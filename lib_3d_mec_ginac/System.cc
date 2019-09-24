@@ -48,9 +48,9 @@ void print_power_as_myformat(const power& p, const print_myformat& c, unsigned l
   p.op(1).print(c);
   c.s << ")";
 }
-void print_numeric_as_myformat(const numeric& p,const print_myformat & c, unsigned level) 
+void print_numeric_as_myformat(const numeric& p,const print_myformat & c, unsigned level)
 {
-     
+
   if (p.is_rational() && p.denom() == 1) {
     c.s << setiosflags(ios::fixed) << (p.numer()) << ".0" ;
   }
@@ -61,9 +61,9 @@ void print_numeric_as_myformat(const numeric& p,const print_myformat & c, unsign
     c.s << setiosflags(ios::fixed) <<  (p.numer()).to_double();
 }
 
-//~ void print_absolute_as_myformat(const numeric::abs& p,const print_myformat & c, unsigned level) 
+//~ void print_absolute_as_myformat(const numeric::abs& p,const print_myformat & c, unsigned level)
 //~ {
-    //~ 
+    //~
 //~ }
 
 
@@ -150,7 +150,7 @@ void System::init ( void ( * func )( const char * ) ) {
     Frames.push_back ( Frame_abs );/*Default Frame*/
 
     /*Create the "Ground" Solid and push back this in the Solids vector*/
-    //Ground = new ( Solid );	
+    //Ground = new ( Solid );
     //Vector3D* CM_ground = new_Vector3D("CM_ground" ,0,0,0,Base_xyz) ;
     //Tensor3D * IT_ground =  new_Tensor3D ("IT_ground", ex(1) , ex(0) , ex(0) , ex(0) , ex(1) , ex(0) , ex(0) , ex(0) , ex(1) , Base_xyz);
     //Solid solaux("Ground", Point_O,Base_xyz,0,CM_ground,IT_ground,Point_O,"ground.stl",1.0,0.0,0.0,0.0 );
@@ -309,6 +309,17 @@ symbol_numeric * System::new_AuxCoordinate ( string aux_coordinate_name , string
     return new_AuxCoordinate ( aux_coordinate , aux_velocity , aux_acceleration );
 }
 
+
+symbol_numeric * System::new_AuxCoordinate ( string aux_coordinate_name , string aux_velocity_name , string aux_acceleration_name , string aux_coordinate_name_tex , string aux_velocity_name_tex , string aux_acceleration_name_tex , numeric aux_coordinate_value , numeric aux_velocity_value , numeric aux_acceleration_value ) {
+    symbol_numeric * aux_coordinate = new  symbol_numeric ( aux_coordinate_name , aux_coordinate_name_tex, aux_coordinate_value);
+    symbol_numeric * aux_velocity = new  symbol_numeric ( aux_velocity_name , aux_velocity_name_tex, aux_velocity_value);
+    symbol_numeric * aux_acceleration = new symbol_numeric ( aux_acceleration_name , aux_acceleration_name_tex, aux_acceleration_value);
+
+    return new_AuxCoordinate ( aux_coordinate , aux_velocity , aux_acceleration );
+}
+
+
+
 /*
 Methods to for introduce new parameters in the System
 */
@@ -418,7 +429,7 @@ T Search_Object ( vector < T> vect , string name ) {
     /*This function returns a pointer*/
     int i = 0;
     bool encontrado = false;
-    
+
     while ( ( i < vect.size () ) and ( encontrado == false ) ){
         if ( name != vect[i]-> get_name () )
             i++;
@@ -426,7 +437,7 @@ T Search_Object ( vector < T> vect , string name ) {
     }
     if ( encontrado == true ){
         return vect[i];
-    }    
+    }
     else{
         return NULL;
     }
@@ -453,10 +464,10 @@ Method for build a new Base in the System
 */
 Base * System::new_Base ( string name , Base * previous_base , Matrix rotation_tupla , ex rotation_angle ) {
     try{
-		
+
         if ( Search_Object ( Bases , name ) != NULL ) throw 1;
-        if ( Search_Object ( Bases , previous_base-> get_name () ) == NULL ) throw 2;  
-   
+        if ( Search_Object ( Bases , previous_base-> get_name () ) == NULL ) throw 2;
+
         Base * baux = new ( Base );
         Base aux ( name , get_Base ( previous_base-> get_name () ) , rotation_tupla , rotation_angle );
         aux.set_System ( this );
@@ -479,12 +490,12 @@ Base * System::new_Base ( string name , string previous_base_name , Matrix rotat
 	try{
 	    if ( Search_Object ( Bases , previous_base_name ) == NULL ) throw 1;
         return new_Base ( name , get_Base ( previous_base_name ) , rotation_tupla , rotation_angle );
-    } catch ( int e ) { 
+    } catch ( int e ) {
     	if (e==1) {outError ( (string("ERR - The base ") + previous_base_name + string (" used to define ") + name + string(" base does not exist ")).c_str() );}
-    }		  
+    }
 }
 
- 
+
 /*
 Method for build a new Base in the System
 */
@@ -492,13 +503,13 @@ Base * System::new_Base ( string name , string previous_base_name , ex expressio
 	try{
 	    if ( Search_Object ( Bases , previous_base_name ) == NULL ) throw 1;
         lst laux;
-        laux.append( expression1 ); 
-        laux.append( expression2 );       
-        laux.append( expression3 );        
+        laux.append( expression1 );
+        laux.append( expression2 );
+        laux.append( expression3 );
         Matrix m_new (  3 , 1 ,laux);
         //Matrix m_new (  3 , 1 , lst ( expression1 , expression2 , expression3 ) );
         return new_Base ( name , get_Base ( previous_base_name ) , m_new , rotation_angle );
-    } catch ( int e ) { 
+    } catch ( int e ) {
     	if (e==1) {outError ( (string("ERR - The base ") + previous_base_name + string (" used to define ") + name + string(" base does not exist ")).c_str() );}
     }
 }
@@ -510,7 +521,7 @@ Method for build a new Vector3D in the System
 Vector3D * System::new_Vector3D ( string name , Matrix mat , Base * base ) {
     try{
         if ( Search_Object ( Vectors , name ) != NULL )throw 1;
-        if ( Search_Object ( Bases , base-> get_name () ) == NULL ) throw 2;  
+        if ( Search_Object ( Bases , base-> get_name () ) == NULL ) throw 2;
 
         Vector3D * vaux = new ( Vector3D );
         Vector3D aux ( name , mat , base , this );
@@ -531,7 +542,7 @@ Method for build a new Vector3D in the System
 */
 Vector3D * System::new_Vector3D ( string name , Matrix mat , string base_name ) {
 	try{
-        if ( Search_Object ( Bases , base_name ) == NULL ) throw 1;  
+        if ( Search_Object ( Bases , base_name ) == NULL ) throw 1;
         return new_Vector3D ( name , mat , get_Base ( base_name ) );
     }catch ( int e ) {
 		if (e==1)             {outError ( (string("ERR - The base ") + base_name + string (" used to define ") + name + string(" vector does not exist ")).c_str() );}
@@ -544,11 +555,11 @@ Method for build a new Vector3D in the System
 */
 Vector3D * System::new_Vector3D ( string name , ex expression1 , ex expression2 , ex expression3 , Base * base ) {
 	try{
-        if ( Search_Object ( Bases , base-> get_name () ) == NULL ) throw 1;  
+        if ( Search_Object ( Bases , base-> get_name () ) == NULL ) throw 1;
         lst laux;
-        laux.append( expression1 ); 
-        laux.append( expression2 );       
-        laux.append( expression3 );        
+        laux.append( expression1 );
+        laux.append( expression2 );
+        laux.append( expression3 );
         return new_Vector3D ( name , Matrix ( 3 , 1 , laux ) , base );
         //return new_Vector3D ( name , Matrix ( 3 , 1 , lst ( expression1 , expression2 , expression3 ) ) , base );
     }catch ( int e ) {
@@ -564,10 +575,10 @@ Vector3D * System::new_Vector3D ( string name , ex expression1 , ex expression2 
 	try{
         if ( Search_Object ( Bases , base_name ) == NULL ) throw 1;
         lst laux;
-        laux.append( expression1 ); 
-        laux.append( expression2 );       
-        laux.append( expression3 );     
-        return new_Vector3D ( name , Matrix ( 3 , 1 , laux ) , get_Base ( base_name ) );        
+        laux.append( expression1 );
+        laux.append( expression2 );
+        laux.append( expression3 );
+        return new_Vector3D ( name , Matrix ( 3 , 1 , laux ) , get_Base ( base_name ) );
         //return new_Vector3D ( name , Matrix ( 3 , 1 , lst ( expression1 , expression2 , expression3 ) ) , get_Base ( base_name ) );
     }catch ( int e ) {
 		if (e==1) {outError ( (string("ERR - The base ") + base_name + string (" used to define ") + name + string(" vector does not exist ")).c_str() );}
@@ -580,14 +591,14 @@ Method for build a new Vector3D in the System
 */
 Vector3D * System::new_Vector3D ( string name , Matrix * mat , string base_name ) {
 	try{
-        if ( Search_Object ( Bases , base_name ) == NULL ) throw 1;  
-        if ( Search_Object ( Matrixs , mat->get_name () ) == NULL ) throw 2; 
+        if ( Search_Object ( Bases , base_name ) == NULL ) throw 1;
+        if ( Search_Object ( Matrixs , mat->get_name () ) == NULL ) throw 2;
         return new_Vector3D ( name , * mat , get_Base ( base_name ) );
     }catch ( int e ) {
 		if (e==1)             {outError ( (string("ERR - The base ") + base_name + string (" used to define ") + name + string(" vector does not exist ")).c_str() );}
 		else if (e==2)       {outError ( (string("ERR - The matrix ") + mat->get_name () + string (" used to define ") + name + string(" vector does not exist ")).c_str() );}
     }
-    
+
 }
 
 
@@ -597,7 +608,7 @@ Method for build a new Tensor3D in the System
 Tensor3D * System::new_Tensor3D ( string name , Matrix * mat , Base * base ) {
     try{
         if ( Search_Object ( Tensors , name ) != NULL )throw 1;
-        if ( Search_Object ( Bases ,base->get_name () ) == NULL ) throw 2;  
+        if ( Search_Object ( Bases ,base->get_name () ) == NULL ) throw 2;
         Tensor3D * taux = new ( Tensor3D );
         Tensor3D aux ( name , mat , base );
         aux.set_System ( this );
@@ -622,13 +633,13 @@ Tensor3D * System::new_Tensor3D ( string name , ex exp1 , ex exp2 , ex exp3 , ex
         lst laux;
         laux.append( exp1 ); laux.append( exp2 );laux.append( exp3 );
         laux.append( exp4 ); laux.append( exp5 );laux.append( exp6 );
-        laux.append( exp7 ); laux.append( exp9 );laux.append( exp9 );   
+        laux.append( exp7 ); laux.append( exp9 );laux.append( exp9 );
         Matrix m ( 3 , 3 , laux);
         //Matrix m ( 3 , 3 , lst ( exp1 , exp2 , exp3 , exp4 , exp5 , exp6 , exp7 , exp8 , exp9 ) );
         return new_Tensor3D ( name , & m , base );
     }catch ( int e ) {
-       if (e==1) {outError ( (string("ERR - The base ") + base->get_name () + string (" used to define ") + name + string(" tensor does not exist ")).c_str() );}           
-    }        
+       if (e==1) {outError ( (string("ERR - The base ") + base->get_name () + string (" used to define ") + name + string(" tensor does not exist ")).c_str() );}
+    }
 }
 
 
@@ -641,7 +652,7 @@ Tensor3D * System::new_Tensor3D ( string name , ex exp1 , ex exp2 , ex exp3 , ex
         lst laux;
         laux.append( exp1 ); laux.append( exp2 );laux.append( exp3 );
         laux.append( exp4 ); laux.append( exp5 );laux.append( exp6 );
-        laux.append( exp7 ); laux.append( exp9 );laux.append( exp9 );   
+        laux.append( exp7 ); laux.append( exp9 );laux.append( exp9 );
         Matrix m ( 3 , 3 , laux);
         //Matrix m ( 3 , 3 , lst ( exp1 , exp2 , exp3 , exp4 , exp5 , exp6 , exp7 , exp8 , exp9 ) );
        return new_Tensor3D ( name , & m , get_Base ( s_Base ) );
@@ -671,14 +682,14 @@ Point * System::new_Point ( string name , Point * p , Vector3D * v ) {
     }catch ( int e ) {
         if (e==1) {outError ( (string("ERR - Name of Point ") + name + string(" already used ")).c_str() );}
         else if (e==2) {outError ( (string("ERR - The point ") + p->get_name() + string (" used to define ") + name + string(" point does not exist ")).c_str() );}
-        //~ else if (e==3) {outError ( (string("ERR - The vector ") + v->get_name() + string (" used to define ") + name + string(" point does not exist ")).c_str() );}       
+        //~ else if (e==3) {outError ( (string("ERR - The vector ") + v->get_name() + string (" used to define ") + name + string(" point does not exist ")).c_str() );}
     }
 }
 
 /*
 Method for build a new Point in the System
 */
-Point * System::new_Point ( string name , string p , Vector3D * v ) {   
+Point * System::new_Point ( string name , string p , Vector3D * v ) {
     try{
         if ( Search_Object ( Points , p ) == NULL )throw 1;
         return new_Point ( name , get_Point ( p ) , v );
@@ -691,7 +702,7 @@ Point * System::new_Point ( string name , string p , Vector3D * v ) {
 /*
 Method for build a new Point in the System
 */
-Point * System::new_Point ( string name , string p , ex exp1 , ex exp2 , ex exp3 , string s_base  ) {   
+Point * System::new_Point ( string name , string p , ex exp1 , ex exp2 , ex exp3 , string s_base  ) {
     try{
         if ( Search_Object ( Points , p ) == NULL )throw 1;
         Vector3D * vaux = new ( Vector3D );
@@ -722,8 +733,8 @@ Frame * System::new_Frame ( string name , Point * p , Base * base) {
         outError ( "ERR -  Frame not build" );
     }catch ( int e ) {
 		if (e==1) {outError ( (string("ERR - Name of Frame ") + name + string(" already used ")).c_str() );}
-        else if (e==2) {outError ( (string("ERR - The point ") + p->get_name() + string (" used to define ") + name + string(" frame does not exist ")).c_str() );}       
-        else if (e==3) {outError ( (string("ERR - The bse ") + base->get_name() + string (" used to define ") + name + string(" frame does not exist ")).c_str() );}       
+        else if (e==2) {outError ( (string("ERR - The point ") + p->get_name() + string (" used to define ") + name + string(" frame does not exist ")).c_str() );}
+        else if (e==3) {outError ( (string("ERR - The bse ") + base->get_name() + string (" used to define ") + name + string(" frame does not exist ")).c_str() );}
     }
 }
 /*
@@ -733,7 +744,7 @@ Frame * System::new_Frame ( string name , string s_Point , string s_Base) {
     try{
         if ( Search_Object ( Points , s_Point ) == NULL )throw 1;
         if ( Search_Object ( Bases , s_Base ) == NULL )throw 2;
-        return new_Frame ( name , get_Point ( s_Point ) , get_Base ( s_Base ) ); 
+        return new_Frame ( name , get_Point ( s_Point ) , get_Base ( s_Base ) );
     }catch ( int e ) {
 	    if (e==1) {outError ( (string("ERR - The point ") + s_Point + string(" used to define ") + name + string(" frame is not defined.")).c_str() );}
         else if (e==2) {outError ( (string("ERR - The base ") + s_Base + string(" used to define ") + name + string(" frame is not defined.")).c_str() );}
@@ -772,7 +783,7 @@ Solid * System::new_Solid ( string name , Point * p , Base * base, symbol_numeri
         if ( Search_Object ( parameters , new_mass->get_name() ) == NULL )throw 6;
         if ( Search_Object ( Vectors , new_CM->get_name() ) == NULL )throw 7;
         if ( Search_Object ( Tensors , new_IT->get_name() ) == NULL )throw 8;
-        
+
         string s1="G"+name;
         Point* new_G = new_Point(s1 ,p,new_CM);
 
@@ -797,7 +808,7 @@ Solid * System::new_Solid ( string name , Point * p , Base * base, symbol_numeri
 /*
 Method for build a new Solid in the System with strings
 */
-Solid * System::new_Solid ( string name , string s_Point , string s_Base, string s_mass , string s_CM, string s_IT){	
+Solid * System::new_Solid ( string name , string s_Point , string s_Base, string s_mass , string s_CM, string s_IT){
     try{
         if ( Search_Object ( Points , s_Point ) == NULL )throw 1;
         if ( Search_Object ( Bases , s_Base ) == NULL )throw 2;
@@ -817,7 +828,7 @@ Solid * System::new_Solid ( string name , string s_Point , string s_Base, string
 /*
 Method for build a new Solid in the System with strings
 */
-Solid * System::new_Solid ( string name , string s_Point , string s_Base, symbol_numeric * new_mass, string s_CM, string s_IT){	
+Solid * System::new_Solid ( string name , string s_Point , string s_Base, symbol_numeric * new_mass, string s_CM, string s_IT){
     try{
         if ( Search_Object ( Points , s_Point ) == NULL )throw 1;
         if ( Search_Object ( Bases , s_Base ) == NULL )throw 2;
@@ -872,7 +883,7 @@ Wrench3D * System::new_Wrench3D(string s_name, ex f1, ex f2, ex f3, string s_bas
     * Fvaux = Faux;
     Vector3D Maux ( ( ex ) m1 , ( ex ) m2 , ( ex ) m3 , get_Base ( s_baseM ) , this );
     * Mvaux = Maux;
-    return new_Wrench3D ( s_name , Faux, Maux , get_Point ( s_P ) , get_Solid ( s_Sol ), type );    
+    return new_Wrench3D ( s_name , Faux, Maux , get_Point ( s_P ) , get_Solid ( s_Sol ), type );
 }
 
 
@@ -907,13 +918,13 @@ Wrench3D * System::new_Wrench3D(string s_name, ex f1, ex f2, ex f3, string s_bas
     * Fvaux = Faux;
     Vector3D Maux ( ( ex ) m1 , ( ex ) m2 , ( ex ) m3 , get_Base ( s_baseM ) , this );
     * Mvaux = Maux;
-    
+
     string name_action = s_name+"_action";
     string name_reaction = s_name+"_reaction";
-    
+
     new_Wrench3D ( name_action,    Faux,  Maux , get_Point ( s_P ), get_Solid ( s_Sol2 ) , type);
     new_Wrench3D ( name_reaction, -Faux, -Maux , get_Point ( s_P ), get_Solid ( s_Sol1 ) , type);
-       
+
 }
 
 /*
@@ -928,7 +939,7 @@ Drawing3D * System::new_Drawing3D (  string s_name , Solid * Sol, string file_na
 
       if ( Search_Object ( Drawings , s_name ) != NULL )throw 1;
       if ( Search_Object ( Solids , Sol->get_name() ) == NULL )throw 2;
-      
+
       Drawing3D * daux = new ( Drawing3D );
       Drawing3D aux ( name, type, P, B);
 
@@ -952,7 +963,7 @@ Drawing3D * System::new_Drawing3D (  string s_name , Solid * Sol, string file_na
 Method for build a new Draw in the System with Solid object
 */
 Drawing3D * System::new_Drawing3D (  string s_name , string s_Sol, string file_name, numeric r, numeric g,numeric b,numeric alpha  ) {
-    return new_Drawing3D ( s_name, get_Solid(s_Sol), file_name, r, g, b, alpha  ); 
+    return new_Drawing3D ( s_name, get_Solid(s_Sol), file_name, r, g, b, alpha  );
 }
 
 
@@ -968,7 +979,7 @@ Drawing3D * System::new_Drawing3D (string s_name, string s_point , string s_base
         if ( Search_Object ( Drawings , s_name ) != NULL )throw 1;
         if ( Search_Object ( Points , s_point ) == NULL )throw 2;
         if ( Search_Object ( Bases , s_base ) == NULL )throw 3;
-    
+
 
         Drawing3D * daux = new ( Drawing3D );
         Drawing3D aux ( name, type, get_Point ( s_point ) , get_Base( s_base ));
@@ -978,7 +989,7 @@ Drawing3D * System::new_Drawing3D (string s_name, string s_point , string s_base
         new_color.append(r); new_color.append(g); new_color.append(b); new_color.append(alpha);
         aux.set_color(new_color);
         //aux.set_color( lst (r,g,b,alpha) );
-        
+
         * daux = aux;
         Drawings.push_back ( daux );
         return daux;
@@ -996,14 +1007,14 @@ Drawing3D * System::new_Drawing3D (string s_name, string s_point , string s_base
 Method for build a new Draw in the System with Solid object without color
 */
 Drawing3D * System::new_Drawing3D (  string s_name , Solid * Sol, string file_name) {
-    return new_Drawing3D ( s_name, Sol, file_name, 9, 9, 9, 9 ); 
+    return new_Drawing3D ( s_name, Sol, file_name, 9, 9, 9, 9 );
 }
 
 /*
 Method for build a new Draw in the System with Solid object without color
 */
 Drawing3D * System::new_Drawing3D (  string s_name , string s_Sol, string file_name ) {
-    return new_Drawing3D ( s_name, get_Solid(s_Sol), file_name, 9, 9, 9, 9 ); 
+    return new_Drawing3D ( s_name, get_Solid(s_Sol), file_name, 9, 9, 9, 9 );
 }
 
 /*
@@ -1087,7 +1098,7 @@ Drawing3D * System::new_Drawing3D (  string s_name , Point * Pnt, numeric scale)
 
 /*
 Method for build a new Draw in the System with Vector object
-*/       
+*/
 Drawing3D * System::new_Drawing3D ( string s_name , Vector3D * Vec, Point * Pnt, numeric r, numeric g,numeric b,numeric alpha) {
     try{
 
@@ -1095,7 +1106,7 @@ Drawing3D * System::new_Drawing3D ( string s_name , Vector3D * Vec, Point * Pnt,
       string type = "Vector";
 
       if ( Search_Object ( Drawings , name ) != NULL )throw 1;
-      if ( Search_Object ( Points , Pnt->get_name() ) == NULL )throw 1;      
+      if ( Search_Object ( Points , Pnt->get_name() ) == NULL )throw 1;
       Base * B = Vec-> get_Base();
 
 
@@ -1127,8 +1138,8 @@ Drawing3D * System::new_Drawing3D ( string s_name , Vector3D * Vec, Point * Pnt,
 
 Drawing3D * System::new_Drawing3D (string s_name ,  Vector3D * Vec, Point * Pnt) {
 	try{
-        if ( Search_Object ( Points , Pnt->get_name() ) == NULL )throw 1;   
-        return new_Drawing3D (s_name, Vec, Pnt , 1.0, 0.0, 0.0, 1.0  ); 
+        if ( Search_Object ( Points , Pnt->get_name() ) == NULL )throw 1;
+        return new_Drawing3D (s_name, Vec, Pnt , 1.0, 0.0, 0.0, 1.0  );
     }catch ( int e ) {
        if (e==1) {outError ( (string("ERR - The point ") + Pnt->get_name() + string(" used to define ") + s_name + string(" drawings is not defined.")).c_str() );}
     }
@@ -1612,7 +1623,7 @@ Base * System::Reduced_Base ( Base * BaseA , Base * BaseB ) {
     int i;
     vector < Base * > ramaAaux;
     vector < Base * > ramaBaux;
-    
+
     for ( i = ramaA.size () - 1 ; i >= 0 ; i-- ){
         ramaAaux.push_back ( ramaA.back () );
         ramaA.pop_back ();
@@ -1627,7 +1638,7 @@ Base * System::Reduced_Base ( Base * BaseA , Base * BaseB ) {
     /*Now run this vectors in pairs and stop when these pairs are'n equals*/
 
     Base * b;
-   
+
     if ( gravity == DOWN ){
     int encontrado = 0;
     i = 0;
@@ -1636,21 +1647,21 @@ Base * System::Reduced_Base ( Base * BaseA , Base * BaseB ) {
             i++;
         else encontrado=1;
     }
-    
+
     b = ramaAaux[i-1];
     }
     else if ( gravity == UP ){
-        //~ if (ramaAaux.size ()>=ramaBaux.size () ){ 
+        //~ if (ramaAaux.size ()>=ramaBaux.size () ){
             //~ i = ramaAaux.size ();
             //~ b = ramaAaux[i-1];
         //~ }
         //~ else{
             //~ i = ramaBaux.size ();
-            //~ b = ramaBaux[i-1];  
+            //~ b = ramaBaux[i-1];
         //~ }
         b = bauxB;
     }
-    
+
     BaseA = bauxA;
     BaseB = bauxB;
 
@@ -1853,7 +1864,7 @@ Auxiliar method fot calculate Rotation_Matrix ( BaseA is Reduced_Base )
 */
 Matrix System::Rec_Rotation_Matrix (  Base * BaseA , Base * BaseB ) {
     Matrix rt = BaseB-> rotation_matrix () ;
-    
+
     if (BaseB->get_Previous_Base () !=  BaseA){
         Matrix bAux =  Rec_Rotation_Matrix (  BaseA , BaseB->get_Previous_Base () )   ;
         return bAux* rt;
@@ -1890,7 +1901,7 @@ Matrix System::Rotation_Matrix ( Base * BaseA , Base * BaseB ) {
             if ( reducedbase == BaseB )
                 return Rec_Rotation_Matrix ( BaseB , BaseA ).transpose () ;
                 //return Rotation_Matrix_Aux ( BaseB , BaseA ).transpose () ;
-                
+
             else
                 /*return Rotation_Matrix_Aux ( reducedbase , BaseB ) * Rotation_Matrix_Aux ( reducedbase , BaseA ).transpose () ;*/
                 return Rec_Rotation_Matrix ( reducedbase , BaseA ).transpose () * Rec_Rotation_Matrix ( reducedbase , BaseB );
@@ -1898,15 +1909,15 @@ Matrix System::Rotation_Matrix ( Base * BaseA , Base * BaseB ) {
     }else{
         lst laux;
         laux.append(1); laux.append(0); laux.append(0);
-        laux.append(0); laux.append(1); laux.append(0);        
-        laux.append(0); laux.append(0); laux.append(1);        
+        laux.append(0); laux.append(1); laux.append(0);
+        laux.append(0); laux.append(0); laux.append(1);
         Matrix Aux ( 3 , 3 , laux);
         //Matrix Aux ( 3 , 3 , lst ( 1 , 0 , 0 , 0 , 1 , 0 , 0 , 0 , 1 ) );
         return Aux;
     }
 }
 
-   
+
 /*
 Return the Rotation_Matrix between two Bases ( BaseA --> BaseB )
 */
@@ -1930,8 +1941,8 @@ Matrix System::Rotation_Matrix  ( string base_nameA , string base_nameB ) {
     }catch ( int i ) {
         lst laux;
         laux.append(0); laux.append(0); laux.append(0);
-        laux.append(0); laux.append(0); laux.append(0);        
-        laux.append(0); laux.append(0); laux.append(0);        
+        laux.append(0); laux.append(0); laux.append(0);
+        laux.append(0); laux.append(0); laux.append(0);
         Matrix Aux ( 3 , 3 , laux);
         //Matrix Aux ( 3 , 3 , lst ( 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ) );
         return Aux;
@@ -1942,17 +1953,17 @@ Matrix System::Rotation_Matrix  ( string base_nameA , string base_nameB ) {
 Auxiliar method fot calculate Position_Vector ( Point is reducedbase )
 */
 //~ Vector3D System::Position_Vector_Aux ( Point * PointA , Point * PointB ) {
-//~ 
+//~
     //~ Vector3D pv = * PointB-> get_Position_Vector ();
     //~ Vector3D vAux;
     //~ while ( PointB-> get_Previous_Point () != PointA ) {
-//~ 
+//~
         //~ PointB = PointB-> get_Previous_Point ();
         //~ vAux = * PointB-> get_Position_Vector ();
-//~ 
+//~
         //~ pv = pv + vAux;
     //~ }
-   //~ 
+   //~
     //~ return pv;
 //~ }
 
@@ -1963,17 +1974,17 @@ void System::Rec_Position_Vector ( Point * PointA , Point * PointB , Vector3D & 
     Vector3D Vaux = * PointB-> get_Position_Vector ();
 
     PointB = PointB-> get_Previous_Point ();
-    
+
     if (gravity == DOWN){
         if (Vpos.get_Base() == NULL  ){
             Vpos = Vaux;
         }
         else{
-            Vpos = Vpos + Vaux;   
+            Vpos = Vpos + Vaux;
         }
 
         if (PointB != PointA){
-            Rec_Position_Vector ( PointA , PointB , Vpos); 
+            Rec_Position_Vector ( PointA , PointB , Vpos);
         }
         return;
     }
@@ -1987,9 +1998,9 @@ void System::Rec_Position_Vector ( Point * PointA , Point * PointB , Vector3D & 
             Vpos = Vaux;
         }
         return;
-    }    
+    }
 }
- 
+
 /*
 Return the Position Vector between two Points ( PointA --> PointB )
 */
@@ -2011,13 +2022,13 @@ Vector3D System::Position_Vector ( Point * PointA , Point * PointB ) {
             Vector3D Vout;
             Rec_Position_Vector( PointA , PointB , Vout);
             return Vout;
-            
+
         }else if ( reducedpoint == PointB ) {
             //return - Position_Vector_Aux ( PointB , PointA );
             Vector3D Vout;
             Rec_Position_Vector( PointB , PointA , Vout);
             return -Vout;
-        }else{ 
+        }else{
             //return Position_Vector_Aux ( reducedpoint , PointB ) - Position_Vector_Aux ( reducedpoint , PointA );
             Vector3D VoutB;
             Vector3D VoutA;
@@ -2052,9 +2063,9 @@ Vector3D System::Position_Vector ( string PointA_name , string PointB_name ) {
 Auxiliar method fot calculate Angular_Velocity (BaseA is Reduced_Base)
 */
 //~ Vector3D System::Angular_Velocity_Aux ( Base * BaseA , Base * BaseB ) {
-//~ 
+//~
     //~ Vector3D  rt = BaseB-> angular_velocity ();
-//~ 
+//~
     //~ rt.set_System ( this );
     //~ Vector3D bAux ( ( ex ) 0 , ( ex ) 0 , ( ex ) 0 , BaseB , this );
     //~ while ( BaseB-> get_Previous_Base () != BaseA ) {
@@ -2071,16 +2082,16 @@ Auxiliar method fot calculate Angular_Velocity (BaseA is Reduced_Base)
 Method fot calculate Angular_Velocity with tables
 */
 //~ Vector3D System::Angular_Velocity_Tables ( Base * BaseA , Base * BaseB, map  < Base*, Vector3D > &OM_abs ) {
-//~ 
+//~
     //~ if (  (OM_abs[BaseB]).get_Base() != NULL) { return OM_abs[BaseB] ;}
-//~ 
+//~
     //~ Vector3D  rt = BaseB-> angular_velocity ();
-//~ 
+//~
     //~ rt.set_System ( this );
     //~ Vector3D bAux ( ( ex ) 0 , ( ex ) 0 , ( ex ) 0 , BaseB , this );
-    //~ 
+    //~
     //~ if (  (OM_abs[BaseB-> get_Previous_Base ()]).get_Base() != NULL) { cout << "rt  ="<< rt <<endl;rt = rt + OM_abs[BaseB-> get_Previous_Base ()] ;cout << "iep2"<<endl;rt.set_System ( this );return rt;}
-    //~ 
+    //~
     //~ while ( BaseB-> get_Previous_Base () != BaseA ) {
         //~ BaseB = BaseB-> get_Previous_Base ();
         //~ bAux = BaseB-> angular_velocity ();
@@ -2105,28 +2116,28 @@ void System::Rec_Angular_Velocity (  Base * BaseA , Base * BaseB , Vector3D & Vo
     rt.set_System ( this );
     BaseB = BaseB-> get_Previous_Base ();
 
-    if (gravity == DOWN){    
+    if (gravity == DOWN){
         if (Vomega.get_Base() == NULL ){
             Vomega = rt;
-        }    
-        else{
-            Vomega = rt + Vomega ;   
-        }    
-        if (BaseB != BaseA ){
-            Rec_Angular_Velocity ( BaseA , BaseB , Vomega); 
         }
-        return;    
+        else{
+            Vomega = rt + Vomega ;
+        }
+        if (BaseB != BaseA ){
+            Rec_Angular_Velocity ( BaseA , BaseB , Vomega);
+        }
+        return;
     }
     else if (gravity == UP){
         if (BaseB != BaseA ){
-            Rec_Angular_Velocity ( BaseA , BaseB , Vomega); 
+            Rec_Angular_Velocity ( BaseA , BaseB , Vomega);
             Vomega = Vomega + rt;
         }
         else{
             Vomega = rt;
         }
         return;
-    }     
+    }
 }
 
 /*
@@ -2148,7 +2159,7 @@ Vector3D System::Angular_Velocity ( Base * BaseA , Base * BaseB ) {
                 gravity = UP;
             }else
                 reducedbase = Reduced_Base ( BaseA , BaseB );
-                
+
 
             if ( reducedbase == BaseA ) {
                 //return Angular_Velocity_Aux ( BaseA , BaseB );
@@ -2160,14 +2171,14 @@ Vector3D System::Angular_Velocity ( Base * BaseA , Base * BaseB ) {
                 Vector3D Vout;
                 Rec_Angular_Velocity ( BaseB, BaseA , Vout) ;
                 return -Vout;
-                
+
             }else{
                 //return Angular_Velocity_Aux ( reducedbase , BaseB )-Angular_Velocity_Aux ( reducedbase , BaseA );
                 Vector3D VoutA;
                 Vector3D VoutB;
                 Vector3D VoutC;
                 if ( gravity == UP ) {
-                    
+
                     gravity = DOWN;
                     Rec_Angular_Velocity ( reducedbase, BaseA , VoutA) ;
                     Rec_Angular_Velocity ( reducedbase, BaseB , VoutB) ;
@@ -2179,9 +2190,9 @@ Vector3D System::Angular_Velocity ( Base * BaseA , Base * BaseB ) {
                     VoutC = VoutB-VoutA;
                 }
                 return VoutC;
-                
+
             }
-            
+
         }catch ( int i ){
             outError ( "ERR - The two Bases don't exist in this System" );
         }
@@ -2248,38 +2259,38 @@ Tensor3D System::Angular_Velocity_Tensor ( Base * BaseA , Base * BaseB ) {
 Auxiliar method for calculate the velocity vector of PointB-PointA vector
 */
 //~ Vector3D System::Velocity_Vector_Aux ( Point * PointA , Point * PointB ) {
-//~ 
+//~
     //~ Point * PA = PointB;
     //~ Vector3D  V_tot = Vector3D ( "V_tot" , 0 , 0 , 0 , PointB -> get_Position_Vector () -> get_Base(),this );
-//~ 
+//~
     //~ while ( PA -> get_Previous_Point () != PointA ) {
-//~ 
-//~ 
+//~
+//~
         //~ Point * OA = PA -> get_Previous_Point ();
         //~ //Point * OB = OA -> get_Previous_Point ();
-//~ 
+//~
         //~ Vector3D * OAPA = PA -> get_Position_Vector ();
         //~ Vector3D * OBOA = OA -> get_Position_Vector ();
-//~ 
+//~
         //~ Base * BA = OAPA -> get_Base();
         //~ Base * BB = OBOA -> get_Base();
-//~ 
-        //~ Vector3D Omega_BA_BB = Angular_Velocity(BB,BA); 
-//~ 
+//~
+        //~ Vector3D Omega_BA_BB = Angular_Velocity(BB,BA);
+//~
         //~ Vector3D OA_PA = Position_Vector(OA, PA);
         //~ Vector3D VOAPA = Dt(OA_PA,BA);
-//~ 
+//~
         //~ Vector3D PA_rel = Position_Vector(OA, PointB);
-        //~ 
-//~ 
+        //~
+//~
         //~ Vector3D V_rel = VOAPA + (Omega_BA_BB ^ PA_rel);
-//~ 
-//~ 
+//~
+//~
         //~ V_tot = V_tot + V_rel;
-//~ 
+//~
         //~ PA = PA-> get_Previous_Point ();
     //~ }
-//~ 
+//~
     //~ return V_tot;
 //~ }
 
@@ -2292,14 +2303,14 @@ void System::Rec_Velocity_Vector (Frame * FrameF , Point * PointP,  Point * Poin
 
     if (PointO->get_Position_Vector () == NULL ){
         PointO = PointP;
-    } //first iteration 
+    } //first iteration
 
-    
+
     if (PointP == FrameF->get_Point()){
         Vvel = Vector3D( Matrix ( 3 , 1 ) , Base_xyz , this);
         return;
     }
-    
+
     Point * O1 = PointO -> get_Previous_Point ();// O-1 point
     Vector3D * O1_O  = PointO-> get_Position_Vector ();
     Base * B  = O1_O  -> get_Base();
@@ -2314,7 +2325,7 @@ void System::Rec_Velocity_Vector (Frame * FrameF , Point * PointP,  Point * Poin
             Vvel =  VO1_P + (Omega ^ O1_P);
         }
         else{
-            Vvel = (Vvel + VO1_P) + (Omega ^ O1_P);  
+            Vvel = (Vvel + VO1_P) + (Omega ^ O1_P);
         }
     }
     else{
@@ -2325,9 +2336,9 @@ void System::Rec_Velocity_Vector (Frame * FrameF , Point * PointP,  Point * Poin
         Vector3D O1_P = Position_Vector(O1 , PointP);
 
         Vector3D VO1_O = Dt(*O1_O, B);
-        
+
         if (gravity == UP) { Rec_Velocity_Vector (FrameF , PointP , O1, Vvel ); }
-              
+
         if (Vvel.get_Base() == NULL ){
             Vvel = VO1_O + (Omega ^ O1_P);
         }
@@ -2336,51 +2347,51 @@ void System::Rec_Velocity_Vector (Frame * FrameF , Point * PointP,  Point * Poin
         }
 
         if (gravity == DOWN) { Rec_Velocity_Vector (FrameF , PointP , O1, Vvel ); }
-        
-        
+
+
     }
 
-    
 
-    return;    
+
+    return;
 
 }
 
 
 /*
-Return the Velocity Vector of the point PointB with respect to Frame 
+Return the Velocity Vector of the point PointB with respect to Frame
 */
 Vector3D System::Velocity_Vector (Frame * FrameF , Point * PointB ) {
     // OLD procedure, Dt based ==>> OK
     //Vector3D Vaux = Position_Vector(FrameF->get_Point(),PointB);
     //return Dt(Vaux,FrameF);
-    
-    
-    
+
+
+
     Point * PointA = FrameF->get_Point();
 
-    Point * reducedpoint = NULL;  
-    // The gravity no effect here 
+    Point * reducedpoint = NULL;
+    // The gravity no effect here
     if ( gravity == UP ) {
         gravity = DOWN;
         reducedpoint = Reduced_Point ( PointA , PointB );
         gravity = UP;
     }else
         reducedpoint = Reduced_Point ( PointA , PointB );
-            
-            
+
+
     if ( reducedpoint == PointA ) {
         Point * Paux = new ( Point );
         Vector3D VvelB;
         Rec_Velocity_Vector (FrameF ,PointB ,Paux, VvelB);
-        return VvelB ;   
-          
-    }else if ( reducedpoint == PointB ) { 
+        return VvelB ;
+
+    }else if ( reducedpoint == PointB ) {
         Point * Paux = new ( Point );
-        Vector3D VvelA;        
+        Vector3D VvelA;
         Frame FrameAux = Frame(PointB, FrameF->get_Base() );
         Rec_Velocity_Vector (&FrameAux ,PointA ,Paux, VvelA);
-        return -VvelA;  
+        return -VvelA;
 
     }else{
         Point * PauxA = new ( Point );
@@ -2388,9 +2399,9 @@ Vector3D System::Velocity_Vector (Frame * FrameF , Point * PointB ) {
         Vector3D VvelA;
         Vector3D VvelB;
         Vector3D VvelC;
-        
+
         Frame FrameAux = Frame(reducedpoint, FrameF->get_Base() );
-        
+
         if ( gravity == UP ) {
             gravity = DOWN;
             Rec_Velocity_Vector (&FrameAux, PointA ,PauxA, VvelA);
@@ -2403,9 +2414,9 @@ Vector3D System::Velocity_Vector (Frame * FrameF , Point * PointB ) {
             Rec_Velocity_Vector (&FrameAux, PointB ,PauxB, VvelB);
             VvelC = VvelB - VvelA;
         }
-        
+
         return VvelC;
-        
+
 
     }
 }
@@ -2425,7 +2436,7 @@ Vector3D System::Velocity_Vector (Frame * Frame , Point * Point, Solid * Sol ) {
     Vector3D Omega = Angular_Velocity(Frame -> get_Base(),Sol->get_Base());
     Vector3D OSol_P = Position_Vector(Sol->get_Point(),Point );
     Vector3D Velocity;
-    
+
     if (gravity == UP && OSol_P.get_Base() == Sol->get_Base()){
         Velocity = Velocity_Vector(Frame,Sol->get_Point() ) + (Omega ^ OSol_P );
     }else if(gravity == UP && OSol_P.get_Base() != Sol->get_Base()){
@@ -2435,7 +2446,7 @@ Vector3D System::Velocity_Vector (Frame * Frame , Point * Point, Solid * Sol ) {
     }else{
         Velocity = Velocity_Vector(Frame,Sol->get_Point() ) + (Omega ^ OSol_P );
     }
-    
+
     //~ cout << "====================== "<< Sol->get_name()<<" ===================" << endl;
     //~ cout << unatomize(Velocity_Vector(Frame,Sol->get_Point() ) - Velocity_VectorOLD(Frame,Sol->get_Point() ) )<< endl;
     return Velocity;
@@ -2455,28 +2466,28 @@ void System::Rec_Angular_Acceleration (  Base * BaseA , Base * BaseB , Vector3D 
     rt.set_System ( this );
     BaseB = BaseB-> get_Previous_Base ();
 
-    if (gravity == DOWN){    
+    if (gravity == DOWN){
         if (Valpha.get_Base() == NULL ){
             Valpha = rt;
-        }    
-        else{
-            Valpha = rt + Valpha ;   
-        }    
-        if (BaseB != BaseA ){
-            Rec_Angular_Acceleration ( BaseA , BaseB , Valpha); 
         }
-        return;    
+        else{
+            Valpha = rt + Valpha ;
+        }
+        if (BaseB != BaseA ){
+            Rec_Angular_Acceleration ( BaseA , BaseB , Valpha);
+        }
+        return;
     }
     else if (gravity == UP){
         if (BaseB != BaseA ){
-            Rec_Angular_Acceleration ( BaseA , BaseB , Valpha); 
+            Rec_Angular_Acceleration ( BaseA , BaseB , Valpha);
             Valpha = Valpha + rt;
         }
         else{
             Valpha = rt;
         }
         return;
-    }     
+    }
 }
 
 
@@ -2524,7 +2535,7 @@ Vector3D System::Angular_Acceleration (  Base * BaseA , Base * BaseB ){
                 gravity = UP;
             }else
                 reducedbase = Reduced_Base ( BaseA , BaseB );
-                
+
 
             if ( reducedbase == BaseA ) {
                 Vector3D Vout;
@@ -2534,13 +2545,13 @@ Vector3D System::Angular_Acceleration (  Base * BaseA , Base * BaseB ){
                 Vector3D Vout;
                 Rec_Angular_Acceleration ( BaseB, BaseA , Vout) ;
                 return -Vout;
-                
+
             }else{
                 Vector3D VoutA;
                 Vector3D VoutB;
                 Vector3D VoutC;
                 if ( gravity == UP ) {
-                    
+
                     gravity = DOWN;
                     Rec_Angular_Acceleration ( reducedbase, BaseA , VoutA) ;
                     Rec_Angular_Acceleration ( reducedbase, BaseB , VoutB) ;
@@ -2552,9 +2563,9 @@ Vector3D System::Angular_Acceleration (  Base * BaseA , Base * BaseB ){
                     VoutC = VoutB-VoutA;
                 }
                 return VoutC;
-                
+
             }
-            
+
         }catch ( int i ){
             outError ( "ERR - The two Bases don't exist in this System" );
         }
@@ -2562,69 +2573,69 @@ Vector3D System::Angular_Acceleration (  Base * BaseA , Base * BaseB ){
     }else
         return Vector3D ( Matrix ( 3 , 1 ) , BaseB , this );
 
-     
+
 }
 
 /*
-Return the Velocity Vector of the point PointB with respect to Frame 
+Return the Velocity Vector of the point PointB with respect to Frame
 */
 Vector3D System::Acceleration_Vector (Frame * FrameF , Point * PointB ) {
     // OLD procedure, Dt based ==>> OK
     Vector3D Vaux = Position_Vector(FrameF->get_Point(),PointB);
-    
+
     return Dt(Dt(Vaux,FrameF),FrameF) ;
-    
-    //~ 
+
+    //~
     //~ Point * PointA = FrameF->get_Point();
-//~ 
-    //~ Point * reducedpoint = NULL;  
-    //~ // The gravity no effect here 
+//~
+    //~ Point * reducedpoint = NULL;
+    //~ // The gravity no effect here
     //~ if ( gravity == UP ) {
         //~ gravity = DOWN;
         //~ reducedpoint = Reduced_Point ( PointA , PointB );
         //~ gravity = UP;
     //~ }else
         //~ reducedpoint = Reduced_Point ( PointA , PointB );
-            //~ 
-            //~ 
+            //~
+            //~
     //~ if ( reducedpoint == PointA ) {
         //~ Point * Paux = new ( Point );
         //~ Vector3D VvelB;
         //~ Rec_Velocity_Vector (FrameF ,PointB ,Paux, VvelB);
-        //~ return VvelB ;   
-          //~ 
-    //~ }else if ( reducedpoint == PointB ) { 
+        //~ return VvelB ;
+          //~
+    //~ }else if ( reducedpoint == PointB ) {
         //~ Point * Paux = new ( Point );
-        //~ Vector3D VvelA;        
+        //~ Vector3D VvelA;
         //~ Frame FrameAux = Frame(PointB, FrameF->get_Base() );
         //~ Rec_Velocity_Vector (&FrameAux ,PointA ,Paux, VvelA);
-        //~ return -VvelA;  
-//~ 
+        //~ return -VvelA;
+//~
     //~ }else{
         //~ Point * PauxA = new ( Point );
         //~ Point * PauxB = new ( Point );
         //~ Vector3D VvelA;
         //~ Vector3D VvelB;
         //~ Vector3D VvelC;
-        //~ 
+        //~
         //~ Frame FrameAux = Frame(reducedpoint, FrameF->get_Base() );
-        //~ 
+        //~
         //~ if ( gravity == UP ) {
             //~ gravity = DOWN;
             //~ Rec_Velocity_Vector (&FrameAux, PointA ,PauxA, VvelA);
             //~ Rec_Velocity_Vector (&FrameAux, PointB ,PauxB, VvelB);
             //~ VvelC = VvelB - VvelA;
             //~ gravity = UP;
-//~ 
+//~
         //~ }else{
             //~ Rec_Velocity_Vector (&FrameAux, PointA ,PauxA, VvelA);
             //~ Rec_Velocity_Vector (&FrameAux, PointB ,PauxB, VvelB);
             //~ VvelC = VvelB - VvelA;
         //~ }
-        //~ 
+        //~
         //~ return VvelC;
-        //~ 
-//~ 
+        //~
+//~
     //~ }
 }
 
@@ -2639,16 +2650,16 @@ Vector3D System::Acceleration_Vector ( string Frame_name , string PointA_name  )
 Return the Velocity Vector of the point PointB respect Frame in Solid Sol
 */
 Vector3D System::Acceleration_Vector (Frame * FrameF , Point * PointB, Solid * SolS ) {
-    
+
     Vector3D Vaux = Position_Vector(FrameF->get_Point(),PointB);
-    
+
     return Dt(Dt(Vaux,FrameF),FrameF) ;
-    
+
 
     //~ Vector3D Omega = Angular_Velocity(Frame -> get_Base(),Sol->get_Base());
     //~ Vector3D OSol_P = Position_Vector(Sol->get_Point(),Point );
     //~ Vector3D Velocity;
-    //~ 
+    //~
     //~ if (gravity == UP && OSol_P.get_Base() == Sol->get_Base()){
         //~ Velocity = Velocity_Vector(Frame,Sol->get_Point() ) + (Omega ^ OSol_P );
     //~ }else if(gravity == UP && OSol_P.get_Base() != Sol->get_Base()){
@@ -2658,7 +2669,7 @@ Vector3D System::Acceleration_Vector (Frame * FrameF , Point * PointB, Solid * S
     //~ }else{
         //~ Velocity = Velocity_Vector(Frame,Sol->get_Point() ) + (Omega ^ OSol_P );
     //~ }
-//~ 
+//~
     //~ return Velocity;
 }
 
@@ -2678,7 +2689,7 @@ Return the ex derivate
 ex System::dt ( ex expression ) {
 
         ex expression_derivative = diff ( expression ,get_Time_Symbol () ) ;
-        
+
         for ( int i = 0; i < get_Coordinates ().size () ; i++ )
                 expression_derivative =  expression_derivative +  diff ( expression , *get_Coordinates ()[i] )    * *get_Velocities ()[i]    + diff ( expression ,  *get_Velocities()[i] )    *  *get_Accelerations ()[i]   ;
         for ( int i = 0; i < get_AuxCoordinates ().size () ; i++ )
@@ -2689,7 +2700,7 @@ ex System::dt ( ex expression ) {
 }
 
 /*
-Return the time derivate of the components of a vector3D 
+Return the time derivate of the components of a vector3D
 */
 Vector3D System::dt ( Vector3D Vector3DA) {
     Vector3D dVector3DA ( "" , Dt ( Vector3DA ) , Vector3DA.get_Base () , this );
@@ -2750,7 +2761,7 @@ Vector3D System::Dt ( Vector3D Vector3DA , string base_frame_name ) {
 }
 
 
-/* 
+/*
 Remove one Matrix of the System by name
 */
 void System::remove_Matrix ( string matrix_name ) {
@@ -2877,9 +2888,9 @@ void System::remove_Base ( string base_name ) {
 
 
 /*
-Return the jacobian Matrix between two Matrix taking into account if the result matrix will be symmetric or not. 
+Return the jacobian Matrix between two Matrix taking into account if the result matrix will be symmetric or not.
 If symmetric == 1, the matrix will be symmetric
-If symmetric == 0, the matrix won't be symmetric 
+If symmetric == 0, the matrix won't be symmetric
 */
 Matrix System::jacobian ( Matrix MatrixA , Matrix MatrixB , ex symmetric ) {
     Matrix out ( MatrixA.cols () , MatrixB.rows () );
@@ -2887,14 +2898,14 @@ Matrix System::jacobian ( Matrix MatrixA , Matrix MatrixB , ex symmetric ) {
         if ( ( MatrixA.rows () == 1 ) and ( MatrixB.cols () == 1 ) ) {
             for ( int i = 0 ; i <  MatrixA.cols () ; i++ )
                 for ( int j = 0;j< MatrixB.rows () ;j++ )
-                    if( symmetric == 1){    
+                    if( symmetric == 1){
                         if (j >= i){
                             out ( i , j ) =  diff( MatrixA ( 0 , i ),  ex_to<symbol> ( unatomize_ex ( MatrixB ( j , 0 ) ) ) );
                         }
                         else{
                             out ( i , j ) = out ( j , i );
-                        } 
-                    } 
+                        }
+                    }
                     else{
                         out ( i , j ) =  diff( MatrixA ( 0 , i ),  ex_to<symbol> ( unatomize_ex ( MatrixB ( j , 0 ) ) ) );
                     }
@@ -2954,12 +2965,12 @@ ex System::diff ( ex expression , symbol symbolA ) {
         return expression.diff ( symbolA );
     }
     else{
-        // OLD 
+        // OLD
         //expression = unatomize_ex ( expression );
         //return expression.diff ( symbolA );
         return recursive_differentiation (expression,symbolA);
     }
-    
+
 }
 
 /*
@@ -2967,13 +2978,13 @@ Function that make the derivate of one object ( Matrix ,  Vector3D or Tensor3D )
 */
 template < class T >
 T diff ( T object , symbol symbolA ) {
-    
+
     for ( int i = 0 ; i < object.rows () ; i++ ){
         for ( int j = 0 ; j < object.cols() ; j++ ){
             object ( i , j ) = diff ( object ( i , j ) , symbolA );
         }
     }
-    
+
     return object;
 }
 
@@ -3001,9 +3012,9 @@ try {
 
 
     if (symbol_symbol==NULL) throw 1;
-    
+
     out = diff ( expression , *symbol_symbol);
-  
+
     return out;
 
     } catch (int e) {
@@ -3063,7 +3074,7 @@ try {
     if (symbol_symbol==NULL) throw 1;
 
     return ::diff(MatrixA,*symbol_symbol);
-    
+
     } catch (int e) {
 		outError ( (string("ERR - The string") + symbol_name + string("is not a symbol (Coordinate velocity acceleration or parameter)")).c_str());
     }
@@ -3092,7 +3103,7 @@ try {
     if (symbol_symbol==NULL) throw 1;
 
     return ::diff(VectorA,*symbol_symbol);
-    
+
     } catch (int e) {
 		outError ( (string("ERR - The string") + symbol_name + string("is not a symbol (Coordinate velocity acceleration or parameter)")).c_str());
     }
@@ -3122,7 +3133,7 @@ try {
     if (symbol_symbol==NULL) throw 1;
 
     return ::diff(TensorA,*symbol_symbol);
-    
+
     } catch (int e) {
 		outError ( (string("ERR - The string") + symbol_name + string("is not a symbol (Coordinate velocity acceleration or parameter)")).c_str());
     }
@@ -3269,8 +3280,8 @@ Matrix System::evaluate_Matrix ( Matrix MatrixA ) {
 
 
 //***********************Solid Methods********************************************
-Vector3D System::get_SOL_Omega ( Solid * Sol){	
-    Vector3D SOL_Omega = Angular_Velocity("xyz",Sol->get_Base()->get_name());  
+Vector3D System::get_SOL_Omega ( Solid * Sol){
+    Vector3D SOL_Omega = Angular_Velocity("xyz",Sol->get_Base()->get_name());
     return SOL_Omega;
 }
 //Velcidad punto-referencia (punto, perteneciapunto, ref)
@@ -3283,7 +3294,7 @@ Vector3D System::get_SOL_Velocity (Solid * Sol){
 Vector3D System::get_SOL_GC_Velocity (Solid * Sol){
     Vector3D OO_OSol = Position_Vector("O", Sol->get_Point()->get_name());
     Vector3D VabsOO_OSol = Dt(OO_OSol ,"abs");
-    Vector3D Omega_SOl = Angular_Velocity("xyz",Sol->get_Base()->get_name()); 
+    Vector3D Omega_SOl = Angular_Velocity("xyz",Sol->get_Base()->get_name());
     Vector3D CM = *Sol -> get_CM();
     Vector3D GC_Velocity = VabsOO_OSol + (Omega_SOl ^ CM);
     return GC_Velocity;
@@ -3297,9 +3308,9 @@ Return the Generalized Force associated to wrench
 Matrix System::GenForce(Wrench3D * wrench){
     Matrix dq = Velocities();
     Matrix GenForce(dq.rows(),1);
-    
+
     if (gravity == DOWN || wrench-> get_Type () == "Gravity" || wrench-> get_Type () == "External") {
-    //if (gravity == DOWN ) {    
+    //if (gravity == DOWN ) {
         //Vector3D OO_P = Position_Vector("O",wrench->get_Point()->get_name());Vector3D Vel= Dt(OO_P,"xyz");
         Vector3D Vel = Velocity_Vector("abs",wrench -> get_Point() -> get_name(),wrench -> get_Solid() -> get_name() );
         Vector3D Omega = Angular_Velocity("xyz",wrench->get_Solid()->get_Base()->get_name());
@@ -3307,24 +3318,24 @@ Matrix System::GenForce(Wrench3D * wrench){
         for (int i=0; (i < dq.rows()); ++i) {
             symbol_numeric dq_i;
             dq_i=ex_to<symbol_numeric>(dq(i,0));
-            
-            
-            GenForce (i,0) = (wrench->get_Force()).change_Base(Base_xyz)* diff(Vel,dq_i) 
-                           + (wrench->get_Momentum() ).change_Base(Base_xyz)* diff(Omega,dq_i);  
+
+
+            GenForce (i,0) = (wrench->get_Force()).change_Base(Base_xyz)* diff(Vel,dq_i)
+                           + (wrench->get_Momentum() ).change_Base(Base_xyz)* diff(Omega,dq_i);
             //GenForce (i,0) = ( wrench->get_Force() + Vector3D( Matrix ( 3 , 1, lst(0,0,0) ) ,Base_xyz, this) ) * diff(Vel,dq_i)
-            //           + ( wrench->get_Momentum()  + Vector3D( Matrix ( 3 , 1, lst(0,0,0) ) ,Base_xyz, this) )* diff(Omega,dq_i);                    
-        
+            //           + ( wrench->get_Momentum()  + Vector3D( Matrix ( 3 , 1, lst(0,0,0) ) ,Base_xyz, this) )* diff(Omega,dq_i);
+
         }
-        
+
         //~ Matrix Vel_dq    = jacobian(Vel.transpose(),dq);
         //~ Matrix Omega_dq  = jacobian(Omega.transpose(),dq);
-        //~ 
+        //~
         //~ GenForce = Vel_dq.transpose() * (wrench->get_Force()).change_Base(Vel.get_Base())
                  //~ + Omega_dq.transpose() *(wrench->get_Momentum() ).change_Base(Omega.get_Base()) ;
 
-        
-        
-        
+
+
+
     }
     else{
         Vector3D VelUP   = Velocity_Vector("abs",wrench -> get_Point() -> get_name(),wrench -> get_Solid() -> get_name() );
@@ -3332,17 +3343,17 @@ Matrix System::GenForce(Wrench3D * wrench){
 
         Vector3D OmegaUP = Angular_Velocity("xyz",wrench->get_Solid()->get_Base()->get_name());
         Matrix ROM_M  = Rotation_Matrix (OmegaUP.get_Base(), (wrench->get_Momentum()).get_Base());
- 
-  
+
+
         Matrix VelUP_dq    = jacobian(VelUP.transpose(),dq);
         Matrix OmegaUP_dq  = jacobian(OmegaUP.transpose(),dq);
 
-        // GenForce = VelUP_dq.transpose() * RVel_F * (wrench->get_Force()) 
+        // GenForce = VelUP_dq.transpose() * RVel_F * (wrench->get_Force())
                 // + OmegaUP_dq.transpose() * ROM_M * (wrench->get_Momentum()) ;
         GenForce = VelUP_dq.transpose() * (wrench->get_Force()).change_Base(VelUP.get_Base())
-                 + OmegaUP_dq.transpose() * (wrench->get_Momentum()).change_Base(OmegaUP.get_Base());                 
-                 
-    }      
+                 + OmegaUP_dq.transpose() * (wrench->get_Momentum()).change_Base(OmegaUP.get_Base());
+
+    }
 
     return GenForce;
 }
@@ -3351,7 +3362,7 @@ Matrix System::GenForce(Wrench3D * wrench){
 Return the Generalized Force associated to a type of wrenches
 */
 Matrix System::GenForceSys(string Wrench_type){
-    int i = 0;	
+    int i = 0;
     Matrix dq = Velocities();
     Matrix GF(dq.rows(),1);
 
@@ -3373,10 +3384,10 @@ Wrench3D * System::Gravity_Wrench(Solid * Sol){
     string s2="Gravity_Wrench_"+name;
     string s3="Gravity_Force_"+name;
     string s4="Gravity_Momen_"+name;
-    
+
     symbol_numeric grav = *g;
     Point * B = Sol->get_Point();
-    
+
     //~ Point * G = Sol->get_G();
     //~ Vector3D Fgrav = *new_Vector3D(s3,0,0,-grav*mass ,"xyz");
     //~ Vector3D Mgrav = *new_Vector3D(s4,0,0,0 ,"xyz");
@@ -3422,15 +3433,15 @@ Wrench3D * System::Inertia_Wrench(Solid * Sol){
 
     //Vector3D AabsG = Dt(VabsG,"xyz");
     Vector3D AabsB = Dt(VabsB,"xyz");
-    
-    
+
+
 
     Vector3D Omega = Angular_Velocity("xyz",base->get_name());
     Vector3D H_B = I_B * Omega;
 
     Vector3D mBG = atomize(mass*unatomize(BG));
     //Vector3D Fi = -(mass)*AabsG;
-    Vector3D Fi = - mass*AabsB - (Dt(Omega,"xyz")^mBG) - (Omega^(Omega^mBG)); 
+    Vector3D Fi = - mass*AabsB - (Dt(Omega,"xyz")^mBG) - (Omega^(Omega^mBG));
     Vector3D Mi_B = -Dt(H_B,"xyz") - (mBG^AabsB);
 
     Wrench3D* new_InTor= new_Wrench3D (s2, Fi, Mi_B , B, Sol, "Inertia" );
@@ -3479,7 +3490,7 @@ Method that create a C file to export parameters GSL
     //~ cout << csrc_double ;
     //~ cout << "/*----------var_def.c lib3D_MEC expoted-----------*/" << endl << endl;
     //~ cout << "/*----------time-----------*/" << endl << endl;
-//~ 
+//~
     //~ cout << "double " << get_Time_Symbol () << ";" << endl;
     //~ cout << "/*----------parameters-----------*/" << endl << endl;
     //~ for ( int i = 0 ; i < parameters.size () ; i++ )
@@ -3629,20 +3640,20 @@ Method that create a C file to export atoms GSL
         //~ cout << csrc_double ;
         //~ cout << "/*----------atom_def.c lib3D_MEC exported-----------*/" << endl << endl;
         //~ cout << "/*----------atoms-----------*/" << endl << endl;
-//~ 
+//~
         //~ for ( size_t i = 0; i < atom_list.nops () ; ++i )
             //~ cout << "double " << atom_list.op ( i )<< ";" << endl;
-//~ 
+//~
         //~ cout.close ();
-//~ 
+//~
         //~ cout.open ( "atom_def.h" );
         //~ cout << csrc_double ;
         //~ cout << "/*----------atom_def.h lib3D_MEC exported-----------*/" << endl << endl;
         //~ cout << "/*----------atoms-----------*/" << endl << endl;
-//~ 
+//~
         //~ for ( size_t i = 0; i < atom_list.nops () ; ++i )
             //~ cout << "extern double " << atom_list.op ( i ) << ";" << endl;
-//~ 
+//~
         //~ cout.close ();
 //~ }
 
@@ -3797,19 +3808,19 @@ Method that create a C file for initialize coordinates for GSL
     //~ cout << "#include <gsl/gsl_vector.h>" << endl;
     //~ cout << "#include \"var_def.h\"" << endl;
     //~ cout << "#include \"gen_coord_vect_def.h\"" << endl;
-//~ 
+//~
     //~ for ( int i = 0 ; i < coordinates.size () ; i++ )
         //~ cout << "#define " << coordinates[i]-> get_name () << " " << coordinates[i]-> get_value() << endl;
-//~ 
+//~
     //~ cout << "void gen_coord_vect_init ( void )" << endl;
     //~ cout << "{" << endl;
     //~ cout << "  if ( n_gen_coord > 0 )" << endl;
     //~ cout << "  {" << endl;
     //~ cout << "  q = gsl_vector_alloc ( n_gen_coord );" << endl;
-//~ 
+//~
     //~ for ( int i = 0 ; i < coordinates.size () ; i++ )
         //~ cout << "gsl_vector_set ( q , " << i << " , " << coordinates[i]-> get_name () << " );" << endl;
-//~ 
+//~
     //~ cout << "  }" << endl;
     //~ cout << "}" << endl;
     //~ cout.close () ;
@@ -3966,19 +3977,19 @@ Method that create a C file for initializa velocities GSL
     //~ cout << "#include <gsl/gsl_vector.h>" << endl;
     //~ cout << "#include \"var_def.h\"" << endl;
     //~ cout << "#include \"gen_vel_vect_def.h\"" << endl;
-//~ 
+//~
     //~ for ( int i = 0 ; i < velocities.size () ; i++ )
         //~ cout << "#define " << velocities[i]-> get_name () << " " << velocities[i]-> get_value() << endl;
-//~ 
+//~
     //~ cout << "void gen_vel_vect_init ( void )" << endl;
     //~ cout << "{" << endl;
     //~ cout << "  if ( n_gen_vel > 0 )" << endl;
     //~ cout << "  {" << endl;
     //~ cout << "  dq = gsl_vector_alloc ( n_gen_vel );" << endl;
-//~ 
+//~
     //~ for ( int i = 0 ; i < velocities.size () ; i++ )
         //~ cout << "gsl_vector_set ( dq , " << i << " , " << velocities[i]-> get_name () << " );" << endl;
-//~ 
+//~
     //~ cout << "  }" << endl;
     //~ cout << "}" << endl;
     //~ cout.close () ;
@@ -4138,19 +4149,19 @@ Method that create a C file for initialize accelerations GSL
     //~ cout << "#include <gsl/gsl_vector.h>" << endl;
     //~ cout << "#include \"var_def.h\"" << endl;
     //~ cout << "#include \"gen_accel_vect_def.h\"" << endl;
-//~ 
+//~
     //~ for ( int i = 0 ; i < accelerations.size () ; i++ )
         //~ cout << "#define " << accelerations[i]-> get_name () << " " << accelerations[i]-> get_value() << endl;
-//~ 
+//~
     //~ cout << "void gen_accel_vect_init ( void )" << endl;
     //~ cout << "{" << endl;
     //~ cout << "  if ( n_gen_accel > 0 )" << endl;
     //~ cout << "  {" << endl;
     //~ cout << "  ddq = gsl_vector_alloc ( n_gen_accel );" << endl;
-//~ 
+//~
     //~ for ( int i = 0 ; i < accelerations.size () ; i++ )
         //~ cout << "gsl_vector_set ( ddq , " << i << " , " << accelerations[i]-> get_name () << " );" << endl;
-//~ 
+//~
     //~ cout << "  }" << endl;
     //~ cout << "}" << endl;
     //~ cout.close () ;
@@ -4527,7 +4538,7 @@ void System::export_inputs_vect_init_C ( void ) {
     cout << "#include \"inputs_vect_def.h\"" << endl;
     for ( int i = 0 ; i < inputs.size () ; i++ )
         cout << "#define " << inputs[i]-> get_name () << " " << inputs[i]-> get_value() << endl;
-        
+
     cout << "void inputs_vect_init ( void )" << endl;
     cout << "{" << endl;
     cout << "  if ( n_inputs > 0 )" << endl;
@@ -4587,7 +4598,7 @@ void System::export_inputs_C ( void ) {
     cout << "{" << endl;
     for ( int i = 0 ; i < inputs.size () ; i++ )
         cout << "inputs[" << i << "]=" << inputs[i]-> get_name ()  << ";" << endl;
-        
+
     cout << "}" << endl << endl;
 
     cout << "void Init_inputs ( )" << endl;
@@ -4895,7 +4906,7 @@ Method that create a C file GSL
     //~ cout << "#include \""<< function_name << ".h\"" << endl;
     //~ cout << "#include \"step.h\"" << endl;
     //~ cout << "#include <math.h>" << endl;
-//~ 
+//~
     //~ for ( int i = 0 ; i < coordinates.size () ; i++ )
         //~ cout << "#define " << coordinates[i]-> get_name () << " gsl_vector_get ( q , " << i << " )" << endl;
     //~ for ( int i = 0 ; i < velocities.size () ; i++ )
@@ -4906,7 +4917,7 @@ Method that create a C file GSL
         //~ cout << "#define " << unknowns[i]-> get_name () << " gsl_vector_get ( unknowns , " << i << " )" << endl;
     //~ for ( int i = 0 ; i < inputs.size () ; i++ )
         //~ cout << "#define " << inputs[i]-> get_name () << " gsl_vector_get ( inputs , " << i << " )" << endl;
-//~ 
+//~
     //~ if ( atomization == YES ) {
         //~ lst aux_Col_Matrix_atom_list;
         //~ aux_Col_Matrix_atom_list = Col_Matrix_atom_list;
@@ -4914,7 +4925,7 @@ Method that create a C file GSL
         //~ for ( int i = 0 ; i < aux_Col_Matrix_atom_list.nops () ; ++i )
             //~ cout << "extern double " << aux_Col_Matrix_atom_list.op ( i )<< ";" << endl;
     //~ }
-//~ 
+//~
     //~ if ( 0 )
         //~ cout << "gsl_vector * " << function_name << " ( gsl_vector * " << vector_name << " )" << endl;
     //~ else{
@@ -4925,36 +4936,36 @@ Method that create a C file GSL
     //~ cout << "if ( " << vector_name << " == NULL )" << endl;
     //~ cout << " {" << endl;
     //~ cout << "    " << vector_name << " = gsl_vector_alloc ( " << function_name << "_n_comp );" << endl;
-//~ 
+//~
     //~ vector < int > vector_aux_one;
     //~ vector < int > vector_aux_two;
-//~ 
+//~
     //~ lst Col_Matrix_atom_expression_list;
     //~ atom_expression_list ( Col_Matrix_atom_list , Col_Matrix_atom_expression_list );
-//~ 
+//~
     //~ if ( atomization == YES )
         //~ for ( int i = 0 ; i < Col_Matrix_atom_list.nops () ; i++ )
             //~ if ( dt ( Col_Matrix_atom_list.op ( i )) == true )
                 //~ cout << "/*constant*/ " << Col_Matrix_atom_list.op ( i ) << " = " << Col_Matrix_atom_expression_list.op ( i )<< ";" << endl;
             //~ else
                 //~ vector_aux_one.push_back ( i );
-//~ 
+//~
     //~ for ( int i = 0 ; i < Col_Matrix.rows () ; i++ )
         //~ if ( dt ( Col_Matrix ( i , 0 ) ) == true )
             //~ cout << "gsl_vector_set ( " << vector_name << " , " << i <<" , " << Col_Matrix ( i , 0 )<< " );" << endl;
         //~ else
             //~ vector_aux_two.push_back ( i );
-//~ 
+//~
     //~ cout << " }" << endl;
-//~ 
-//~ 
+//~
+//~
     //~ if ( atomization == YES )
         //~ for ( int i = 0 ; i < vector_aux_one.size () ; i++ )
             //~ cout << " " << Col_Matrix_atom_list.op ( vector_aux_one.at ( i ) ) << " = " << Col_Matrix_atom_expression_list.op ( vector_aux_one.at ( i ) )<< ";" << endl;
-//~ 
+//~
     //~ for ( int i = 0 ; i < vector_aux_two.size () ; i++ )
         //~ cout << "gsl_vector_set ( " << vector_name << " , " << vector_aux_two.at ( i ) <<" , " << Col_Matrix ( vector_aux_two.at ( i ) , 0 )<< " );" << endl;
-//~ 
+//~
     //~ cout << "return " << vector_name << ";" << endl;
     //~ cout << "}" << endl;
     //~ cout.close () ;
@@ -5113,10 +5124,10 @@ void System::export_Matrix_C ( string function_name , string matrix_name , Matri
         //*************************************************************************************************
         cout << "" << endl;
 
-        if ( atomization == YES ) {        
+        if ( atomization == YES ) {
             for ( int i = 0; i < Matrix_atom_list.nops () ; ++i )
                 cout << "double " << Matrix_atom_list.op ( i )<< ";" << endl;
-                
+
             cout << "" << endl;
         }
 
@@ -5183,7 +5194,7 @@ void System::export_Matrix_C ( string function_name , string matrix_name , Matri
                     if ( dt ( Matrix ( i , j ) ) == true )
                     {
                     cout << matrix_name << "[" << k << "]=" ; ( Matrix ( i , j ) ).print(print_myformat(cout)); cout << ";" << endl;
-                    //cout << matrix_name << "[" << k << "] = " << csrc_double <<  Matrix ( i , j )<< ";" << endl;                    
+                    //cout << matrix_name << "[" << k << "] = " << csrc_double <<  Matrix ( i , j )<< ";" << endl;
                     k++;
                     }
                     else
@@ -5196,36 +5207,36 @@ void System::export_Matrix_C ( string function_name , string matrix_name , Matri
 
         cout << " }" << endl << endl;
 
-        
+
         if ( order==CMO && atomization == YES ){
-			ex AuxExp; 
+			ex AuxExp;
             for ( int i = 0 ; i < Matrix_atom_list.nops () ; i++ ){
-                cout << Matrix_atom_list.op( i )<< " = " <<  csrc_double << Matrix_atom_expression_list.op( i ) << ";" << endl;    
+                cout << Matrix_atom_list.op( i )<< " = " <<  csrc_double << Matrix_atom_expression_list.op( i ) << ";" << endl;
                 //AuxExp = Matrix_atom_expression_list.op( i );
-                //cout << Matrix_atom_list.op( i ) << " = " ; ( AuxExp ).print(print_myformat(cout)); cout << ";" << endl;          
+                //cout << Matrix_atom_list.op( i ) << " = " ; ( AuxExp ).print(print_myformat(cout)); cout << ";" << endl;
             }
             cout << endl;
             k = 0 ;
             for ( int j = 0 ; j < Matrix.cols () ; j++ ){
                 for ( int i = 0 ; i < Matrix.rows () ; i++ ){
-                    if (Matrix ( i , j ) != 0.0 ) 
+                    if (Matrix ( i , j ) != 0.0 )
                         cout << matrix_name << "[" << k << "] = " << csrc_double << Matrix ( i , j ) << ";" << endl;
                     //cout << matrix_name << "[" << k << "]=" ; ( Matrix ( i , j ) ).print(print_myformat(cout)); cout << ";" << endl;
                     k++;
-                }    
+                }
             }
-            cout << endl;    
+            cout << endl;
         }
-        
+
         else if ( order==RMO && atomization == YES ){
             ex AuxExp;
             for ( int i = 0 ; i < Matrix_atom_list.nops () ; i++ ){
                 cout << Matrix_atom_list.op( i )<< " = " <<  csrc_double << Matrix_atom_expression_list.op( i ) << ";" << endl;
                 //AuxExp = Matrix_atom_expression_list.op( i );
-                //cout << Matrix_atom_list.op( i ) << " = " ; ( AuxExp ).print(print_myformat(cout)); cout << ";" << endl;                  
+                //cout << Matrix_atom_list.op( i ) << " = " ; ( AuxExp ).print(print_myformat(cout)); cout << ";" << endl;
             }
             cout << endl;
-            k = 0 ; 
+            k = 0 ;
             for ( int i = 0 ; i < Matrix.rows () ; i++ ){
                 for ( int j = 0 ; j < Matrix.cols () ; j++ ){
                     if (Matrix ( i , j ) != 0.0 )
@@ -5233,13 +5244,13 @@ void System::export_Matrix_C ( string function_name , string matrix_name , Matri
                     //cout << matrix_name << "[" << k << "]=" ; (  Matrix ( i , j ) ).print(print_myformat(cout)); cout << ";" << endl;
                     k++;
                 }
-            }    
-            cout << endl;   
+            }
+            cout << endl;
         }
 
-        if (order==CMO && atomization == NO){ 
+        if (order==CMO && atomization == NO){
             /* Matrix written in Column-major order */
-            for ( int i=0; i < vector_aux_two.size () ; i++ ){    
+            for ( int i=0; i < vector_aux_two.size () ; i++ ){
                cout << matrix_name << "[" << vector_aux_two.at ( i ) + Matrix.rows ()*vector_aux_three.at ( i ) <<"]=" ; ( Matrix ( vector_aux_two.at ( i ) , vector_aux_three.at ( i ) ) ).print(print_myformat(cout)); cout  << ";" << endl;
             }
         }
@@ -5459,7 +5470,7 @@ Method that create a C file GSL
         //~ cout << "#define " << unknowns[i]-> get_name () << " gsl_vector_get ( unknowns , " << i << " )" << endl;
     //~ for ( int i = 0 ; i < inputs.size () ; i++ )
         //~ cout << "#define " << inputs[i]-> get_name () << " gsl_vector_get ( inputs , " << i << " )" << endl;
-//~ 
+//~
     //~ if ( atomization == YES ) {
         //~ lst aux_Matrix_atom_list;
         //~ aux_Matrix_atom_list = Matrix_atom_list;
@@ -5467,35 +5478,35 @@ Method that create a C file GSL
         //~ for ( int i = 0; i < aux_Matrix_atom_list.nops () ; ++i )
             //~ cout << "extern double " << aux_Matrix_atom_list.op ( i )<< ";" << endl;
     //~ }
-//~ 
+//~
     //~ if ( 0 )
         //~ cout << "gsl_matrix * " << function_name << " ( gsl_matrix * " << matrix_name << " )" << endl;
     //~ else {
         //~ cout << "gsl_matrix * " << matrix_name << " = NULL;" << endl;
         //~ cout << "gsl_matrix * " << function_name << " ()" << endl;
     //~ }
-//~ 
+//~
     //~ cout << "{" << endl;
     //~ cout << "if ( " << matrix_name << " == NULL )" << endl;
     //~ cout << " {" << endl;
     //~ cout << "    " << matrix_name << " = gsl_matrix_alloc ( " << function_name << "_n_rows , " << function_name << "_n_cols );" << endl;
     //~ cout << "    gsl_matrix_set_zero ( " << matrix_name << " );" << endl;
-//~ 
-//~ 
+//~
+//~
     //~ vector < int > vector_aux_one;
     //~ vector < int > vector_aux_two;
     //~ vector < int > vector_aux_three;
-//~ 
+//~
     //~ lst Matrix_atom_expression_list;
     //~ atom_expression_list ( Matrix_atom_list , Matrix_atom_expression_list );
-//~ 
+//~
     //~ if ( atomization == YES )
         //~ for ( int i = 0 ; i < Matrix_atom_list.nops () ; i++ )
             //~ if ( dt ( Matrix_atom_list.op ( i ) ) == true )
                 //~ cout << "/*constant*/ " << Matrix_atom_list.op ( i ) << " = " << Matrix_atom_expression_list.op ( i )<< ";" << endl;
             //~ else
                 //~ vector_aux_one.push_back ( i );
-//~ 
+//~
     //~ for ( int i = 0 ; i < Matrix.rows () ; i++ )
         //~ for ( int j = 0 ; j < Matrix.cols () ; j++ )
             //~ if ( dt ( Matrix ( i , j ) ) == true )
@@ -5504,19 +5515,19 @@ Method that create a C file GSL
                 //~ vector_aux_two.push_back ( i );
                 //~ vector_aux_three.push_back ( j );
             //~ }
-//~ 
+//~
     //~ cout << " }" << endl;
-//~ 
-//~ 
+//~
+//~
     //~ if ( atomization == YES )
         //~ for ( int i = 0 ; i < vector_aux_one.size () ; i++ )
             //~ cout << " " << Matrix_atom_list.op ( vector_aux_one.at ( i ) ) << " = " << Matrix_atom_expression_list.op ( vector_aux_one.at ( i ) )<< ";" << endl;
-//~ 
-//~ 
+//~
+//~
     //~ for ( int i = 0 ; i < vector_aux_two.size () ; i++ )
             //~ cout << "gsl_matrix_set ( " << matrix_name << " , " << vector_aux_two.at ( i ) <<" , " << vector_aux_three.at ( i ) << " , " << Matrix ( vector_aux_two.at ( i ) , vector_aux_three.at ( i ) )<< " );" << endl;
-//~ 
-//~ 
+//~
+//~
     //~ cout << "return " << matrix_name << ";" << endl;
     //~ cout << "}" << endl;
     //~ cout.close () ;
@@ -5528,7 +5539,7 @@ Method that create a C file GSL
         //~ cout << "#define " << function_name << "_n_cols " << Matrix.cols () << endl;
         //~ cout << "extern     gsl_matrix * " << matrix_name << ";" << endl;
         //~ cout << "extern     gsl_matrix * " << function_name << "() ;" << endl;
-//~ 
+//~
     //~ }
     //~ cout.close () ;
 //~ }
@@ -5593,7 +5604,7 @@ Method that create a C file GSL
     //~ cout << "}" << endl;
     //~ cout.close () ;
 //~ }
-//~ 
+//~
 
 /*
 Method that create a C file
@@ -5676,7 +5687,7 @@ Method that create a C file GSL
         //~ {cout << "#define " << coordinates[i]-> get_name () << " gsl_vector_get ( q , " << i << " )" << endl;
          //~ cout << "#define " << velocities[i]-> get_name () << " gsl_vector_get ( dq , " << i << " )" << endl;
          //~ cout << "#define " << accelerations[i]-> get_name () << " gsl_vector_get ( ddq , " << i << " )" << endl;}
-//~ 
+//~
     //~ for ( int i = 0 ; i < unknowns.size () ; i++ )
         //~ cout << "#define " << unknowns[i]-> get_name () << " gsl_vector_get ( unknowns , " << i << " )" << endl;
     //~ for ( int i = 0 ; i < inputs.size () ; i++ )
@@ -5689,7 +5700,7 @@ Method that create a C file GSL
         //~ {cout << "%g\t";
          //~ cout << "%g\t";
          //~ cout << "%g\t";}
-//~ 
+//~
     //~ for ( int i = 0 ; i < parameters.size () ; i++ )
         //~ cout << "%g\t";
     //~ for ( int i = 0 ; i < unknowns.size () ; i++ )
@@ -5700,7 +5711,7 @@ Method that create a C file GSL
         //~ {cout << " , " << coordinates[i]-> get_name () ;
          //~ cout << " , " << velocities[i]-> get_name () ;
          //~ cout << " , " << accelerations[i]-> get_name () ;}
-//~ 
+//~
     //~ for ( int i = 0 ; i < parameters.size () ; i++ )
         //~ cout << " , " << parameters[i]-> get_name () ;
     //~ for ( int i = 0 ; i < unknowns.size () ; i++ )
@@ -5746,8 +5757,8 @@ void System::export_write_data_file_C ( void ) {
     if (aux_coordinates.size() > 0){
       cout << "#include \"gen_auxcoord.h\"" << endl;
       cout << "#include \"gen_auxvel.h\"" << endl;
-      cout << "#include \"gen_auxaccel.h\"" << endl;    
- 
+      cout << "#include \"gen_auxaccel.h\"" << endl;
+
     }
     cout << "#include \"param.h\"" << endl;
     cout << "#include \"unknowns.h\"" << endl;
@@ -5759,14 +5770,14 @@ void System::export_write_data_file_C ( void ) {
         cout << "#define " << velocities[i]-> get_name () << " dq[ " << i << " ]" << endl;
     for ( int i = 0 ; i < accelerations.size () ; i++ )
         cout << "#define " << accelerations[i]-> get_name () << " ddq[ " << i << " ]" << endl;
-    if (aux_coordinates.size() > 0){        
+    if (aux_coordinates.size() > 0){
       for ( int i = 0 ; i < aux_coordinates.size () ; i++ )
         cout << "#define " << aux_coordinates[i]-> get_name () << " qaux[ " << i << " ]" << endl;
       for ( int i = 0 ; i < aux_velocities.size () ; i++ )
         cout << "#define " << aux_velocities[i]-> get_name () << " dqaux[ " << i << " ]" << endl;
       for ( int i = 0 ; i < aux_accelerations.size () ; i++ )
-        cout << "#define " <<aux_accelerations[i]-> get_name () << " ddqaux[ " << i << " ]" << endl;    
-    }       
+        cout << "#define " <<aux_accelerations[i]-> get_name () << " ddqaux[ " << i << " ]" << endl;
+    }
     for ( int i = 0 ; i < parameters.size () ; i++ )
         cout << "#define " << parameters[i]-> get_name () << " param[ " << i << " ]" << endl;
     for ( int i = 0 ; i < unknowns.size () ; i++ )
@@ -5806,7 +5817,7 @@ void System::export_write_data_file_C ( void ) {
     cout << "void write_data_file_header ( FILE * data_file )" << endl;
     cout << "{" << endl;
     cout << "fprintf ( data_file , \" % ";
-    
+
     cout << get_Time_Symbol () << "\t" ;
     for ( int i = 0 ; i < coordinates.size () ; i++ )
         {cout << coordinates[i]-> get_name () << "\t" ;
@@ -5843,7 +5854,7 @@ void System::export_write_data_file_C ( lst expresion_list ) {
     if (aux_coordinates.size()> 0){
        cout << "#include \"gen_auxcoord.h\"" << endl;
        cout << "#include \"gen_auxvel.h\"" << endl;
-       cout << "#include \"gen_auxaccel.h\"" << endl;       
+       cout << "#include \"gen_auxaccel.h\"" << endl;
     }
     cout << "#include \"param.h\"" << endl;
     cout << "#include \"unknowns.h\"" << endl;
@@ -5855,13 +5866,13 @@ void System::export_write_data_file_C ( lst expresion_list ) {
          cout << "#define " << velocities[i]-> get_name () << " dq[ " << i << " ]" << endl;
     for ( int i = 0 ; i < accelerations.size () ; i++ )
          cout << "#define " << accelerations[i]-> get_name () << " ddq[ " << i << " ]" << endl;
-    if (aux_coordinates.size()> 0){     
+    if (aux_coordinates.size()> 0){
         for ( int i = 0 ; i < aux_coordinates.size () ; i++ )
             cout << "#define " << aux_coordinates[i]-> get_name () << " qaux[ " << i << " ]" << endl;
         for ( int i = 0 ; i < aux_velocities.size () ; i++ )
              cout << "#define " << aux_velocities[i]-> get_name () << " dqaux[ " << i << " ]" << endl;
         for ( int i = 0 ; i < aux_accelerations.size () ; i++ )
-             cout << "#define " << aux_accelerations[i]-> get_name () << " ddqaux[ " << i << " ]" << endl;         
+             cout << "#define " << aux_accelerations[i]-> get_name () << " ddqaux[ " << i << " ]" << endl;
     }
     for ( int i = 0 ; i < parameters.size () ; i++ )
         cout << "#define " << parameters[i]-> get_name () << " param[ " << i << " ]" << endl;
@@ -5955,7 +5966,7 @@ Method that create a C file GSL
     //~ cout << get_Time_Symbol () << "\t" ;
     //~ for  ( lst::const_iterator k = expresion_list.begin () ; k != expresion_list.end () ; ++k )
                 //~ { cout << (* k) << "\t" ;  }
-//~ 
+//~
 //~ /*  for ( int i = 0 ; i < coordinates.size () ; i++ )
         //~ {cout << coordinates[i]-> get_name () << "\t" ;
          //~ cout << velocities[i]-> get_name () << "\t" ;
@@ -5969,7 +5980,7 @@ Method that create a C file GSL
     //~ for ( int i = 0 ; i < unknowns.size () ; i++ )
         //~ cout << unknowns[i]-> get_name () << "\t" ;
 //~ */
-//~ 
+//~
     //~ cout << "\\n\" );" << endl;
     //~ cout << "}" << endl;
     //~ cout.close () ;
@@ -6047,30 +6058,30 @@ Method that create a C file GSL
         //~ {cout << "#define " << coordinates[i]-> get_name () << " gsl_vector_get ( q , " << i << " )" << endl;
          //~ cout << "#define " << velocities[i]-> get_name () << " gsl_vector_get ( dq , " << i << " )" << endl;
          //~ cout << "#define " << accelerations[i]-> get_name () << " gsl_vector_get ( ddq , " << i << " )" << endl;}
-//~ 
+//~
     //~ for ( int i = 0 ; i < parameters.size () ; i++ )
         //~ cout << "#define " << parameters[i]-> get_name () << " gsl_vector_get ( parameters , " << i << " )" << endl;
     //~ for ( int i = 0 ; i < unknowns.size () ; i++ )
         //~ cout << "#define " << unknowns[i]-> get_name () << " gsl_vector_get ( unknowns , " << i << " )" << endl;
     //~ for ( int i = 0 ; i < inputs.size () ; i++ )
         //~ cout << "#define " << inputs[i]-> get_name () << " gsl_vector_get ( inputs , " << i << " )" << endl;
-//~ 
-//~ 
+//~
+//~
     //~ cout << "void write_state_file ( FILE * state_file )" << endl;
     //~ cout << "{" << endl;
     //~ cout << "fprintf ( state_file , \"";
     //~ cout << "%g\t";
-//~ 
+//~
     //~ for  ( lst::const_iterator k = expresion_list.begin () ; k != expresion_list.end () ; ++k )
                 //~ { cout << "%g\t"; }
-//~ 
+//~
     //~ cout << "\\n\"";
     //~ cout << " , " << get_Time_Symbol () ;
-//~ 
+//~
     //~ for  ( lst::const_iterator k = expresion_list.begin () ; k != expresion_list.end () ; ++k )
         //~ { cout << " , " << (* k) ; }
-//~ 
-//~ 
+//~
+//~
     //~ cout << " );" << endl;
     //~ cout << "}" << endl;
     //~ cout.close () ;
@@ -6111,7 +6122,7 @@ void System::export_read_data_file_C ( lst expresion_list ) {
     //~ if (aux_coordinates.size()> 0){
        //~ cout << "#include \"gen_auxcoord.h\"" << endl;
        //~ cout << "#include \"gen_auxvel.h\"" << endl;
-       //~ cout << "#include \"gen_auxaccel.h\"" << endl;       
+       //~ cout << "#include \"gen_auxaccel.h\"" << endl;
     //~ }
     cout << "#include \"param.h\"" << endl;
     cout << "#include \"unknowns.h\"" << endl;
@@ -6123,13 +6134,13 @@ void System::export_read_data_file_C ( lst expresion_list ) {
          cout << "#define " << velocities[i]-> get_name () << " dq[ " << i << " ]" << endl;
     for ( int i = 0 ; i < accelerations.size () ; i++ )
          cout << "#define " << accelerations[i]-> get_name () << " ddq[ " << i << " ]" << endl;
-    //~ if (aux_coordinates.size()> 0){     
+    //~ if (aux_coordinates.size()> 0){
         //~ for ( int i = 0 ; i < aux_coordinates.size () ; i++ )
             //~ cout << "#define " << aux_coordinates[i]-> get_name () << " qaux[ " << i << " ]" << endl;
         //~ for ( int i = 0 ; i < aux_velocities.size () ; i++ )
              //~ cout << "#define " << aux_velocities[i]-> get_name () << " dqaux[ " << i << " ]" << endl;
         //~ for ( int i = 0 ; i < aux_accelerations.size () ; i++ )
-             //~ cout << "#define " << aux_accelerations[i]-> get_name () << " ddqaux[ " << i << " ]" << endl;         
+             //~ cout << "#define " << aux_accelerations[i]-> get_name () << " ddqaux[ " << i << " ]" << endl;
     //~ }
     for ( int i = 0 ; i < parameters.size () ; i++ )
         cout << "#define " << parameters[i]-> get_name () << " param[ " << i << " ]" << endl;
@@ -6162,11 +6173,11 @@ void System::export_read_data_file_C ( lst expresion_list ) {
     //~ cout << get_Time_Symbol () << "\t" ;
     //~ for  ( lst::const_iterator k = expresion_list.begin () ; k != expresion_list.end () ; ++k )
                 //~ { cout << (* k) << "\t" ;  }
-    //~ 
+    //~
     //~ cout << "\\n\" );" << endl;
     //~ cout << "}" << endl;
     cout.close () ;
-    
+
     export_read_data_file_H ( );
 }
 
@@ -6179,33 +6190,33 @@ void System::export_read_data_file_C ( lst expresion_list ) {
 ***************************** SYSTEM MATLAB EXPORT FUNCTIONS *********************************************
 *********************************************************************************************************/
 void System::export_function_MATLAB(string function_name, string function_out, Matrix symbolic_matrix_function, lst Matrix_atom_list, lst Matrix_atom_expression_list, string s_in){
-    
+
   vector<string> s_internal;
   stringstream ss(s_in); // Turn the string into a stream.
   string tok;
-  
+
   while(getline(ss, tok, ',')) {
     s_internal.push_back(tok);
   }
-  
+
   ofstream matlab_file;
 
-  matlab_file.open( ( function_name+".m" ).c_str () ); 
-  
+  matlab_file.open( ( function_name+".m" ).c_str () );
+
   string s="(";
-  
+
   for(int i = 0; i < s_internal.size(); ++i){
      if (s_internal[i] == "q"){s=s+"q,";}
      else if (s_internal[i] == "qaux"){s=s+"qaux,";}
-     
+
      else if (s_internal[i] == "dq"){s=s+"dq,";}
      else if (s_internal[i] == "dqaux"){s=s+"dqaux,";}
-     
+
      else if (s_internal[i] == "ddq"){s=s+"ddq,";}
      else if (s_internal[i] == "ddqaux"){s=s+"ddqaux,";}
-         
+
      else if (s_internal[i] == "param"){s=s+"param,";}
-     
+
      else if (s_internal[i] == "time"){s=s+"time,";}
      else if (s_internal[i] == "inputs" && inputs.size () > 0){s=s+"inputs,";}
      else if (s_internal[i] == "unknowns" && unknowns.size ()> 0 ){s=s+"unknowns,";}
@@ -6215,11 +6226,11 @@ void System::export_function_MATLAB(string function_name, string function_out, M
   s = s + ")";
 
   matlab_file << "function " << function_out << " = " << function_name << s << endl;
-  
+
   matlab_file <<  endl;
-  
-  
-  
+
+
+
   for(int i = 0; i < s_internal.size(); ++i){
     if (s_internal[i] == "q"){
       for ( int i = 0 ; i < coordinates.size () ; i++ )
@@ -6228,61 +6239,61 @@ void System::export_function_MATLAB(string function_name, string function_out, M
     else if (s_internal[i] == "qaux"){
       for ( int i = 0 ; i < aux_coordinates.size () ; i++ )
         matlab_file << aux_coordinates[i]-> get_name () << " = qaux( " << i+1 << " ); "  << endl;
-    }    
- 
+    }
+
     else if (s_internal[i] == "dq"){
       for ( int i = 0 ; i < velocities.size () ; i++ )
-        matlab_file << velocities[i]-> get_name () << " = dq( " << i+1 << " ); "  << endl;  
+        matlab_file << velocities[i]-> get_name () << " = dq( " << i+1 << " ); "  << endl;
     }
     else if (s_internal[i] == "dqaux"){
       for ( int i = 0 ; i < aux_velocities.size () ; i++ )
-        matlab_file << aux_velocities[i]-> get_name () << " = dqaux( " << i+1 << " ); "  << endl;  
-    }    
-    
+        matlab_file << aux_velocities[i]-> get_name () << " = dqaux( " << i+1 << " ); "  << endl;
+    }
+
     else if (s_internal[i] == "ddq"){
       for ( int i = 0 ; i < accelerations.size () ; i++ )
-        matlab_file << accelerations[i]-> get_name () << " = ddq( " << i+1 << " ); "  << endl;  
+        matlab_file << accelerations[i]-> get_name () << " = ddq( " << i+1 << " ); "  << endl;
     }
     else if (s_internal[i] == "ddqaux"){
       for ( int i = 0 ; i < aux_accelerations.size () ; i++ )
-        matlab_file << aux_accelerations[i]-> get_name () << " = ddqaux( " << i+1 << " ); "  << endl;  
-    } 
-    
+        matlab_file << aux_accelerations[i]-> get_name () << " = ddqaux( " << i+1 << " ); "  << endl;
+    }
+
     else if (s_internal[i] == "param"){
       for ( int i = 0 ; i < parameters.size () ; i++ )
-        matlab_file << parameters[i]-> get_name () << " = param( " << i+1 << " ); "  << endl;  
+        matlab_file << parameters[i]-> get_name () << " = param( " << i+1 << " ); "  << endl;
     }
     else  if (s_internal[i] == "time"){
       matlab_file << get_Time_Symbol ( ) << "= time ;" << endl;
     }
     else if (s_internal[i] == "inputs"){
       for ( int i = 0 ; i < inputs.size () ; i++ )
-        matlab_file << inputs[i]-> get_name () << " = inputs( " << i+1 << " ); "  << endl;  
-    }    
+        matlab_file << inputs[i]-> get_name () << " = inputs( " << i+1 << " ); "  << endl;
+    }
     else if (s_internal[i] == "unknowns"){
       for ( int i = 0 ; i < unknowns.size () ; i++ )
-        matlab_file << unknowns[i]-> get_name () << " = unknowns( " << i+1 << " ); "  << endl;  
-    }    
-    
-   
+        matlab_file << unknowns[i]-> get_name () << " = unknowns( " << i+1 << " ); "  << endl;
+    }
+
+
     matlab_file <<  endl;
 
   }
-  
+
   if (atomization == YES){
-    for (int i  = 0 ; i < Matrix_atom_list.nops () ; i++ ){ 
+    for (int i  = 0 ; i < Matrix_atom_list.nops () ; i++ ){
       matlab_file << Matrix_atom_list.op( i )<< " = " <<   Matrix_atom_expression_list.op( i ) << ";" << endl;
     }
-    matlab_file <<  endl;    
+    matlab_file <<  endl;
   }
-  
+
   matlab_file << function_out << " = " << symbolic_matrix_function << ";" << endl;
-  
+
   matlab_file <<  endl;
   matlab_file << "%endfunction" << endl;
   matlab_file.close();
-  
-  
+
+
 }
 
 void System::export_function_MATLAB(string function_name, string function_out, Matrix symbolic_matrix_function, lst Matrix_atom_list, lst Matrix_atom_expression_list){
@@ -6304,12 +6315,12 @@ ofstream matlab_file;
         matlab_file << "global " << coordinates[i]-> get_name () << ";" << endl;
   for ( int i = 0 ; i < velocities.size () ; i++ )
         matlab_file << "global " << velocities[i]-> get_name () << ";" << endl;
-        
+
   matlab_file << "if nargin == 3" << endl;
   for ( int i = 0 ; i < accelerations.size () ; i++ )
-        matlab_file << "global " << accelerations[i]-> get_name () << ";" << endl; 
-  matlab_file << "end" << endl;  
-        
+        matlab_file << "global " << accelerations[i]-> get_name () << ";" << endl;
+  matlab_file << "end" << endl;
+
   if (aux_coordinates.size () != 0){
     for ( int i = 0 ; i < aux_coordinates.size () ; i++ )
         matlab_file << "global " << aux_coordinates[i]-> get_name () << ";" << endl;
@@ -6322,9 +6333,9 @@ ofstream matlab_file;
         matlab_file << "global " << unknowns[i]-> get_name () << ";" << endl;
   for ( int i = 0 ; i < inputs.size () ; i++ )
         matlab_file << "global " << inputs[i]-> get_name () << ";" << endl;
-  
+
   matlab_file <<  endl;
-  
+
   //matlab_file << "global q;" << endl;
   for ( int i = 0 ; i < coordinates.size () ; i++ )
         matlab_file << coordinates[i]-> get_name () << " = q( " << i+1 << "); "  << endl;
@@ -6343,20 +6354,20 @@ ofstream matlab_file;
   }
   matlab_file << "if nargin == 3" << endl;
   for ( int i = 0 ; i < accelerations.size () ; i++ )
-    matlab_file << accelerations[i]-> get_name () << " = ddq( " << i+1 << "); "  << endl; 
-  matlab_file << "end" << endl; 
-  
+    matlab_file << accelerations[i]-> get_name () << " = ddq( " << i+1 << "); "  << endl;
+  matlab_file << "end" << endl;
+
   matlab_file <<  endl;
-  
+
   if (atomization == YES){
-    for (int i  = 0 ; i < Matrix_atom_list.nops () ; i++ ){ 
+    for (int i  = 0 ; i < Matrix_atom_list.nops () ; i++ ){
       matlab_file << Matrix_atom_list.op( i )<< " = " <<   Matrix_atom_expression_list.op( i ) << ";" << endl;
     }
-  matlab_file <<  endl;    
+  matlab_file <<  endl;
   }
-  
+
   matlab_file << function_out << " = " << symbolic_matrix_function << ";" << endl;
-  
+
   matlab_file <<  endl;
   matlab_file << "%endfunction" << endl;
   matlab_file.close();
@@ -6365,14 +6376,14 @@ ofstream matlab_file;
 
 
 void System::export_function_MATLAB(string function_name, string function_out, Matrix symbolic_matrix_function){
-    
+
   lst Matrix_atom_list, Matrix_atom_expression_list;
   export_function_MATLAB(function_name, function_out, symbolic_matrix_function,Matrix_atom_list,Matrix_atom_expression_list );
 
 }
 
 void System::export_function_MATLAB(string function_name, string function_out, Matrix symbolic_matrix_function,string s_in){
-    
+
   lst Matrix_atom_list, Matrix_atom_expression_list;
   export_function_MATLAB(function_name, function_out, symbolic_matrix_function,Matrix_atom_list,Matrix_atom_expression_list,s_in );
 
@@ -6383,9 +6394,9 @@ void System::export_function_MATLAB(string function_name, string function_out, M
 void System::export_function_MATLAB_SYMPY(string function_name, string function_out, Matrix symbolic_matrix_function){
 
   ofstream python_file;
-  
+
   //symbolic_matrix_function = unatomize(symbolic_matrix_function);
-  
+
   python_file.open( ( function_name+"_python.py" ).c_str () );
 
   python_file << "from sympy import *" << endl;
@@ -6421,7 +6432,7 @@ void System::export_function_MATLAB_SYMPY(string function_name, string function_
   python_file << "f.write(\"" << function_name+"_matrix" << "=[\")" << endl;
   for ( int i = 0 ; i < symbolic_matrix_function.rows () -1; i++ ){
 	python_file << "f.write(b" << i << ")" << endl;
-	python_file << "f.write(\";\")" << endl; 
+	python_file << "f.write(\";\")" << endl;
   }
   python_file << "f.write(b" << symbolic_matrix_function.rows () -1 << ")" << endl;
   python_file << "f.write(\"" << "];\")" << endl;
@@ -6456,13 +6467,13 @@ void System::export_function_MATLAB_SYMPY(string function_name, string function_
 
   for ( int i = 0 ; i < inputs.size () ; i++ )
     matlab_file << "syms " << inputs[i]-> get_name () << " real;" << endl;
-  
+
   matlab_file << "inputs=[";
   for ( int i = 0 ; i < inputs.size () - 1; i++ )
         matlab_file << inputs[i]-> get_name () << ",";
-  matlab_file << inputs[inputs.size () - 1]-> get_name () << "];" << endl; 
-  
- 
+  matlab_file << inputs[inputs.size () - 1]-> get_name () << "];" << endl;
+
+
 /*
   for ( int i = 0 ; i < coordinates.size () ; i++ )
         matlab_file << "global " << coordinates[i]-> get_name () << ";" << endl;
@@ -6534,7 +6545,7 @@ void System::export_function_MATLAB_SYMPY(string function_name, string function_
 
 void System::export_init_function_MATLAB(){
     ofstream matlab_file;
-    
+
     matlab_file.open ("time_init.m");
     matlab_file << "global " <<  get_Time_Symbol ( ) << ";" << endl;
     matlab_file << get_Time_Symbol ( ) << " = 0.0;" << endl;
@@ -6593,7 +6604,7 @@ void System::export_init_function_MATLAB(){
     matlab_file << velocities[velocities.size ()-1]-> get_name () ;
     matlab_file <<"]';"<< endl;
     matlab_file.close();
-    
+
     matlab_file.open ("acc_init.m");
     for ( int i = 0 ; i < accelerations.size () ; i++ )
         matlab_file << "global " << accelerations[i]-> get_name () << ";" << endl;
@@ -6610,10 +6621,10 @@ void System::export_init_function_MATLAB(){
         matlab_file << accelerations[i]-> get_name () << "," ;
     matlab_file <<accelerations[accelerations.size ()-1]-> get_name () ;
     matlab_file <<"]';"<< endl;
-    matlab_file.close();    
-    
+    matlab_file.close();
 
-  if ( unknowns.size () != 0 ) {	
+
+  if ( unknowns.size () != 0 ) {
     matlab_file.open ("unknowns_init.m");
     for ( int i = 0 ; i < unknowns.size () ; i++ )
         matlab_file << "global " << unknowns[i]-> get_name () << ";" << endl;
@@ -6748,7 +6759,7 @@ void System::export_Matrix_MAPLE ( string function_name , vector < string > matr
             /* Matrix written in Column-major order */
                 for ( int j = 0 ; j < ( Exported_Matrixes[z]->cols() ) ; j++ )
                     for ( int i = 0 ; i < ( Exported_Matrixes[z]->rows() ) ; i++ ){
-                       if( symmetric == 1){ 
+                       if( symmetric == 1){
                           if (i>=j){
                               cout << matrix_name << "[" << k << "]:=" ;  (( * Exported_Matrixes[z] ) ( i , j )).print(print_myformat(cout)); cout << ";" << endl;
                             }
@@ -6766,7 +6777,7 @@ void System::export_Matrix_MAPLE ( string function_name , vector < string > matr
                 {
                 for ( int i = 0 ; i <  ( Exported_Matrixes[z]->rows() ); i++ )
                     for ( int j = 0 ; j < ( Exported_Matrixes[z]->cols() ) ; j++ ){
-                       if( symmetric == 1){ 
+                       if( symmetric == 1){
                           if (j>=i){
                               cout << matrix_name << "[" << k << "]:=" ;  (( * Exported_Matrixes[z] ) ( i , j )).print(print_myformat(cout)); cout << ";" << endl;
                             }
@@ -6783,7 +6794,7 @@ void System::export_Matrix_MAPLE ( string function_name , vector < string > matr
 
             cout << "" << endl;
 
-            //cout << "return;" << endl;    
+            //cout << "return;" << endl;
             cout << "return " << matrix_name << ";" << endl;
 
             cout << "end proc;" << endl;
@@ -6816,7 +6827,7 @@ void System::export_Matrix_MAPLE ( string function_name , vector < string > matr
 
         cout << "" << endl;
         string matrix_name;
-        
+
         for ( int z = 0 ; z < Exported_Matrixes.size () ; z++ )
             {
 
@@ -6832,7 +6843,7 @@ void System::export_Matrix_MAPLE ( string function_name , vector < string > matr
                 for ( int j = 0 ; j < ( Exported_Matrixes[z]->cols() ) ; j++ )
                     for ( int i = 0 ; i < ( Exported_Matrixes[z]->rows() ) ; i++ ){
                         //cout << matrix_name << "[" << k << "]:=" <<  ( * Exported_Matrixes[z] ) ( i , j ) << ";" << endl;
-                        if( symmetric == 1){ 
+                        if( symmetric == 1){
                           if (i>=j){
                               cout << matrix_name << "[" << k << "]:=" ;  (( * Exported_Matrixes[z] ) ( i , j )).print(print_myformat(cout)); cout << ";" << endl;
                             }
@@ -6850,7 +6861,7 @@ void System::export_Matrix_MAPLE ( string function_name , vector < string > matr
             {
                 for ( int i = 0 ; i <  ( Exported_Matrixes[z]->rows() ); i++ )
                     for ( int j = 0 ; j < ( Exported_Matrixes[z]->cols() ) ; j++ ){
-                       if( symmetric == 1){ 
+                       if( symmetric == 1){
                           if (j>=i){
                               cout << matrix_name << "[" << k << "]:=" ;  (( * Exported_Matrixes[z] ) ( i , j )).print(print_myformat(cout)); cout << ";" << endl;
                             }
@@ -6867,7 +6878,7 @@ void System::export_Matrix_MAPLE ( string function_name , vector < string > matr
 
             cout << "" << endl;
             }
-        //cout << "return;" << endl;   
+        //cout << "return;" << endl;
         cout << "return " << matrix_name << ";" << endl;
         cout << "end proc;" << endl;
         cout << "C(p, optimized, precision=double, filename = \"./"<< function_name+"_maple_include.c\");" << endl;
@@ -7181,15 +7192,15 @@ void  System::load_includes_defines(string function_name, int order) {
         cout << "#define " << velocities[i]-> get_name () << " dq[ " << i << " ]" << endl;
     for ( int i = 0 ; i < accelerations.size () ; i++ )
         cout << "#define " << accelerations[i]-> get_name () << " ddq[ " << i << " ]" << endl;
-    if (aux_coordinates.size()> 0 ){    
+    if (aux_coordinates.size()> 0 ){
         for ( int i = 0 ; i < aux_coordinates.size () ; i++ )
             cout << "#define " << aux_coordinates[i]-> get_name () << " qaux[ " << i << " ]" << endl;
         for ( int i = 0 ; i < aux_velocities.size () ; i++ )
             cout << "#define " << aux_velocities[i]-> get_name () << " dqaux[ " << i << " ]" << endl;
         for ( int i = 0 ; i < aux_accelerations.size () ; i++ )
             cout << "#define " << aux_accelerations[i]-> get_name () << " ddqaux[ " << i << " ]" << endl;
-     }       
-        
+     }
+
     for ( int i = 0 ; i < parameters.size () ; i++ )
         cout << "#define " << parameters[i]-> get_name () << " param[ " << i << " ]" << endl;
     for ( int i = 0 ; i < unknowns.size () ; i++ )
@@ -7215,7 +7226,7 @@ void System::make_argument_standard_list ( vector < string > Argument_Standard, 
 
 void System::make_argument_matrixes_list ( vector < string > Argument_Matrixes, string &aux) {
     for ( int i = 0 ; i < Argument_Matrixes.size () ; i++ ){
-     if (aux.length() > 0){aux=aux+", ";} 
+     if (aux.length() > 0){aux=aux+", ";}
      aux = aux+"double * "+Argument_Matrixes[i]+" ";
     }
 }
@@ -7232,15 +7243,15 @@ void System::export_defines ( void ) {
     Matrix Phi   = *get_Matrix( "Phi" );
     //defines_h  << "#include \"defines_extra.h\"" <<endl;
     defines_h  << "#define NEWTON_RAPHSON_TOLERANCE 1.0e-8 " <<endl;
-    if (Joint_Unknowns.size() > 0){     
+    if (Joint_Unknowns.size() > 0){
         defines_h  << "#define UNKNOWNS" <<endl;
     }
-    if (Inputs.size() > 0){     
+    if (Inputs.size() > 0){
         defines_h  << "#define INPUTS" <<endl;
-    } 
-    if (Phi.rows() > 0){     
+    }
+    if (Phi.rows() > 0){
         defines_h  << "#define PHI" <<endl;
-    } 
+    }
     defines_h.close();
 
     ofstream external_def_h;
@@ -7298,7 +7309,7 @@ void System::export_Graphviz_dot ( void ) {
 
     for (int i=1; i < Bases.size() ; ++i)
         {
-        string s1=Bases[i]->get_name();  
+        string s1=Bases[i]->get_name();
 
         size_t pos=s1.find(sub_str1,0);
         while(pos <= s1.size()) {
@@ -7526,13 +7537,13 @@ void System::export_environment_m ( void ) {
         {
             environment_file << *velocities[i] << "=" << velocities[i]->get_value() << ";" <<endl;
         }
-        
+
     environment_file <<  "%------------ Acelerations -------------------"  <<endl;
 
     for (int i=0; i < accelerations.size() ; ++i)
         {
             environment_file << *accelerations[i] << "=" << accelerations[i]->get_value() << ";" <<endl;
-        }       
+        }
 
     environment_file <<  "%------------ Auxiliar Coordinates -------------------"  <<endl;
 
@@ -7547,14 +7558,14 @@ void System::export_environment_m ( void ) {
         {
             environment_file << *aux_velocities[i] << "=" << aux_velocities[i]->get_value() << ";" <<endl;
         }
-        
+
     environment_file <<  "%------------ auxiliar Acelerations -------------------"  <<endl;
 
     for (int i=0; i < aux_accelerations.size() ; ++i)
         {
             environment_file << *aux_accelerations[i] << "=" << aux_accelerations[i]->get_value() << ";" <<endl;
-        }          
-        
+        }
+
 
     environment_file <<  "%------------ Parameters -------------------"  <<endl;
 
@@ -7592,15 +7603,15 @@ void System::export_environment_m ( void ) {
             environment_file << *velocities[i] << ";" ;
         }
     environment_file << "];"  <<endl;
-    
+
     environment_file <<  "ddq=[" ;
     for (int i=0; i < accelerations.size() ; ++i)
         {
             environment_file << *accelerations[i] << ";" ;
         }
-    environment_file << "];"  <<endl;    
-    
-    
+    environment_file << "];"  <<endl;
+
+
     if (aux_coordinates.size () != 0){
       environment_file <<  "qaux=[" ;
       for (int i=0; i < aux_coordinates.size() ; ++i)
@@ -7623,15 +7634,15 @@ void System::export_environment_m ( void ) {
         }
       environment_file << "];"  <<endl;
     }
-    
+
     environment_file <<  "param=[" ;
     for (int i=0; i < parameters.size() ; ++i)
         {
             environment_file << *parameters[i] <<  ";" ;
         }
     environment_file << "];"  <<endl;
-    
-    
+
+
     if (unknowns.size () != 0){
       environment_file <<  "unkn=[" ;
       for (int i=0; i < unknowns.size() ; ++i)
@@ -7640,18 +7651,18 @@ void System::export_environment_m ( void ) {
         }
       environment_file << "];"  <<endl;
     }
-    
+
     if (inputs.size () != 0){
       environment_file <<  "input=[" ;
       for (int i=0; i < inputs.size() ; ++i)
         {
             environment_file << *inputs[i] <<  ";" ;
         }
-      environment_file << "];"  <<endl;  
+      environment_file << "];"  <<endl;
     }
 
     environment_file.close();
- 
+
 /*---------end write q, dq, ddq, epsilon, parameters to environment.m---------*/
 }
 
@@ -7680,7 +7691,7 @@ void System::export_solids_homogeneous_matrix_cpp ( void ) {
     laux0.append(0);laux0.append(0);laux0.append(0);
     Matrix Zeros(3,1,laux0);
     //Matrix Zeros(3,1, lst( 0, 0, 0));
-    
+
     lst laux1;
     laux0.append(1);
     Matrix Ones(1,1,laux1);
@@ -7741,7 +7752,7 @@ void System::export_solids_homogeneous_matrix_cpp ( void ) {
 
     for ( int i = 0 ; i < unknowns.size () ; i++ )
         hom_matrix_file << "#define " << unknowns[i]-> get_name () << " unknowns[ " << i << " ]" << endl;
-        
+
 
     hom_matrix_file << " "  <<endl;
 
@@ -7771,7 +7782,7 @@ void System::export_solids_homogeneous_matrix_cpp ( void ) {
     for ( int i = 0 ; i < Drawings.size () ; i++ ){
         string s1 = Drawings[i]->get_name();
         Matrix Mrot=Rotation_Matrix(get_Base("xyz"),Drawings[i]->get_Base() ).transpose();
- 
+
         if ( gravity == UP ) {
             gravity = DOWN;
             Vector3D O_P = Position_Vector("O", Drawings[i]->get_Point()->get_name());
@@ -7782,7 +7793,7 @@ void System::export_solids_homogeneous_matrix_cpp ( void ) {
         else{
             //Mtrans=(Matrix)(Position_Vector("O", Drawings[i]->get_Point()->get_name())+ Oxyz).transpose();
             Vector3D O_P = Position_Vector("O", Drawings[i]->get_Point()->get_name());
-            Mtrans=(Matrix)(O_P.change_Base(Base_xyz)).transpose();                
+            Mtrans=(Matrix)(O_P.change_Base(Base_xyz)).transpose();
         }
 
         Matrix Mhom(2,2,&Mrot,&Zeros,&Mtrans,&Ones);
@@ -7804,8 +7815,8 @@ void System::export_solids_homogeneous_matrix_cpp ( void ) {
                 for ( int jj = 0; jj < Mhom.cols () ;  jj++ ) {
 					hom_matrix_file << csrc_double << unatomize_ex( Mhom(ii,jj) );
 					//~ hom_matrix_file << csrc_double << Mhom(ii,jj);
-                    if (ii*jj < (Mhom.rows()-1) * (Mhom.cols ()-1) ) {hom_matrix_file << ",";} 
-                    else {hom_matrix_file <<");";} 
+                    if (ii*jj < (Mhom.rows()-1) * (Mhom.cols ()-1) ) {hom_matrix_file << ",";}
+                    else {hom_matrix_file <<");";}
                 }
                 hom_matrix_file << endl;
             }
@@ -7835,17 +7846,17 @@ void System::export_solids_homogeneous_matrix_cpp ( void ) {
 
             if (Vx != 0 ||  Vy != 0){////Rotation matrix [1,0,0]' to Vec
                  l_rot_zy.append(Vx / mod); l_rot_zy.append(-Vy / sqrt_x2_y2); l_rot_zy.append(- Vz * Vx / (mod * sqrt_x2_y2)); l_rot_zy.append(0);
-                 l_rot_zy.append(Vy / mod); l_rot_zy.append( Vx / sqrt_x2_y2); l_rot_zy.append(- Vz * Vy / (mod * sqrt_x2_y2)); l_rot_zy.append(0);           
-                 l_rot_zy.append(Vz / mod); l_rot_zy.append(0);                l_rot_zy.append(sqrt_x2_y2 / mod);               l_rot_zy.append(0);           
-                 l_rot_zy.append(0);        l_rot_zy.append(0);                l_rot_zy.append(0);                              l_rot_zy.append(1);           
+                 l_rot_zy.append(Vy / mod); l_rot_zy.append( Vx / sqrt_x2_y2); l_rot_zy.append(- Vz * Vy / (mod * sqrt_x2_y2)); l_rot_zy.append(0);
+                 l_rot_zy.append(Vz / mod); l_rot_zy.append(0);                l_rot_zy.append(sqrt_x2_y2 / mod);               l_rot_zy.append(0);
+                 l_rot_zy.append(0);        l_rot_zy.append(0);                l_rot_zy.append(0);                              l_rot_zy.append(1);
                  //l_rot_zy = Vx / mod,-Vy / sqrt_x2_y2,  - Vz * Vx / (mod * sqrt_x2_y2),0,
                  //           Vy / mod , Vx / sqrt_x2_y2, - Vz * Vy / (mod * sqrt_x2_y2),0,
                  //           Vz / mod , 0              ,   sqrt_x2_y2 / mod,            0,
-                 //          0,         0              ,    0,                           1; 
-                 l_rot_y.append(0);       l_rot_y.append(0); l_rot_y.append(-Vz/ mod); l_rot_y.append(0); 
-                 l_rot_y.append(0);       l_rot_y.append(1); l_rot_y.append(0);        l_rot_y.append(0); 
+                 //          0,         0              ,    0,                           1;
+                 l_rot_y.append(0);       l_rot_y.append(0); l_rot_y.append(-Vz/ mod); l_rot_y.append(0);
+                 l_rot_y.append(0);       l_rot_y.append(1); l_rot_y.append(0);        l_rot_y.append(0);
                  l_rot_y.append(Vz/ mod); l_rot_y.append(0); l_rot_y.append(0);        l_rot_y.append(0);
-                 l_rot_y.append(0);       l_rot_y.append(0); l_rot_y.append(0);        l_rot_y.append(1); 
+                 l_rot_y.append(0);       l_rot_y.append(0); l_rot_y.append(0);        l_rot_y.append(1);
                  //l_rot_y = 0,         0, -Vz/ mod, 0,
                  //          0,         1, 0,       0,
                  //          Vz/ mod,   0, 0,       0,
@@ -7854,16 +7865,16 @@ void System::export_solids_homogeneous_matrix_cpp ( void ) {
 
             else if (Vx == 0 &&  Vy == 0 && Vz == 0){
                 //cout << "  Be carefull => Impossible to draw" << vaux.get_name() << " = [0,0,0] vector"<<endl;
-                l_rot_zy.append(1.0); l_rot_zy.append(0.0); l_rot_zy.append(0.0); l_rot_zy.append(0.0); 
-                l_rot_zy.append(0.0); l_rot_zy.append(1.0); l_rot_zy.append(0.0); l_rot_zy.append(0.0); 
+                l_rot_zy.append(1.0); l_rot_zy.append(0.0); l_rot_zy.append(0.0); l_rot_zy.append(0.0);
+                l_rot_zy.append(0.0); l_rot_zy.append(1.0); l_rot_zy.append(0.0); l_rot_zy.append(0.0);
                 l_rot_zy.append(0.0); l_rot_zy.append(0.0); l_rot_zy.append(0.0); l_rot_zy.append(0.0);
                 l_rot_zy.append(0.0); l_rot_zy.append(0.0); l_rot_zy.append(0.0); l_rot_zy.append(1.0);
                 //l_rot_zy = 1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0;
-                
-                l_rot_y.append(1.0); l_rot_y.append(0.0); l_rot_y.append(0.0); l_rot_y.append(0.0); 
-                l_rot_y.append(0.0); l_rot_y.append(1.0); l_rot_y.append(0.0); l_rot_y.append(0.0); 
+
+                l_rot_y.append(1.0); l_rot_y.append(0.0); l_rot_y.append(0.0); l_rot_y.append(0.0);
+                l_rot_y.append(0.0); l_rot_y.append(1.0); l_rot_y.append(0.0); l_rot_y.append(0.0);
                 l_rot_y.append(0.0); l_rot_y.append(0.0); l_rot_y.append(1.0); l_rot_y.append(0.0);
-                l_rot_y.append(0.0); l_rot_y.append(0.0); l_rot_y.append(0.0); l_rot_y.append(1.0);                
+                l_rot_y.append(0.0); l_rot_y.append(0.0); l_rot_y.append(0.0); l_rot_y.append(1.0);
                 //l_rot_y = 1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0;
             }
 
@@ -7872,33 +7883,33 @@ void System::export_solids_homogeneous_matrix_cpp ( void ) {
                  //          0,         1, 0,       0,
                  //          Vz/ mod,   0, 0,       0,
                  //          0,         0, 0,       1;
-                 l_rot_zy.append(0);       l_rot_zy.append(0); l_rot_zy.append(+Vz/ mod); l_rot_zy.append(0); 
-                 l_rot_zy.append(0);       l_rot_zy.append(1); l_rot_zy.append(0);        l_rot_zy.append(0); 
+                 l_rot_zy.append(0);       l_rot_zy.append(0); l_rot_zy.append(+Vz/ mod); l_rot_zy.append(0);
+                 l_rot_zy.append(0);       l_rot_zy.append(1); l_rot_zy.append(0);        l_rot_zy.append(0);
                  l_rot_zy.append(Vz/ mod); l_rot_zy.append(0); l_rot_zy.append(0);        l_rot_zy.append(0);
-                 l_rot_zy.append(0);       l_rot_zy.append(0); l_rot_zy.append(0);        l_rot_zy.append(1); 
-                 
+                 l_rot_zy.append(0);       l_rot_zy.append(0); l_rot_zy.append(0);        l_rot_zy.append(1);
+
                  l_rot_y = l_rot_zy;
             }
 
             //l_scl = mod, 0,    0,   0,
             //        0,   mod,  0,   0,
-            //        0,   0,  mod,   0,         
-            //        0,   0,     0,  1; 
-            l_scl.append(mod); l_scl.append(0.0); l_scl.append(0.0); l_scl.append(0.0); 
-            l_scl.append(0.0); l_scl.append(mod); l_scl.append(0.0); l_scl.append(0.0); 
+            //        0,   0,  mod,   0,
+            //        0,   0,     0,  1;
+            l_scl.append(mod); l_scl.append(0.0); l_scl.append(0.0); l_scl.append(0.0);
+            l_scl.append(0.0); l_scl.append(mod); l_scl.append(0.0); l_scl.append(0.0);
             l_scl.append(0.0); l_scl.append(0.0); l_scl.append(mod); l_scl.append(0.0);
-            l_scl.append(0.0); l_scl.append(0.0); l_scl.append(0.0); l_scl.append(1.0);                     
-                    
-                    
+            l_scl.append(0.0); l_scl.append(0.0); l_scl.append(0.0); l_scl.append(1.0);
+
+
             Matrix H_rot_zy (4,4,l_rot_zy);
             Matrix H_rot_y  (4,4,l_rot_y);
             Matrix H_scl(4,4,l_scl);
             Matrix Mhom_zy = H_scl  * H_rot_zy.transpose() * Mhom ;
-            Matrix Mhom_y  = H_scl  * H_rot_y.transpose() * Mhom;  
+            Matrix Mhom_y  = H_scl  * H_rot_y.transpose() * Mhom;
 
             //Rotation matrix when mod = 0
             hom_matrix_file  << csrc_double<<"if ("<< unatomize_ex( mod )<<"<= 0.001 ){" << endl;
-            //~ hom_matrix_file <<"if ("<<  mod <<"<= 0.001 ){" << endl;            
+            //~ hom_matrix_file <<"if ("<<  mod <<"<= 0.001 ){" << endl;
             hom_matrix_file <<"MVec_" << s1 << ".set"  <<endl;
             hom_matrix_file <<"  (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0);" << endl;
             hom_matrix_file <<"}" << endl;
@@ -7910,9 +7921,9 @@ void System::export_solids_homogeneous_matrix_cpp ( void ) {
                 for ( int ii = 0; ii < Mhom_y.rows(); ++ii){
                     for ( int jj = 0; jj < Mhom_y.cols () ;  jj++ ) {
                         hom_matrix_file << csrc_double << unatomize_ex( Mhom_y(ii,jj) );
-                        //~ hom_matrix_file << csrc_double <<  Mhom_y(ii,jj) ;                        
-                        if (ii*jj < (Mhom_y.rows()-1) * (Mhom_y.cols ()-1) ) {hom_matrix_file << ",";} 
-                        else {hom_matrix_file <<");";} 
+                        //~ hom_matrix_file << csrc_double <<  Mhom_y(ii,jj) ;
+                        if (ii*jj < (Mhom_y.rows()-1) * (Mhom_y.cols ()-1) ) {hom_matrix_file << ",";}
+                        else {hom_matrix_file <<");";}
                     }
                     hom_matrix_file << endl;
                 }
@@ -7924,9 +7935,9 @@ void System::export_solids_homogeneous_matrix_cpp ( void ) {
                 for ( int ii = 0; ii < Mhom_zy.rows(); ++ii){
                     for ( int jj = 0; jj < Mhom_zy.cols () ;  jj++ ) {
                         hom_matrix_file << csrc_double << unatomize_ex( Mhom_zy(ii,jj) );
-                        //~ hom_matrix_file << csrc_double << Mhom_zy(ii,jj) ;                       
-                        if (ii*jj < (Mhom_zy.rows()-1) * (Mhom_zy.cols ()-1) ) {hom_matrix_file << ",";} 
-                        else {hom_matrix_file <<");";} 
+                        //~ hom_matrix_file << csrc_double << Mhom_zy(ii,jj) ;
+                        if (ii*jj < (Mhom_zy.rows()-1) * (Mhom_zy.cols ()-1) ) {hom_matrix_file << ",";}
+                        else {hom_matrix_file <<");";}
                     }
                     hom_matrix_file << endl;
                 }
@@ -8328,10 +8339,10 @@ void System::export_gnuplot ( lst expresion_list ) {
     vector < symbol_numeric * > Accelerations    = get_Accelerations();
     vector < symbol_numeric * > Joint_Unknowns = get_Joint_Unknowns();
 
-    lst coords; 
+    lst coords;
     lst vels;
-    lst accels; 
-    lst unkns; 
+    lst accels;
+    lst unkns;
 
     for (int i=0; i < Coordinates.size() ; ++i){
         for (int j=0; j < expresion_list.nops() ; ++j){
@@ -8507,13 +8518,13 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
         Velocities.insert( Velocities.end(),Aux_Velocities.begin(), Aux_Velocities.end() );
         Accelerations.insert( Accelerations.end(),Aux_Accelerations.begin(), Aux_Accelerations.end() );
     }
-     
+
     cout<<" dPhi Calculating"<<endl;
     Matrix dPhi_aux = Dt(Phi);
     Matrix dPhi = Matrix (2,1,&dPhi_aux,&dPhiNH);
     cout<<" ddPhi Calculating"<<endl;
     Matrix ddPhi  = Dt(dPhi);
-      
+
 
     //Check sizes:+
     if( method == LAGRANGE){
@@ -8524,7 +8535,7 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
             cout << " "<< endl;
         }
     }
-    
+
 
     cout<<" Beta Calculating"<<endl;
     Matrix Beta  = -dPhi;
@@ -8539,13 +8550,13 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
         else{
             Beta(i,0) = recursive_substitution (Beta(i,0),Velocities , 0);
             Beta(i,0) = recursive_substitution (Beta(i,0),Aux_Velocities , 0);
-        }	
-    }    
+        }
+    }
 
     cout<<" Gamma Calculating"<<endl;
     symbol_numeric *ddq_j;
-    //~ Matrix Gamma  = Dt(Beta);    
-    Matrix Gamma  = -ddPhi;   
+    //~ Matrix Gamma  = Dt(Beta);
+    Matrix Gamma  = -ddPhi;
     for (int i=0; (i < Gamma.rows()); ++i) {
 		if ( atomization == NO ){
             for (int j=0; (j < Accelerations.size()); ++j) {
@@ -8554,21 +8565,21 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
             }
         }
         else{
- 
+
             Gamma(i,0) = recursive_substitution (Gamma(i,0),Accelerations , 0);
             Gamma(i,0) = recursive_substitution (Gamma(i,0),Aux_Accelerations , 0);
-        }	
+        }
     }
 
 
- 
+
     Matrix Dynamic_Equations_open = Dynamic_Equations;
     Matrix M(ddq.rows(),ddq.rows()) ;
     Matrix Q(ddq.rows(),1);
-    
-    struct timeval  tv; 
-    
-    if  (Dynamic_Equations.rows() != 0 ) {  // uses the old method, 
+
+    struct timeval  tv;
+
+    if  (Dynamic_Equations.rows() != 0 ) {  // uses the old method,
     gettimeofday(&tv, NULL); double time1 =  (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000 ;
         // Dynamic_Equations ==> M * ddq + V * epsilon - Q = 0 // Dynamic_Equations_open	==> M * ddq - Q = 0
         Dynamic_Equations_open = Dynamic_Equations;
@@ -8585,17 +8596,17 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
                 }
                 else{
                     Dynamic_Equations_open(i,0) = recursive_substitution (Dynamic_Equations_open(i,0),Joint_Unknowns , 0);
-                }	
+                }
             }
         }
         else if( method == LAGRANGE){
-		    Matrix Dynamic_Equations_open = Dynamic_Equations;  
-    	} 
+		    Matrix Dynamic_Equations_open = Dynamic_Equations;
+    	}
         * new_Matrix( "Dynamic_Equations_open",Dynamic_Equations_open );
-        
+
         cout<<" M and Q Calculating by differentation"<<endl;
         //M = jacobian(Dynamic_Equations_open.transpose() ,ddq,1); //M is symmetric
-        M = jacobian(Dynamic_Equations_open.transpose() ,ddq); 
+        M = jacobian(Dynamic_Equations_open.transpose() ,ddq);
 
         Q = - Dynamic_Equations_open;
         for (int i=0; (i < Q.rows()); ++i) {
@@ -8607,13 +8618,13 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
             }
             else{
                 Q(i,0) = recursive_substitution (Q(i,0),Accelerations , 0);
-            }	
-        } 
+            }
+        }
     gettimeofday(&tv, NULL); double time2 =  (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000 ;
 
     printf ("  M and Q OLD =========================>  %f seconds\n",(double) (time2 - time1)/1000.0);
     }
-    
+
 
     * new_Matrix( "Phi"   ,Phi );
     * new_Matrix( "Beta"  ,Beta );
@@ -8631,14 +8642,14 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
 
     cout<<" dPhiInit Calculating"<<endl;
     Matrix dPhiInit       = Matrix (2,1,&dPhi,&dInit);
-        
-   
+
+
     cout<<" PhiInit_q Calculating"<<endl;
     //Matrix PhiInit_q       = jacobian(PhiInit.transpose(), q);
     Matrix PhiInit_q       = jacobian(PhiInit.transpose(), Matrix (2,1,&q,&qaux));//if qaux == 0 then  Matrix (2,1,&q,&qaux)) = q
 
     cout<<" dPhiInit_dq Calculating"<<endl;
-    //Matrix dPhiInit_dq     = jacobian(dPhiInit.transpose() ,dq);   
+    //Matrix dPhiInit_dq     = jacobian(dPhiInit.transpose() ,dq);
     Matrix dPhiInit_dq     = jacobian(dPhiInit.transpose() ,Matrix (2,1,&dq,&dqaux));//if dqaux == 0 then  Matrix (2,1,&dq,&dqaux)) = dq
 
     cout<<" BetaInit Calculating"<<endl;
@@ -8653,36 +8664,36 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
         else{
             BetaInit(i,0) = recursive_substitution (BetaInit(i,0),Velocities , 0);
             BetaInit(i,0) = recursive_substitution (BetaInit(i,0),Aux_Velocities , 0);
-        }	
-    }  
+        }
+    }
 
- 
+
     cout<<" Phi_q Calculating"<<endl;
     //Matrix Phi_q  = jacobian(Phi.transpose() ,q);
     Matrix Phi_q  = jacobian(Phi.transpose() ,Matrix (2,1,&q,&qaux));//if qaux == 0 then  Matrix (2,1,&q,&qaux)) = q
-      
+
     cout<<" dPhi_dq Calculating"<<endl;
     //Matrix dPhi_dq =  jacobian(dPhi.transpose() ,dq);
     Matrix dPhi_dq =  jacobian(dPhi.transpose() ,Matrix (2,1,&dq,&dqaux));//if dqaux == 0 then  Matrix (2,1,&dq,&dqaux)) = dq
 
-        
 
-     
+
+
     vector < Solid * > Solids = sys.get_Solids ( );
     vector < Wrench3D * > Wrenches = sys.get_Wrenches ( );
     //Matrix W(q.rows(),4*Solids.size()) ;
-    
+
     //~ Matrix MUP(ddq.rows(),ddq.rows()) ;
     //~ Matrix QUP(ddq.rows(),1);
-    
-   
+
+
     if  (Dynamic_Equations.rows() == 0 ) {  // uses the new method,
         cout<<" M and Q Calculating"<<endl;
         for (int k=0; k< Solids.size(); k++) {
             symbol_numeric mass = *Solids[k]->get_mass();
             //Matrix R_IT_SOL = sys.Rotation_Matrix (Solids[k]->get_Base(),Solids[k]->get_IT()->get_Base() );
             //Matrix IT = R_IT_SOL*(*Solids[k]->get_IT())*R_IT_SOL.transpose();
-            
+
             //Tensor3D IT = (*Solids[k]->get_IT()).change_Base(Solids[k]->get_Base());
             Vector3D BG = (*Solids[k]->get_CM()).change_Base(Solids[k]->get_Base());
 
@@ -8696,25 +8707,25 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
             Vector3D VelBUP  = Velocity_Vector("abs",Solids[k]->get_Point() -> get_name());
             Vector3D OmSolUP = Angular_Velocity("xyz",Solids[k]->get_Base() -> get_name());
             gravity = DOWN;
-            
+
             Tensor3D IT = (*Solids[k]->get_IT()).change_Base(OmSolUP.get_Base());
 
-            
+
             Matrix VelBUP_dq   = jacobian(VelBUP.transpose(),dq);
             Matrix VelBUP_dqT  = VelBUP_dq.transpose();
             Matrix OmSolUP_dq   = jacobian(OmSolUP.transpose(),dq);
-            Matrix OmSolUP_dqT  = OmSolUP_dq.transpose();            
-            
-            
-            
-            
+            Matrix OmSolUP_dqT  = OmSolUP_dq.transpose();
+
+
+
+
             Matrix RVel_mBG = sys.Rotation_Matrix ( VelBUP.get_Base(), mBG.get_Base());
             Matrix RmBG_OM  = sys.Rotation_Matrix ( mBG.get_Base(),OmSolUP.get_Base() );
-            
+
             Matrix Maux = VelBUP_dqT*RVel_mBG*mBG.skew().transpose()*RmBG_OM*OmSolUP_dq;
             Matrix MauxT = Maux.transpose();
-            
-            
+
+
             Matrix Maux2(ddq.rows(),ddq.rows());
             Matrix RowITColUP;
             for ( int i = 0 ; i < OmSolUP_dqT.rows () ; i++ ) {
@@ -8722,7 +8733,7 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
     		    for ( int j = i ; j < OmSolUP_dq.cols () ; j++ ) {
                     Matrix Col = OmSolUP_dq.get_col(j);
                     RowITColUP = RowITUP*Col;
-                    if (i==j){ 
+                    if (i==j){
                         Maux2 ( i , j ) = RowITColUP(0,0);
                     }
                     else {
@@ -8730,28 +8741,28 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
                         Maux2 ( j , i ) = RowITColUP(0,0);
                     }
                }
-            } 
-   
-            M = M - mass*( VelBUP_dqT*VelBUP_dq ) - (Maux + MauxT) -  Maux2;  
-            
+            }
+
+            M = M - mass*( VelBUP_dqT*VelBUP_dq ) - (Maux + MauxT) -  Maux2;
+
             Matrix R_BG_xyz = sys.Rotation_Matrix (Base_xyz ,mBG.get_Base()  );
             Matrix R_VelBUP_xyz = sys.Rotation_Matrix (Base_xyz ,VelBUP.get_Base()  );
-            
+
             //Matrix VelBUP_q     = jacobian(VelBUP.transpose(),q);
-            //Matrix VelBUP_t     = jacobian(VelBUP.transpose(),get_Time_Symbol ());  
+            //Matrix VelBUP_t     = jacobian(VelBUP.transpose(),get_Time_Symbol ());
             Matrix OmSolUP_q  = jacobian(OmSolUP.transpose(),q);
             Matrix OmSolUP_t  = jacobian(OmSolUP.transpose(),get_Time_Symbol ());
-            
-            
+
+
             Vector3D mBG_O = mBG.change_Base(Base_xyz);
             Vector3D OmSol = (Angular_Velocity(Base_xyz,Solids[k]->get_Base())).change_Base(Base_xyz);
             Vector3D VelB  = (Velocity_Vector("abs",Solids[k]->get_Point() -> get_name(), Solids[k]-> get_name() )).change_Base(Base_xyz);
             Matrix VelB_q     = jacobian(VelB.transpose(),q);
-            Matrix VelB_t     = jacobian(VelB.transpose(),get_Time_Symbol ()); 
+            Matrix VelB_t     = jacobian(VelB.transpose(),get_Time_Symbol ());
             Matrix OmSol_q    = jacobian(OmSol.transpose(),q);
-            Matrix OmSol_t    = jacobian(OmSol.transpose(),get_Time_Symbol ()); 
-            
-            
+            Matrix OmSol_t    = jacobian(OmSol.transpose(),get_Time_Symbol ());
+
+
             //Matrix QUP1 = (mass*(VelBUP_q + R_VelBUP_xyz.transpose()*VelBUP2_q) -  R_BG_VelBUP * mBG.skew()*R_BG_xyz.transpose()*(OmSolUP1_q + OmSolUP2_q)     )*dq  + mass*R_VelBUP_xyz*VelB_t -(mBG.skew())*R_VelBUP_xyz*OmSol_t ;
             Matrix QUP1 =  R_VelBUP_xyz.transpose()*( (mass*VelB_q  - (mBG_O.skew())*OmSol_q)*dq + mass*VelB_t -(mBG_O.skew())*OmSol_t);
             Matrix QUP2 = RVel_mBG * OmSolUP.skew() * OmSolUP.skew() *  mBG;
@@ -8760,29 +8771,29 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
             Matrix QUP4 = IT * ( OmSolUP_q*dq + OmSolUP_t );
             Matrix QUP5 = (OmSolUP.skew())*IT*OmSolUP ;
 
-            Q = Q + VelBUP_dqT * (QUP1 + QUP2)  
+            Q = Q + VelBUP_dqT * (QUP1 + QUP2)
                   + OmSolUP_dqT * (QUP3 + QUP4 + QUP5)
                 ;
             /* -----------------------------------------------------------------------------------------------------------------*/
-              
 
-            
-            
+
+
+
             /* -----------------------------------------------------------------------------------------------------------------*/
             //  DOWN
             /* -----------------------------------------------------------------------------------------------------------------*/
             /*Vector3D mBG_O = mBG.change_Base(Base_xyz);
-            Matrix R_SOL_xyz = sys.Rotation_Matrix (Base_xyz ,Solids[k]->get_Base()  ); 
+            Matrix R_SOL_xyz = sys.Rotation_Matrix (Base_xyz ,Solids[k]->get_Base()  );
             Matrix IT_O = R_SOL_xyz*IT*R_SOL_xyz.transpose();
- 
+
             Vector3D OmSol = (Angular_Velocity(Base_xyz,Solids[k]->get_Base())).change_Base(Base_xyz);
 
             Vector3D VelB  = (Velocity_Vector("abs",Solids[k]->get_Point() -> get_name(), Solids[k]-> get_name() )).change_Base(Base_xyz);
 
             Matrix OmSol_dq  = jacobian(OmSol.transpose(),dq);
             Matrix OmSol_dqT = OmSol_dq.transpose();
-            
-            
+
+
             Matrix Maux2(ddq.rows(),ddq.rows());
             Matrix RowITCol;
             for ( int i = 0 ; i < OmSol_dqT.rows () ; i++ ) {
@@ -8790,7 +8801,7 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
     		    for ( int j = i ; j < OmSol_dq.cols () ; j++ ) {
                     Matrix Col = OmSol_dq.get_col(j);
                     RowITCol = RowIT*Col;
-                    if (i==j){ 
+                    if (i==j){
                         Maux2 ( i , j ) = RowITCol(0,0);
                     }
                     else {
@@ -8801,36 +8812,36 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
             }
             Matrix VelB_dq   = jacobian(VelB.transpose(),dq);
             Matrix VelB_dqT  = VelB_dq.transpose();
-            
+
             Matrix Maux = VelB_dqT*(mBG_O.skew()).transpose()*OmSol_dq;
             Matrix MauxT = Maux.transpose();
-            
+
             M = M - mass*( VelB_dqT*VelB_dq ) - (Maux + MauxT) -  Maux2;
 
             Matrix VelB_q     = jacobian(VelB.transpose(),q);
-            Matrix VelB_t     = jacobian(VelB.transpose(),get_Time_Symbol ()); 
-       
+            Matrix VelB_t     = jacobian(VelB.transpose(),get_Time_Symbol ());
+
             Matrix OmSol_q    = jacobian(OmSol.transpose(),q);
             Matrix OmSol_t    = jacobian(OmSol.transpose(),get_Time_Symbol ());
 
-            
-       
+
+
             //~ Q = Q + VelB_dqT * (  (mass*VelB_q  - (mBG_O.skew())*OmSol_q)*dq + mass*VelB_t -(mBG_O.skew())*OmSol_t )
             //~ //Q = Q + VelB_dqT * (  mass*(VelB_q  * dq + VelB_t) )  + VelB_dqT * ( -mBG_O.skew() * (OmSol_q*dq + OmSol_t))
                   //~ + VelB_dqT * (OmSol.skew() * (OmSol.skew() *  mBG_O))
-                  //~ + OmSolUP_dqT * IT * ( OmSolUP_q*dq + OmSolUP_t ) 
+                  //~ + OmSolUP_dqT * IT * ( OmSolUP_q*dq + OmSolUP_t )
                   //~ + OmSol_dqT * (mBG_O.skew()) * ( VelB_q*dq  + VelB_t)
                   //~ + OmSolUP_dqT*(OmSolUP.skew())*IT*OmSolUP
                   //~ ;
-                  
+
             //~ Q = Q + VelB_dqT * (  (mass*VelB_q  - (mBG_O.skew())*OmSol_q)*dq + mass*VelB_t -(mBG_O.skew())*OmSol_t + OmSol.skew() * (OmSol.skew() *  mBG_O))
                   //~ + OmSolUP_dqT * (IT * ( OmSolUP_q*dq + OmSolUP_t ) + (OmSolUP.skew())*IT*OmSolUP)
                   //~ + OmSol_dqT * (mBG_O.skew()) * ( VelB_q*dq  + VelB_t)
-                  //~ ;  
-            
+                  //~ ;
+
             Matrix Q1 = (mass*VelB_q  - (mBG_O.skew())*OmSol_q)*dq + mass*VelB_t -(mBG_O.skew())*OmSol_t;
             Matrix Q2 = OmSol.skew() * OmSol.skew() *  mBG_O;
-             
+
             Matrix Q3 = (mBG_O.skew()) * ( VelB_q*dq  + VelB_t);
             Matrix Q4 = IT_O * ( OmSol_q*dq + OmSol_t ) ;
             Matrix Q5 = (OmSol.skew())*IT_O*OmSol;
@@ -8838,11 +8849,11 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
             Q = Q  + VelB_dqT * (Q1 + Q2)
                   + OmSol_dqT * (Q3 + Q4 + Q5)
                   ;
-            */     
+            */
             /* -----------------------------------------------------------------------------------------------------------------*/
 
-         
-            
+
+
 
         }
 
@@ -8850,22 +8861,22 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
     	    if ( Wrenches[k]-> get_Type () != "Inertia"){
                 //Q = Q - GenForce(Wrenches[k]);
                 gravity = UP;Q = Q - GenForce(Wrenches[k]);gravity = DOWN;
-            }    
+            }
         }
     }
-        
+
     //~ if (aux_coordinates.size()>0){
         //~ Matrix ZeroM12 = Matrix(ddq.rows(),ddqaux.rows());
-        //~ Matrix ZeroM21 = Matrix(ddqaux.rows(),ddq.rows());   
+        //~ Matrix ZeroM21 = Matrix(ddqaux.rows(),ddq.rows());
         //~ Matrix ZeroM22 = Matrix(ddqaux.rows(),ddqaux.rows());
         //~ Matrix ZeroQ = Matrix(ddqaux.rows(),1);
         //~ M = Matrix(2,2,&M,&ZeroM12,&ZeroM21,&ZeroM22);
         //~ Q = Matrix(2,1,&Q,&ZeroQ);
     //~ }
 
-    
+
     Matrix MQ = Matrix("MQ",1,2,&M,&Q);
-        
+
     // Dynamic_Equations ==> M * ddq + V * epsilon - Q = 0 <===> Q = -(Dynamic_Equations-(M*ddq+V*epsilon));
     //~ if ( method == LAGRANGE){
         //~ Matrix dPhi_dqT = dPhi_dq.transpose();
@@ -8890,7 +8901,7 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
     * new_Matrix( "dPhi_dq"     ,dPhi_dq );
     * new_Matrix( "M",M );     //* new_Matrix( "C"     ,C );//* new_Matrix( "K"     ,K );
     * new_Matrix( "Q",Q );
-    * new_Matrix( "MQ",MQ );   
+    * new_Matrix( "MQ",MQ );
     //~ * new_Matrix( "Qgamma",Qgamma );
     //~ * new_Matrix( "Zero" ,Zero );
     //~ * new_Matrix( "MXdPhi_dqZero",MXdPhi_dqZero );
@@ -8928,13 +8939,13 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
 
 
 void System::export_Dynamic_Simulation (System &sys, int order, int maple){
-    
+
     try{ if ( (order != CMO) && (order != RMO)  ) throw 1;}
     catch ( int e ) {outError ( "ERR -  Parameter 'int order' must be CMO  or RMO" );}
 
     try{ if ( (maple != MAPLE_ON) && (maple != MAPLE_OFF)  ) throw 1;}
     catch ( int e ) {outError ( "ERR -  Parameter 'int maple' must be MAPLE_ON or MAPLE_OFF" );}
-    
+
     export_defines(); //->"defines.h"
 
     export_time_H(); //->"time_3D_mec.h"
@@ -8946,7 +8957,7 @@ void System::export_Dynamic_Simulation (System &sys, int order, int maple){
         //~ accelerations.insert( accelerations.end(),aux_accelerations.begin(), aux_accelerations.end() );
         //~ aux_coordinates.clear();aux_velocities.clear();aux_accelerations.clear();
     //~ }
-    
+
     export_gen_coord_H(); //->"gen_coord.h"
     export_gen_coord_C(); //->"gen_coord.c"
 
@@ -8955,18 +8966,18 @@ void System::export_Dynamic_Simulation (System &sys, int order, int maple){
 
     export_gen_accel_H(); //->"gen_accel.h"
     export_gen_accel_C(); //->"gen_accel.c"
-    
+
     if (aux_coordinates.size()> 0 ){
         export_gen_auxcoord_H(); //->"gen_auxcoord.h"
         export_gen_auxcoord_C(); //->"gen_auxcoord.c"
-        
+
         export_gen_auxvel_H(); //->"gen_auxvel.h"
         export_gen_auxvel_C(); //->"gen_auxvel.c"
-        
+
         export_gen_auxaccel_H(); //->"gen_auxaccel.h"
         export_gen_auxaccel_C(); //->"gen_auxaccel.c"
     }
-    
+
     export_param_H(); //->"param.h"
     export_param_C(); //->"param.c"
 
@@ -8974,8 +8985,8 @@ void System::export_Dynamic_Simulation (System &sys, int order, int maple){
     export_inputs_C(); //->"inputs.c"
 
     export_unknowns_H(); //->"unknowns.h"
-    export_unknowns_C(); //->"unknowns.c"    
-    
+    export_unknowns_C(); //->"unknowns.c"
+
     Matrix PhiInit       = *get_Matrix( "PhiInit" );
     Matrix dPhiInit      = *get_Matrix( "dPhiInit" );
     Matrix PhiInit_q     = *get_Matrix( "PhiInit_q" );
@@ -8988,15 +8999,15 @@ void System::export_Dynamic_Simulation (System &sys, int order, int maple){
     Matrix dPhi_dq       = *get_Matrix( "dPhi_dq" );
     Matrix M             = *get_Matrix( "M" );
     Matrix Q             = *get_Matrix( "Q" );
-    Matrix MQ             = *get_Matrix( "MQ" );    
+    Matrix MQ             = *get_Matrix( "MQ" );
     //Matrix MXdPhi_dqZero = *get_Matrix( "MXdPhi_dqZero" );
     //Matrix Qgamma        = *get_Matrix( "Qgamma" );
     Matrix Output        = *get_Matrix( "Output" );
-    Matrix Energy        = *get_Matrix( "Energy" );    
-    
-    
+    Matrix Energy        = *get_Matrix( "Energy" );
+
+
     if ( maple == MAPLE_ON && atomization == NO ){
-        
+
         int systemRet;
         export_Matrix_MAPLE("Phi", "_Phi", Phi, order);
         systemRet = system("maple Phi.mpl > Phi.log && bash ./replace.bash Phi_maple_include.c Phi_maple_include.c ");
@@ -9006,7 +9017,7 @@ void System::export_Dynamic_Simulation (System &sys, int order, int maple){
 
         export_Matrix_MAPLE("Gamma", "_Gamma", Gamma, order);
         systemRet = system("maple Gamma.mpl > Gamma.log && bash ./replace.bash Gamma_maple_include.c Gamma_maple_include.c ");
-        
+
         export_Matrix_MAPLE("PhiInit", "_PhiInit", PhiInit, order);
         systemRet = system("maple PhiInit.mpl > PhiInit.log && bash ./replace.bash PhiInit_maple_include.c PhiInit_maple_include.c ");
 
@@ -9030,9 +9041,9 @@ void System::export_Dynamic_Simulation (System &sys, int order, int maple){
 
         export_Matrix_MAPLE("Q", "_Q", Q, order);
         systemRet = system("maple Q.mpl > Q.log && bash ./replace.bash Q_maple_include.c Q_maple_include.c ");
-        
+
         export_Matrix_MAPLE("MQ", "_MQ", MQ, order);
-        systemRet = system("maple MQ.mpl > MQ.log && bash ./replace.bash MQ_maple_include.c MQ_maple_include.c ");       
+        systemRet = system("maple MQ.mpl > MQ.log && bash ./replace.bash MQ_maple_include.c MQ_maple_include.c ");
 
         //~ export_Matrix_MAPLE("MXdPhi_dqZero", "_MXdPhi_dqZero", MXdPhi_dqZero, order,1); //This matrix will be symmetric
         //~ systemRet = system("maple MXdPhi_dqZero.mpl > MXdPhi_dqZero.log && bash ./replace.bash MXdPhi_dqZero_maple_include.c MXdPhi_dqZero_maple_include.c &");
@@ -9045,7 +9056,7 @@ void System::export_Dynamic_Simulation (System &sys, int order, int maple){
 
         export_Matrix_MAPLE("Energy", "_Energy", Energy, order);
         systemRet = system("maple Energy.mpl > Energy.log && bash ./replace.bash Energy_maple_include.c Energy_maple_include.c ");
-        
+
         systemRet = system("while [ \"$(pidof -x cmaple)\" ]; do sleep 1; done");
         systemRet = system("while [ \"$(pidof -x replace.bash)\" ]; do sleep 1; done");
 
@@ -9054,7 +9065,7 @@ void System::export_Dynamic_Simulation (System &sys, int order, int maple){
         export_init_function_MATLAB();
         export_function_MATLAB("Phi", "Phi_", Phi);
         export_function_MATLAB("Beta", "Beta_", Beta);
-        export_function_MATLAB("Gamma", "Gamma_", Gamma);    
+        export_function_MATLAB("Gamma", "Gamma_", Gamma);
         export_function_MATLAB("PhiInit" ,"PhiInit_" ,PhiInit);
         export_function_MATLAB("PhiInit_q","PhiInit_q_",PhiInit_q);
         export_function_MATLAB("dPhiInit_dq" ,"dPhiInit_dq_" ,dPhiInit_dq);
@@ -9068,77 +9079,77 @@ void System::export_Dynamic_Simulation (System &sys, int order, int maple){
         export_function_MATLAB("Output", "Output_", Output);
         export_function_MATLAB("Energy", "Energy_", Energy);
 
-    } 
-       
+    }
+
     else if ( atomization == YES ){
-        
+
         lst used_atom_list;
 
         cout <<" PhiInit Optimizing"<<endl;
-        lst new_atom_list_PhiInit, new_exp_list_PhiInit;        
+        lst new_atom_list_PhiInit, new_exp_list_PhiInit;
         matrix_list_optimize (PhiInit, new_atom_list_PhiInit, new_exp_list_PhiInit);
-        
+
         cout <<" PhiInit_q Optimizing"<<endl;
-        lst new_atom_list_PhiInit_q, new_exp_list_PhiInit_q;        
-        matrix_list_optimize (PhiInit_q, new_atom_list_PhiInit_q, new_exp_list_PhiInit_q); 
-                 
-        cout <<" dPhiInit_dq Optimizing"<<endl;;        
-        lst new_atom_list_dPhiInit_dq, new_exp_list_dPhiInit_dq;        
+        lst new_atom_list_PhiInit_q, new_exp_list_PhiInit_q;
+        matrix_list_optimize (PhiInit_q, new_atom_list_PhiInit_q, new_exp_list_PhiInit_q);
+
+        cout <<" dPhiInit_dq Optimizing"<<endl;;
+        lst new_atom_list_dPhiInit_dq, new_exp_list_dPhiInit_dq;
         matrix_list_optimize (dPhiInit_dq, new_atom_list_dPhiInit_dq, new_exp_list_dPhiInit_dq);
-                  
-        cout <<" BetaInit Optimizing"<<endl;        
-        lst new_atom_list_BetaInit, new_exp_list_BetaInit;        
-        matrix_list_optimize (BetaInit, new_atom_list_BetaInit, new_exp_list_BetaInit); 
-               
+
+        cout <<" BetaInit Optimizing"<<endl;
+        lst new_atom_list_BetaInit, new_exp_list_BetaInit;
+        matrix_list_optimize (BetaInit, new_atom_list_BetaInit, new_exp_list_BetaInit);
+
         cout << " Phi Optimizing"<<endl;
-        lst new_atom_list_Phi, new_exp_list_Phi;        
+        lst new_atom_list_Phi, new_exp_list_Phi;
         matrix_list_optimize (Phi, new_atom_list_Phi, new_exp_list_Phi);
-                
-        cout << " Beta Optimizing"<<endl;        
-        lst new_atom_list_Beta, new_exp_list_Beta;        
+
+        cout << " Beta Optimizing"<<endl;
+        lst new_atom_list_Beta, new_exp_list_Beta;
         matrix_list_optimize (Beta, new_atom_list_Beta, new_exp_list_Beta);
-        
-         cout << " Gamma Optimizing"<<endl;        
-        lst new_atom_list_Gamma, new_exp_list_Gamma;        
+
+         cout << " Gamma Optimizing"<<endl;
+        lst new_atom_list_Gamma, new_exp_list_Gamma;
         matrix_list_optimize (Gamma, new_atom_list_Gamma, new_exp_list_Gamma);
-               
-        cout <<" Phi_q Optimizing"<<endl;       
-        lst new_atom_list_Phi_q, new_exp_list_Phi_q;        
-        matrix_list_optimize (Phi_q, new_atom_list_Phi_q, new_exp_list_Phi_q); 
-               
-        cout <<" dPhi_dq Optimizing"<<endl;        
-        lst new_atom_list_dPhi_dq, new_exp_list_dPhi_dq;        
+
+        cout <<" Phi_q Optimizing"<<endl;
+        lst new_atom_list_Phi_q, new_exp_list_Phi_q;
+        matrix_list_optimize (Phi_q, new_atom_list_Phi_q, new_exp_list_Phi_q);
+
+        cout <<" dPhi_dq Optimizing"<<endl;
+        lst new_atom_list_dPhi_dq, new_exp_list_dPhi_dq;
         matrix_list_optimize (dPhi_dq, new_atom_list_dPhi_dq, new_exp_list_dPhi_dq);
-        
-        cout <<" M Optimizing"<<endl;        
-        lst new_atom_list_M, new_exp_list_M;        
+
+        cout <<" M Optimizing"<<endl;
+        lst new_atom_list_M, new_exp_list_M;
         matrix_list_optimize (M, new_atom_list_M, new_exp_list_M);
-        
-        cout <<" Q Optimizing"<<endl;       
-        lst new_atom_list_Q, new_exp_list_Q;        
+
+        cout <<" Q Optimizing"<<endl;
+        lst new_atom_list_Q, new_exp_list_Q;
         matrix_list_optimize (Q, new_atom_list_Q, new_exp_list_Q);
-        
-        cout <<" MQ Optimizing"<<endl;       
-        lst new_atom_list_MQ, new_exp_list_MQ;        
+
+        cout <<" MQ Optimizing"<<endl;
+        lst new_atom_list_MQ, new_exp_list_MQ;
         matrix_list_optimize (MQ, new_atom_list_MQ, new_exp_list_MQ);
-                        
-        //~ cout <<" MXdPhi_dqZero Optimizing"<<endl;        
-        //~ lst new_atom_list_MXdPhi_dqZero, new_exp_list_MXdPhi_dqZero;        
+
+        //~ cout <<" MXdPhi_dqZero Optimizing"<<endl;
+        //~ lst new_atom_list_MXdPhi_dqZero, new_exp_list_MXdPhi_dqZero;
         //~ matrix_list_optimize (MXdPhi_dqZero, new_atom_list_MXdPhi_dqZero, new_exp_list_MXdPhi_dqZero);
-                                        
-        //~ cout <<" Qgamma Optimizing"<<endl;        
-        //~ lst new_atom_list_Qgamma, new_exp_list_Qgamma;        
+
+        //~ cout <<" Qgamma Optimizing"<<endl;
+        //~ lst new_atom_list_Qgamma, new_exp_list_Qgamma;
         //~ matrix_list_optimize (Qgamma, new_atom_list_Qgamma, new_exp_list_Qgamma);
-                
-        cout <<" Output  Optimizing"<<endl;        
-        lst new_atom_list_Output, new_exp_list_Output;        
-        matrix_list_optimize (Output, new_atom_list_Output, new_exp_list_Output); 
-               
-        cout <<" Energy  Optimizing"<<endl;        
-        lst new_atom_list_Energy, new_exp_list_Energy;        
+
+        cout <<" Output  Optimizing"<<endl;
+        lst new_atom_list_Output, new_exp_list_Output;
+        matrix_list_optimize (Output, new_atom_list_Output, new_exp_list_Output);
+
+        cout <<" Energy  Optimizing"<<endl;
+        lst new_atom_list_Energy, new_exp_list_Energy;
         matrix_list_optimize (Energy, new_atom_list_Energy, new_exp_list_Energy);
-        
-        cout <<" Code Exporting "<<endl; 
+
+        cout <<" Code Exporting "<<endl;
         export_Matrix_C	("PhiInit","_PhiInit",PhiInit, new_atom_list_PhiInit, new_exp_list_PhiInit ,order);
         export_Matrix_C	("PhiInit_q","_PhiInit_q",PhiInit_q, new_atom_list_PhiInit_q, new_exp_list_PhiInit_q ,order);
         export_Matrix_C	("dPhiInit_dq","_dPhiInit_dq",dPhiInit_dq, new_atom_list_dPhiInit_dq, new_exp_list_dPhiInit_dq ,order);
@@ -9150,19 +9161,19 @@ void System::export_Dynamic_Simulation (System &sys, int order, int maple){
         export_Matrix_C	("dPhi_dq","_dPhi_dq",dPhi_dq, new_atom_list_dPhi_dq, new_exp_list_dPhi_dq ,order);
         export_Matrix_C	("M","_M",M, new_atom_list_M, new_exp_list_M ,order);
         export_Matrix_C	("Q","_Q",Q, new_atom_list_Q, new_exp_list_Q ,order);
-        export_Matrix_C	("MQ","_MQ",MQ, new_atom_list_MQ, new_exp_list_MQ ,order);       
+        export_Matrix_C	("MQ","_MQ",MQ, new_atom_list_MQ, new_exp_list_MQ ,order);
         //~ export_Matrix_C	("MXdPhi_dqZero","_MXdPhi_dqZero",MXdPhi_dqZero, new_atom_list_MXdPhi_dqZero, new_exp_list_MXdPhi_dqZero ,order);
         //~ export_Matrix_C	("Qgamma","_Qgamma",Qgamma, new_atom_list_Qgamma, new_exp_list_Qgamma ,order);
         export_Matrix_C	("Output","_Output",Output, new_atom_list_Output, new_exp_list_Output ,order);
         export_Matrix_C	("Energy","_Energy",Energy, new_atom_list_Energy, new_exp_list_Energy ,order);
-        
-        
+
+
         // MATLAB exportation atomized
         /*
         export_init_function_MATLAB();
         export_function_MATLAB("Phi", "Phi_", Phi, new_atom_list_Phi, new_exp_list_Phi );
         export_function_MATLAB("Beta", "Beta_", Beta, new_atom_list_Beta, new_exp_list_Beta);
-        export_function_MATLAB("Gamma", "Gamma_", Gamma, new_atom_list_Gamma, new_exp_list_Gamma);    
+        export_function_MATLAB("Gamma", "Gamma_", Gamma, new_atom_list_Gamma, new_exp_list_Gamma);
         export_function_MATLAB("PhiInit" ,"PhiInit_" ,PhiInit, new_atom_list_PhiInit, new_exp_list_PhiInit);
         export_function_MATLAB("PhiInit_q","PhiInit_q_",PhiInit_q, new_atom_list_PhiInit_q, new_exp_list_PhiInit_q);
         export_function_MATLAB("dPhiInit_dq" ,"dPhiInit_dq_" ,dPhiInit_dq, new_atom_list_dPhiInit_dq, new_exp_list_dPhiInit_dq);
@@ -9171,13 +9182,13 @@ void System::export_Dynamic_Simulation (System &sys, int order, int maple){
         export_function_MATLAB("dPhi_dq", "dPhi_dq_", dPhi_dq, new_atom_list_dPhi_dq, new_exp_list_dPhi_dq);
         export_function_MATLAB("M", "M_", M, new_atom_list_M, new_exp_list_M);
         export_function_MATLAB("Q", "Q_", Q, new_atom_list_Q, new_exp_list_Q);
-        export_function_MATLAB("MQ", "MQ_", MQ, new_atom_list_MQ, new_exp_list_MQ);       
+        export_function_MATLAB("MQ", "MQ_", MQ, new_atom_list_MQ, new_exp_list_MQ);
         //export_function_MATLAB("MXdPhi_dqZero", "MXdPhi_dqZero_", MXdPhi_dqZero, new_atom_list_MXdPhi_dqZero, new_exp_list_MXdPhi_dqZero);
         //export_function_MATLAB("Qgamma", "Qgamma_", Qgamma, new_atom_list_Qgamma, new_exp_list_Qgamma);
         export_function_MATLAB("Output", "Output_", Output, new_atom_list_Output, new_exp_list_Output);
-        export_function_MATLAB("Energy", "Energy_", Energy, new_atom_list_Energy, new_exp_list_Energy);   
+        export_function_MATLAB("Energy", "Energy_", Energy, new_atom_list_Energy, new_exp_list_Energy);
         */
-        
+
         //  int acc, int tim, int inp, int unks
         export_environment_m();
         string s_q= "q,";
@@ -9185,13 +9196,13 @@ void System::export_Dynamic_Simulation (System &sys, int order, int maple){
         string s_ddq= "ddq,";
         if (aux_coordinates.size()>0){
           s_q = "q,qaux,";
-          s_dq = "dq,dqaux,";         
-          s_ddq = "ddq,ddqaux,";           
+          s_dq = "dq,dqaux,";
+          s_ddq = "ddq,ddqaux,";
         }
 
         export_function_MATLAB("Phi", "Phi_", Phi, new_atom_list_Phi, new_exp_list_Phi,s_q +"time,param");
         export_function_MATLAB("Beta", "Beta_", Beta, new_atom_list_Beta, new_exp_list_Beta,s_q +"time,param");
-        export_function_MATLAB("Gamma", "Gamma_", Gamma, new_atom_list_Gamma, new_exp_list_Gamma,s_q + s_dq + "time,param");    
+        export_function_MATLAB("Gamma", "Gamma_", Gamma, new_atom_list_Gamma, new_exp_list_Gamma,s_q + s_dq + "time,param");
         export_function_MATLAB("PhiInit" ,"PhiInit_" ,PhiInit, new_atom_list_PhiInit, new_exp_list_PhiInit,s_q +"time,param");
         export_function_MATLAB("PhiInit_q","PhiInit_q_",PhiInit_q, new_atom_list_PhiInit_q, new_exp_list_PhiInit_q,s_q +"time,param");
         export_function_MATLAB("dPhiInit_dq" ,"dPhiInit_dq_" ,dPhiInit_dq, new_atom_list_dPhiInit_dq, new_exp_list_dPhiInit_dq,s_q +"time,param");
@@ -9200,11 +9211,11 @@ void System::export_Dynamic_Simulation (System &sys, int order, int maple){
         export_function_MATLAB("dPhi_dq", "dPhi_dq_", dPhi_dq, new_atom_list_dPhi_dq, new_exp_list_dPhi_dq,s_q +"time,param");
         export_function_MATLAB("M", "M_", M, new_atom_list_M, new_exp_list_M,"q,time,param");
         export_function_MATLAB("Q", "Q_", Q, new_atom_list_Q, new_exp_list_Q, s_q + s_dq +"time,param,inputs");
-        export_function_MATLAB("MQ", "MQ_", MQ, new_atom_list_MQ, new_exp_list_MQ, s_q + s_dq + "time,param,inputs");       
+        export_function_MATLAB("MQ", "MQ_", MQ, new_atom_list_MQ, new_exp_list_MQ, s_q + s_dq + "time,param,inputs");
         //export_function_MATLAB2("MXdPhi_dqZero", "MXdPhi_dqZero_", MXdPhi_dqZero, new_atom_list_MXdPhi_dqZero, new_exp_list_MXdPhi_dqZero"q,time,param");
         //export_function_MATLAB2("Qgamma", "Qgamma_", Qgamma, new_atom_list_Qgamma, new_exp_list_Qgamma,"q,dq,time,param,inputs");
         export_function_MATLAB("Output", "Output_", Output, new_atom_list_Output, new_exp_list_Output,s_q + s_dq + s_ddq +"unknowns,time,param,inputs");
-        export_function_MATLAB("Energy", "Energy_", Energy, new_atom_list_Energy, new_exp_list_Energy,s_q + s_dq + s_ddq +"time,param"); 
+        export_function_MATLAB("Energy", "Energy_", Energy, new_atom_list_Energy, new_exp_list_Energy,s_q + s_dq + s_ddq +"time,param");
 
 
 
@@ -9212,14 +9223,14 @@ void System::export_Dynamic_Simulation (System &sys, int order, int maple){
         //~ ofstream atom_file;
         //~ atom_file.open( ( "atoms.txt" ) );
         //~ for ( int i = 0 ; i < atoms.size() ; i++ ){
-           //~ //cout<< atoms[i] <<" = " << atoms[i].get_expression()<<endl; 
+           //~ //cout<< atoms[i] <<" = " << atoms[i].get_expression()<<endl;
            //~ atom_file<< atoms[i] <<" = " << atoms[i].get_expression()<<endl;
         //~ }
         //~ atom_file.close();
-    }    
+    }
     else{
         cout << "Exporting without any kind of optimization" << endl;
-        
+
         export_Matrix_C	("PhiInit","_PhiInit",PhiInit,order);
         export_Matrix_C	("PhiInit_q","_PhiInit_q",PhiInit_q,order);
         export_Matrix_C	("dPhiInit_dq","_dPhiInit_dq",dPhiInit_dq,order);
@@ -9231,17 +9242,17 @@ void System::export_Dynamic_Simulation (System &sys, int order, int maple){
         export_Matrix_C	("dPhi_dq","_dPhi_dq",dPhi_dq,order);
         export_Matrix_C	("M","_M",M,order);
         export_Matrix_C	("Q","_Q",Q ,order);
-        export_Matrix_C	("MQ","_MQ",MQ ,order);        
+        export_Matrix_C	("MQ","_MQ",MQ ,order);
         //export_Matrix_C	("MXdPhi_dqZero","_MXdPhi_dqZero",MXdPhi_dqZero,order);
         //export_Matrix_C	("Qgamma","_Qgamma",Qgamma, order);
         export_Matrix_C	("Output","_Output",Output, order);
         export_Matrix_C	("Energy","_Energy",Energy, order);
-        
+
         // MATLAB exportation
         export_init_function_MATLAB();
         export_function_MATLAB("Phi", "Phi_", Phi);
         export_function_MATLAB("Beta", "Beta_", Beta);
-        export_function_MATLAB("Gamma", "Gamma_", Gamma);    
+        export_function_MATLAB("Gamma", "Gamma_", Gamma);
         export_function_MATLAB("PhiInit" ,"PhiInit_" ,PhiInit);
         export_function_MATLAB("PhiInit_q","PhiInit_q_",PhiInit_q);
         export_function_MATLAB("dPhiInit_dq" ,"dPhiInit_dq_" ,dPhiInit_dq);
@@ -9250,18 +9261,18 @@ void System::export_Dynamic_Simulation (System &sys, int order, int maple){
         export_function_MATLAB("dPhi_dq", "dPhi_dq_", dPhi_dq);
         export_function_MATLAB("M", "M_", M);
         export_function_MATLAB("Q", "Q_", Q);
-        export_function_MATLAB("MQ", "MQ_", MQ);        
+        export_function_MATLAB("MQ", "MQ_", MQ);
         //export_function_MATLAB("MXdPhi_dqZero", "MXdPhi_dqZero_", MXdPhi_dqZero);
         //export_function_MATLAB("Qgamma", "Qgamma_", Qgamma);
         export_function_MATLAB("Output", "Output_", Output);
-        export_function_MATLAB("Energy", "Energy_", Energy);  
-        
-    }    
+        export_function_MATLAB("Energy", "Energy_", Energy);
 
-       
+    }
+
+
 
 }
- 
+
 
 
 /*********************************************************************************************************
@@ -9272,6 +9283,3 @@ void System::export_Dynamic_Simulation (System &sys, int order, int maple){
 System's destructor method
 */
 System::~System ( void ) {}
-
-
-

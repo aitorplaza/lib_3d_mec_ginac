@@ -16,7 +16,7 @@
 //#include <gsl/gsl_vector.h>
 //#include <gsl/gsl_matrix.h>
 
-extern Point * Point_O; 
+extern Point * Point_O;
 extern Base * Base_xyz;
 extern Frame * Frame_abs;
 extern Solid * Ground;
@@ -54,13 +54,13 @@ class System{
         vector < Matrix * > Matrixs;
         vector < Vector3D * > Vectors;
         vector < Tensor3D * > Tensors;
-        vector < VectorE * > VectorEs;       
+        vector < VectorE * > VectorEs;
         vector < Frame * > Frames;
         vector < Point * > Points;
         vector < Solid * > Solids;
         vector < Wrench3D * > Wrenches;
         vector < Drawing3D * > Drawings;
-        
+
 
     private:
 
@@ -88,9 +88,9 @@ class System{
         //Vector3D Angular_Velocity_Tables ( Base * BaseA , Base * BaseB, map  < Base*, Vector3D > &OM_abs );
         //Matrix Rec_Rotation_Matrix (  Base * BaseA , Base * BaseB );
         //void Rec_Velocity_Vector ( Frame * FrameF , Point * PointF , Point * PointO, Vector3D & Vvel );
-        
+
         //Constructors
- 
+
         System ( void );
         System ( void  ( * func ) ( const char * ) );
 
@@ -109,6 +109,7 @@ class System{
 
         symbol_numeric * new_AuxCoordinate ( symbol_numeric * aux_coord , symbol_numeric * aux_vel , symbol_numeric * aux_accel );
         symbol_numeric * new_AuxCoordinate ( string aux_coord_name , string aux_vel_name , string aux_accel_name , numeric aux_coord_value , numeric aux_vel_value , numeric aux_accel_value );
+        symbol_numeric * new_AuxCoordinate ( string aux_coordinate_name , string aux_velocity_name , string aux_acceleration_name , string aux_coordinate_name_tex , string aux_velocity_name_tex , string aux_acceleration_name_tex , numeric aux_coordinate_value , numeric aux_velocity_value , numeric aux_acceleration_value );
 
         symbol_numeric * new_Parameter ( symbol_numeric * parameter );
         symbol_numeric * new_Parameter ( symbol_numeric * parameter , numeric parameter_value );
@@ -156,10 +157,10 @@ class System{
 
         Frame * new_Frame ( string name , Point * point , Base * base );
         Frame * new_Frame ( string name , string point_name , string base_name );
-        
+
         VectorE  * new_VectorE ( string name ) ;
 
-        
+
         Solid * new_Solid ( string name , Point * point , Base * base, symbol_numeric * new_mass , Vector3D * new_CM, Tensor3D * new_IT);
         Solid * new_Solid ( string name , string s_Point , string s_Base, string s_mass , string s_CM, string s_IT);
         Solid * new_Solid ( string name , string s_Point , string s_Base, symbol_numeric * new_mass , string s_CM, string s_IT);
@@ -169,7 +170,7 @@ class System{
         Wrench3D * new_Wrench3D ( string name , string s_F , string s_M , string s_P, string s_Sol, string type);
         Wrench3D * new_Wrench3D (string s_name, ex f1, ex f2, ex f3, string s_baseF, ex m1, ex m2, ex m3, string s_baseM, string s_P, string s_Sol, string type );
         Wrench3D * new_Wrench3D ( string name , Vector3D F , Vector3D M , Point * P, Solid * Sol1, Solid * Sol2, string type);
-        Wrench3D * new_Wrench3D ( string name , string s_F , string s_M , string s_P, string s_Sol1, string s_Sol2, string type); 
+        Wrench3D * new_Wrench3D ( string name , string s_F , string s_M , string s_P, string s_Sol1, string s_Sol2, string type);
         Wrench3D * new_Wrench3D(string s_name, ex f1, ex f2, ex f3, string s_baseF, ex m1, ex m2, ex m3, string s_baseM, string s_P, string s_Sol1, string s_Sol2, string type );
 
 
@@ -239,10 +240,10 @@ class System{
         Point * get_Point ( string point_name );
         Wrench3D * get_Wrench3D  ( string wrench_name );
         Drawing3D * get_Drawing3D  ( string drawing_name );
-        
-        
+
+
         /******************** Kinematic Operators Methods ********************/
-        
+
         Base * Reduced_Base ( string BaseA_name , string BaseB_name );
         Base * Reduced_Base ( Base * BaseA , Base * BaseB );
         Point * Reduced_Point ( string PointA_name , string PointB_name );
@@ -259,7 +260,7 @@ class System{
         Vector3D Angular_Velocity ( Base * BaseA , Base * BaseB );
         Vector3D Angular_Velocity ( string  base_frame_nameA , string  base_frame_nameB );
         Tensor3D Angular_Velocity_Tensor ( Base * BaseA , Base * BaseB );
-        
+
         Vector3D Velocity_Vector (Frame * FrameF , Point * PointB );//recursive
         Vector3D Velocity_Vector (string Frame_name , string PointA_name );
         Vector3D Velocity_Vector (Frame * FrameF , Point * PointB, Solid * Sol );
@@ -273,8 +274,8 @@ class System{
         Vector3D Acceleration_Vector (string Frame_name , string PointA_name );
         Vector3D Acceleration_Vector (Frame * FrameF , Point * PointB, Solid * SolS );
         Vector3D Acceleration_Vector (string Frame_name , string PointA_name, string Solid_name );
-        
-        
+
+
 
         void remove_Matrix ( string matrix_name );
         void remove_Vector3D ( string vector3D_name );
@@ -289,7 +290,7 @@ class System{
         Vector3D Dt ( Vector3D Vector3DA , string base_frame_name );
 
         Matrix jacobian ( Matrix MatrixA , Matrix MatrixB, ex symmetric );
-        Matrix jacobian ( Matrix MatrixA , Matrix MatrixB);       
+        Matrix jacobian ( Matrix MatrixA , Matrix MatrixB);
         Matrix jacobian ( ex , Matrix MatrixA );
         Matrix jacobian ( Matrix MatrixA , symbol symbolA );
         ex jacobian ( ex expression , symbol symbolA );
@@ -394,17 +395,17 @@ class System{
 
         void export_Matrix_C ( string , string , Matrix , lst );
         void export_Matrix_C ( string , string , Matrix , lst , lst , int );
-        void export_Matrix_C ( string , string , Matrix , int );       
+        void export_Matrix_C ( string , string , Matrix , int );
         //~ void export_Matrix_C_GSL ( string , string , Matrix , lst );
         //~ void export_Matrix_C_GSL ( string , string , Matrix , lst , int );
 
         void export_write_data_file_H ( void );
         void export_write_data_file_C ( void );
         void export_write_data_file_C ( lst expresion_list  );
-        
+
         void export_read_data_file_H ( void );
         void export_read_data_file_C ( lst expresion_list  );
-        
+
 
         void export_write_state_file_header_C ( void );
         //~ void export_write_state_file_header_C_GSL ( void );
@@ -417,8 +418,8 @@ class System{
 
         void export_write_state_file_C ( lst expresion_list  );
         //~ void export_write_state_file_C_GSL ( lst expresion_list  );
-        
-        
+
+
 
         /* Export function to matlab to simplify expressions */
         void export_init_function_MATLAB();
@@ -428,43 +429,43 @@ class System{
         void export_function_MATLAB(string function_name, string function_out, Matrix symbolic_matrix_function, lst Matrix_atom_list, lst Matrix_atom_expression_list, string s_in);
 
         void export_function_MATLAB_SYMPY(string function_name, string function_out, Matrix symbolic_matrix_function);
-        
+
         /* Export function to maple to atomize expressions */
         void export_Matrix_MAPLE ( string , vector < string >   , vector < Matrix * > , vector < string > , vector < string > , int order, int symmetric);
         void export_Matrix_MAPLE ( string , vector < string >   , vector < Matrix * > , vector < string > , vector < string > , int order);
-        
+
         void export_Matrix_MAPLE ( string , vector < Matrix * > , vector < string > , vector < string > , int order, int symmetric);
         void export_Matrix_MAPLE ( string , vector < Matrix * > , vector < string > , vector < string > , int order);
-        
+
         void export_Matrix_MAPLE ( string , vector < Matrix * > , vector < string > , int order, int symmetric);
         void export_Matrix_MAPLE ( string , vector < Matrix * > , vector < string > , int order);
-        
+
         void export_Matrix_MAPLE ( string , vector < Matrix * > , int order, int symmetric);
         void export_Matrix_MAPLE ( string , vector < Matrix * > , int order);
-        
+
         void export_Matrix_MAPLE ( string , string, Matrix, int order, int symmetric);
         void export_Matrix_MAPLE ( string , string, Matrix, int order);
-        
+
         void load_includes_defines(string, int order);
         void make_argument_standard_list ( vector < string > , string &aux);
         void make_argument_matrixes_list ( vector < string > , string &aux);
-        
-        
+
+
         /* Export defines.h*/
         void export_defines ( void );
-        
+
         /* Export Graphviz files*/
         void export_Graphviz_dot ( void );
 
         /* Export environment.m file*/
         void export_environment_m ( void );
-        
+
         /* Export config.ini file*/
         void export_config_ini ( void );
         void export_param_ini ( void );
         void export_inputs_ini ( void );
         void export_gen_coord_ini ( void );
-        void export_gen_vel_ini ( void );      
+        void export_gen_vel_ini ( void );
 
         /* Export OSG files */
         void export_solids_homogeneous_matrix_cpp ( void );
@@ -477,11 +478,11 @@ class System{
         void export_osg_state_h ( void );
 
         void export_open_scene_graph( void );
-        
+
         /* Export GNUplot files */
         void export_gnuplot( lst expresion_list );
-        
-        
+
+
         /* SYSTEM MATRIX CALCULATION and EXPORTATION */
         void Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep_init , Matrix &Dynamic_Equations, System &sys, int method, Matrix &dPhiNH);
         void Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep_init , Matrix &Dynamic_Equations, System &sys, int method);
