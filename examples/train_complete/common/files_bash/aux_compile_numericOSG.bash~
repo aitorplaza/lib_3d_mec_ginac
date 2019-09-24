@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cp ../common/files_c_h/* .
+cp ./GENERATED_files_process_c_h/* .
+cp ./GENERATED_files_osg/cpp/* .
+cp ./GENERATED_files_osg/h/* .
+./aux_compile_main.bash
+g++ -c solids_homogeneous_matrix.cpp osg_read_file.cpp osg_root.cpp osg_state.cpp joystick.cc
+g++ -D$1 -o main_numeric_osg main_numeric_osg.cc var_def.o var_init.o gen_coord_vect_def.o gen_coord_vect_init.o gen_vel_vect_def.o gen_vel_vect_init.o gen_accel_vect_def.o gen_accel_vect_init.o param_vect_def.o param_vect_init.o unknowns_vect_def.o unknowns_vect_init.o inputs_vect_def.o inputs_vect_init.o Phi.o Phi_q.o Beta.o dPhi_dq.o PhiInit.o PhiInit_q.o dPhiInit_dq.o BetaInit.o Energy.o Qgamma.o MXdPhi_dqZero.o write_state_file.o write_state_file_header.o read_config_file.o newton_raphson_min_norm.o print_mat.o Output.o solids_homogeneous_matrix.o osg_read_file.o osg_root.o osg_state.o joystick.o -lOpenThreads -losg -losgDB -losgGA -losgUtil -losgViewer -losgText -lm -lblas -llapack
+
+

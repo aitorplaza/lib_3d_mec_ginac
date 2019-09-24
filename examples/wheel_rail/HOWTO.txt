@@ -1,0 +1,65 @@
+
+Compuilar simbólico con KALKER:
+===============================
+
+si le quieres cambiar la inclinación en "main_simbolic_V50.cc" en la línea 179 cambiar la pendiente a 0.0
+symbol_numeric b_pend = *sys.new_Parameter("b_pend",0.0);
+
+Ejecutar simbólico:
+./main_symbolic_train.bash
+
+
+
+
+Compilar y ejecutar numérico con OSG:
+=====================================
+
+./compile_numeric_with_OSG_TRAIN.bash 3 1 1
+
+cd GENERATED_OSG_bin/
+./main_numeric_osg_train 0.001
+
+
+
+SIMULINK DISECRETO:
+===================
+
+$ cd SOURCE_matlab/
+
+(lanzar matlab)
+$ matlab &
+
+para compilar desde matlab en la carpeta "SOURCE_matlab":
+
+>> main_mex_train
+Elegir: 1  6  0  (EULER INDEP)
+o
+Elegir: 1  7  0  (TRAPEZOIDAL INDEP)
+
+>> environment;Delta_t=0.001
+
+lanzar el modelo: " wheelset_discrete_V5 "
+
+Ejecuratlo
+
+
+SIMULINK CONTINUO :
+===================
+
+$ cd SOURCE_matlab/
+
+(lanzar matlab)
+$ matlab &
+
+para compilar desde matlab en la carpeta "SOURCE_matlab":
+
+>> main_mex_train
+Elegir: 1  10  0  ( Simple Formalism and MATLAB integrator, solving with LIN_ALG library)
+o
+Elegir: 1  12  0  ( Independent Velocity Formalism and MATLAB integrator, solving with LIN_ALG library)
+
+>> environment;
+
+lanzar el modelo: " wheelset_continuous_V5 "
+
+Ejecuratlo

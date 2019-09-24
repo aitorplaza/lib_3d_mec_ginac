@@ -1,0 +1,4 @@
+osgviewer --window 0 0 600 400 axes.osg bogie_m.stl
+
+
+

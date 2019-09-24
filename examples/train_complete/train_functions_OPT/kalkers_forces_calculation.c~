@@ -1,0 +1,176 @@
+
+  /*
+  Calculates Kalker's forces
+  */
+  _Table_Hertz = Table_Hertz();
+  _Table_Kalker = Table_Kalker();
+  _Output = Output();
+
+
+  #define E_elastic 150  
+  #define nu_poisson 151  
+  #define G_elastic 152  
+  #define Hertz_a 153  
+  #define Hertz_b 154  
+  #define C11 155  
+  #define C22 156  
+  #define C23 157  
+  #define C33 158 
+
+//REAR BOGIE, FRONT SIDE, RIGHT WHEEL RFR
+  #define output_N_RFR 0
+  #define output_R1x_RFR 6
+  #define output_Vx_RFR 1
+
+  #define Fx_RFR 6  
+  #define Fy_RFR 7  
+  #define Mz_RFR 8
+  
+  hertz_ellipse (param, Hertz_a, E_elastic, _Output, output_R1x_RFR, output_N_RFR ,_Table_Hertz, Table_Hertz_n_rows);
+  kalker_coeffs ( _Table_Kalker ,Table_Kalker_n_rows, param, C11, Hertz_a, nu_poisson );
+  #ifndef SIMULINK 
+  kalker_forces (_Output, output_Vx_RFR ,param, C11, Hertz_a, G_elastic, inputs, Fx_RFR );
+  #else
+    //#define output_fx_L 20
+    //kalker_forces (_Output, output_Vx_RFRL ,param, C11, Hertz_a, G_elastic, _Output,  output_fx_L );
+  #endif
+
+
+//REAR BOGIE, FRONT SIDE, LEFT WHEEL RFL
+  #define output_N_RFL 10
+  #define output_R1x_RFL 16
+  #define output_Vx_RFL 11
+
+  #define Fx_RFL 9  
+  #define Fy_RFL 10  
+  #define Mz_RFL 11  
+  
+  hertz_ellipse (param, Hertz_a, E_elastic, _Output, output_R1x_RFL, output_N_RFL ,_Table_Hertz, Table_Hertz_n_rows);
+  kalker_coeffs ( _Table_Kalker ,Table_Kalker_n_rows, param, C11, Hertz_a, nu_poisson );
+  #ifndef SIMULINK 
+  kalker_forces (_Output, output_Vx_RFL ,param, C11, Hertz_a, G_elastic, inputs, Fx_RFL );
+  #else
+    //#define output_fx_L 20
+    //kalker_forces (_Output, output_Vx_RFLL ,param, C11, Hertz_a, G_elastic, _Output,  output_fx_L );
+  #endif
+
+//REAR BOGIE, REAR SIDE, RIGHT WHEEL RRR
+
+//REAR BOGIE, FRONT SIDE, LEFT WHEEL RFL
+  #define output_N_RRR 20
+  #define output_R1x_RRR 26
+  #define output_Vx_RRR 21
+
+  #define Fx_RRR 12  
+  #define Fy_RRR 13  
+  #define Mz_RRR 14  
+  
+  hertz_ellipse (param, Hertz_a, E_elastic, _Output, output_R1x_RRR, output_N_RRR ,_Table_Hertz, Table_Hertz_n_rows);
+  kalker_coeffs ( _Table_Kalker ,Table_Kalker_n_rows, param, C11, Hertz_a, nu_poisson );
+  #ifndef SIMULINK 
+  kalker_forces (_Output, output_Vx_RRR ,param, C11, Hertz_a, G_elastic, inputs, Fx_RRR );
+  #else
+    //#define output_fx_L 20
+    //kalker_forces (_Output, output_Vx_RRRL ,param, C11, Hertz_a, G_elastic, _Output,  output_fx_L );
+  #endif
+
+
+
+//REAR BOGIE, REAR SIDE, LEFT WHEEL RRL
+  #define output_N_RRL 30
+  #define output_R1x_RRL 36
+  #define output_Vx_RRL 31
+
+  #define Fx_RRL 15  
+  #define Fy_RRL 16  
+  #define Mz_RRL 17  
+  
+  hertz_ellipse (param, Hertz_a, E_elastic, _Output, output_R1x_RRL, output_N_RRL ,_Table_Hertz, Table_Hertz_n_rows);
+  kalker_coeffs ( _Table_Kalker ,Table_Kalker_n_rows, param, C11, Hertz_a, nu_poisson );
+  #ifndef SIMULINK 
+  kalker_forces (_Output, output_Vx_RRL ,param, C11, Hertz_a, G_elastic, inputs, Fx_RRL );
+  #else
+    //#define output_fx_L 20
+    //kalker_forces (_Output, output_Vx_RRLL ,param, C11, Hertz_a, G_elastic, _Output,  output_fx_L );
+  #endif
+
+
+//FRONT BOGIE, FRONT SIDE, RIGHT WHEEL FFR
+  #define output_N_FFR 40
+  #define output_R1x_FFR 46
+  #define output_Vx_FFR 41
+
+  #define Fx_FRR 18  
+  #define Fy_FRR 19  
+  #define Mz_FRR 20
+  
+  hertz_ellipse (param, Hertz_a, E_elastic, _Output, output_R1x_FFR, output_N_FFR ,_Table_Hertz, Table_Hertz_n_rows);
+  kalker_coeffs ( _Table_Kalker ,Table_Kalker_n_rows, param, C11, Hertz_a, nu_poisson );
+  #ifndef SIMULINK 
+  kalker_forces (_Output, output_Vx_FFR ,param, C11, Hertz_a, G_elastic, inputs, Fx_FFR );
+  #else
+    //#define output_fx_L 20
+    //kalker_forces (_Output, output_Vx_FFRL ,param, C11, Hertz_a, G_elastic, _Output,  output_fx_L );
+  #endif
+
+//FRONT BOGIE, FRONT SIDE, LEFT WHEEL FFL
+  #define output_N_FFL 50
+  #define output_R1x_FFL 56
+  #define output_Vx_FFL 51
+
+  #define Fx_FRL 21  
+  #define Fy_FRL 22  
+  #define Mz_FRL 23 
+  
+  hertz_ellipse (param, Hertz_a, E_elastic, _Output, output_R1x_FFL, output_N_FFL ,_Table_Hertz, Table_Hertz_n_rows);
+  kalker_coeffs ( _Table_Kalker ,Table_Kalker_n_rows, param, C11, Hertz_a, nu_poisson );
+  #ifndef SIMULINK 
+  kalker_forces (_Output, output_Vx_FFL ,param, C11, Hertz_a, G_elastic, inputs, Fx_FFL );
+  #else
+    //#define output_fx_L 20
+    //kalker_forces (_Output, output_Vx_FFLL ,param, C11, Hertz_a, G_elastic, _Output,  output_fx_L );
+  #endif
+
+
+//FRONT BOGIE, REAR SIDE, RIGHT WHEEL FRR
+  #define output_N_FRR 60
+  #define output_R1x_FRR 66
+  #define output_Vx_FRR 61
+
+  #define Fx_FFR 24  
+  #define Fy_FFR 25  
+  #define Mz_FFR 26   
+  
+  hertz_ellipse (param, Hertz_a, E_elastic, _Output, output_R1x_FRR, output_N_FRR ,_Table_Hertz, Table_Hertz_n_rows);
+  kalker_coeffs ( _Table_Kalker ,Table_Kalker_n_rows, param, C11, Hertz_a, nu_poisson );
+  #ifndef SIMULINK 
+  kalker_forces (_Output, output_Vx_FRR ,param, C11, Hertz_a, G_elastic, inputs, Fx_FRR );
+  #else
+    //#define output_fx_L 20
+    //kalker_forces (_Output, output_Vx_FRRL ,param, C11, Hertz_a, G_elastic, _Output,  output_fx_L );
+  #endif
+
+
+//FRONT BOGIE, REAR SIDE, LEFT WHEEL FRL
+  #define output_N_FRL 70
+  #define output_R1x_FRL 76
+  #define output_Vx_FRL 71
+
+  #define Fx_FFL 27  
+  #define Fy_FFL 28  
+  #define Mz_FFL 29  
+  
+  hertz_ellipse (param, Hertz_a, E_elastic, _Output, output_R1x_FRL, output_N_FRL ,_Table_Hertz, Table_Hertz_n_rows);
+  kalker_coeffs ( _Table_Kalker ,Table_Kalker_n_rows, param, C11, Hertz_a, nu_poisson );
+  #ifndef SIMULINK 
+  kalker_forces (_Output, output_Vx_FRL ,param, C11, Hertz_a, G_elastic, inputs, Fx_FRL );
+  #else
+    //#define output_fx_L 20
+    //kalker_forces (_Output, output_Vx_FRLL ,param, C11, Hertz_a, G_elastic, _Output,  output_fx_L );
+  #endif
+
+
+
+
+
+

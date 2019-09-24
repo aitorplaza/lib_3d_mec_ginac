@@ -1,0 +1,275 @@
+#!/bin/bash
+###################################################################################################
+OPTION=$1
+if [ -z $1 ] ; then 
+echo " "
+echo "COMPILATION OPTIONS"
+echo " "
+echo "LAPACK library:"
+echo " 1: Lapack library and EULER integrator"
+echo " 2: Lapack library and TRAPEZOIDAL integrator"
+echo "------------------------------------------------------------------------------------"
+echo " "
+echo "LIN_ALG library:"
+echo " 3: Q EULER with Qgamma and MXdPhi_dqZero matrices with INVERSE"
+echo " 4: Q EULER with Qgamma and MXdPhi_dqZero matrices with Cholesky decomposition"
+echo " 5: Q EULER with Q and M matrices with INVERSE"
+echo " 6: Q EULER with Q and M matrices with Cholesky decomposition"
+echo " "
+echo " 7: Q TRAPEZOIDAL with Qgamma and MXdPhi_dqZero matrices with INVERSE"
+echo " 8: Q TRAPEZOIDAL with Qgamma and MXdPhi_dqZero matrices with Cholesky decomposition"
+echo " 9: Q TRAPEZOIDAL with Q and M matrices with INVERSE"
+echo "10: Q TRAPEZOIDAL with Q and M matrices with Cholesky decomposition"
+echo " "
+echo "11: Q index-3 augmented Lagrangian DDL with INVERSE"
+echo "12: Q index-3 augmented Lagrangian DDL with LU decomposition"
+echo " "
+echo "13: Z EULER with INVERSE"
+echo "14: Z EULER LU Row Pivoting decomposition"
+echo "15: Z TRAPEZOIDAL with INVERSE"
+echo "16: Z TRAPEZOIDAL LU Row Pivoting decomposition"
+echo "17: Z EULER LU Full Pivoting decomposition"
+echo " "
+echo "18: Z TRAPEZOIDAL LU with Q and M and coordinate partitioning"
+echo "19: Z Z EULER LU with Q and M and coordinate partitioning"
+echo "------------------------------------------------------------------------------------"
+echo -n "Choose one of the options:  "
+read OPTION
+if [ -z $OPTION ] ; then exit; fi
+fi
+###################################################################################################
+cp ./GENERATED_files_process_c_h/* .
+
+cp ./common_train/files_c_h/osg/* .
+cp ./common_train/files_c_h/lapack/* .
+cp ./common_train/files_c_h/lin_alg/* .
+cp ./common_train/files_c_h/common_c/* .
+
+cp ./GENERATED_files_osg/cpp/* .
+cp ./GENERATED_files_osg/h/* .
+
+
+cp ./train_functions/* .
+###################################################################################################
+## PROYECCION ##
+Q=-DCOORD_DEP
+Z=-DCOORD_IND
+###################################################################################################
+ 
+COMMON="time.c gen_coord.c gen_vel.c gen_accel.c param.c unknowns.c inputs.c Output.c Phi.c Beta.c Gamma.c write_data_file.c step.c"
+COMMON_o="time.o gen_coord.o gen_vel.o gen_accel.o param.o unknowns.o inputs.o Output.o Phi.o Beta.o Gamma.o write_data_file.o step.o"
+
+COORD_Q="PhiInit.c PhiInit_q.c dPhiInit_dq.c BetaInit.c Phi_q.c dPhi_dq.c"
+COORD_Q_o="PhiInit.o PhiInit_q.o dPhiInit_dq.o BetaInit.o Phi_q.o dPhi_dq.o"
+
+DYN_DDL="Qgamma.c MXdPhi_dqZero.c"
+DYN_DDL_o="Qgamma.o MXdPhi_dqZero.o"
+
+DYN_DDQ="M.c Q.c"
+DYN_DDQ_o="M.o Q.o"
+
+COORD_Z="PhiInit.c PhiInit_q.c dPhiInit_dq.c BetaInit.c Phi_q.c dPhi_dq.c Phi_z.c Phi_d.c Mzz.c Mzd.c Mdd.c Qz.c Qd.c"
+COORD_Z_o="PhiInit.o PhiInit_q.o dPhiInit_dq.o BetaInit.o Phi_q.o dPhi_dq.o Phi_z.o Phi_d.o Mzz.o Mzd.o Mdd.o Qz.o Qd.o"
+
+L_A="lin_alg.c Initial_position_velocity.c"
+L_A_o="lin_alg.o Initial_position_velocity.o"
+
+LA_Q=""
+LA_Q_o=""
+
+LA_Z=""
+LA_Z_o=""
+
+I3AL_Q="Q_q.c Q_dq.c M.c Q.c"
+I3AL_Q_o="Q_q.o Q_dq.o M.o Q.o"
+
+I3AL_Z="Qz_z.c Qz_dz.c"
+I3AL_Z_o="Qz_z.o Qz_dz.o"
+
+OSG="solids_homogeneous_matrix.cpp osg_read_file.cpp osg_root.cpp osg_state.cpp"
+OSG_o="solids_homogeneous_matrix.o osg_read_file.o osg_root.o osg_state.o"
+
+
+TRAIN="mu_div_mod_vel.c get_spline_coefs.c breaks_rail.c breaks_wheelL.c breaks_wheelR.c coefs_rail.c coefs_wheelL.c coefs_wheelR.c Initial_position_velocity_with_splines.c hertz_ellipse.c Table_Hertz.c Table_Kalker.c kalker_coeffs.c kalker_forces.c"
+TRAIN_o="mu_div_mod_vel.o get_spline_coefs.o breaks_rail.o breaks_wheelL.o breaks_wheelR.o coefs_rail.o coefs_wheelL.o coefs_wheelR.o Initial_position_velocity_with_splines.o hertz_ellipse.o Table_Hertz.o Table_Kalker.o kalker_coeffs.o kalker_forces.o"
+
+###################################################################################################
+MAIN=main_numeric_osg_train
+echo "";
+############
+## LAPACK ##
+###################################################################################################
+
+if [ "$OPTION" == 1 ];  then
+echo "Compiling OpenSceneGraph model with Lapack and EULER integrator";
+gcc -DCOORD_DEP -DDDL -O2 -c read_config_file.c newton_raphson_min_norm.c $COMMON $COORD_Q $DYN_DDL
+g++ -c $OSG
+g++ -DCOORD_DEP -DDDL -DEULER -DLAPACK -o $MAIN $MAIN.cc $COMMON_o $COORD_Q_o $OSG_o $DYN_DDL_o read_config_file.o newton_raphson_min_norm.o -lOpenThreads -losg -losgDB -losgGA -losgUtil -losgViewer -losgText -lm -lblas -llapack
+fi
+
+if [ "$OPTION" == 2 ];  then
+echo "Compiling OpenSceneGraph model with Lapack and TRAPEZOIDAL integrator";
+gcc -DCOORD_DEP -DDDL -O2 -c read_config_file.c newton_raphson_min_norm.c $COMMON $COORD_Q $DYN_DDL
+g++ -c $OSG
+g++ -DCOORD_DEP -DDDL -DTRAPEZOIDAL -DLAPACK -o $MAIN $MAIN.cc $COMMON_o $COORD_Q_o $OSG_o $DYN_DDL_o read_config_file.o newton_raphson_min_norm.o -lOpenThreads -losg -losgDB -losgGA -losgUtil -losgViewer -losgText -lm -lblas -llapack
+fi
+
+#############
+## LIN_ALG ##
+#####################################################################################################################################################
+NEWTON_RAPHSON_TOLERANCE=1.0e-8
+NR_TOL=-DNEWTON_RAPHSON_TOLERANCE=$NEWTON_RAPHSON_TOLERANCE
+TRAPEZOIDAL_TOLERANCE=1.0e-8
+TR_TOL=-DTRAPEZOIDAL_TOLERANCE=$TRAPEZOIDAL_TOLERANCE
+INVERSE_TOLERANCE=1.0e-12
+INV_TOL=-DINV_TOL=$INVERSE_TOLERANCE
+TOL=" $NR_TOL $TR_TOL $INV_TOL "
+
+ALFA=1.0e+12
+
+
+if [ "$OPTION" == 3 ];  then 
+echo "Q EULER with Qgamma and MXdPhi_dqZero matrices with INVERSE";
+gcc -DEULER -DCOORD_DEP -DROBUST_SOLVER -DDDL -DINV $TOL -O2 -c read_config_file.c $COMMON $COORD_Q $L_A $LA_Q $DYN_DDL $TRAIN one_step_euler_q.c
+g++ -c $OSG
+gcc  -DEULER -DCOORD_DEP -DROBUST_SOLVER -DDDL -DINV $TOL -DLIN_ALG -O2 -o $MAIN $MAIN.cc $COMMON_o $COORD_Q_o $DYN_DDL_o $L_A_o $LA_Q_o $OSG_o $TRAIN_o read_config_file.c one_step_euler_q.o -lOpenThreads -losg -losgDB -losgGA -losgUtil -losgViewer -losgText -lm -lblas -llapack
+fi
+if [ "$OPTION" == 4 ];  then 
+echo "Q EULER with Qgamma and MXdPhi_dqZero matrices with Cholesky decomposition";
+gcc -DEULER -DCOORD_DEP -DDDL -DTRI $TOL -O2 -c read_config_file.c $COMMON $COORD_Q $L_A $LA_Q $DYN_DDL one_step_euler_q.c
+g++ -c $OSG
+gcc  -DEULER -DCOORD_DEP -DDDL -DTRI $TOL -DLIN_ALG -O2 -o $MAIN $MAIN.cc $COMMON_o $COORD_Q_o $DYN_DDL_o $L_A_o $LA_Q_o $OSG_o read_config_file.c one_step_euler_q.o -lOpenThreads -losg -losgDB -losgGA -losgUtil -losgViewer -losgText -lm -lblas -llapack
+fi
+if [ "$OPTION" == 5 ];  then 
+echo "Q EULER with Q and M matrices with INVERSE";
+gcc -DEULER -DCOORD_DEP -DDDQ  -DINV $TOL -O2 -c read_config_file.c $COMMON $COORD_Q $L_A $LA_Q $DYN_DDQ one_step_euler_q.c
+g++ -c $OSG
+gcc  -DEULER -DCOORD_DEP -DDDQ -DINV $TOL -DLIN_ALG -O2 -o $MAIN $MAIN.cc $COMMON_o $COORD_Q_o $DYN_DDQ_o $L_A_o $LA_Q_o $OSG_o read_config_file.c one_step_euler_q.o -lOpenThreads -losg -losgDB -losgGA -losgUtil -losgViewer -losgText -lm -lblas -llapack
+fi
+if [ "$OPTION" == 6 ];  then 
+echo "Q EULER with Q and M matrices with Cholesky decomposition";
+gcc -DEULER -DCOORD_DEP -DDDQ -DTRI $TOL -O2 -c read_config_file.c $COMMON $COORD_Q $L_A $LA_Q $DYN_DDQ one_step_euler_q.c
+g++ -c $OSG
+gcc  -DEULER -DCOORD_DEP -DDDQ -DTRI $TOL -DLIN_ALG -O2 -o $MAIN $MAIN.cc $COMMON_o $COORD_Q_o $DYN_DDQ_o $L_A_o $LA_Q_o $OSG_o read_config_file.c one_step_euler_q.o -lOpenThreads -losg -losgDB -losgGA -losgUtil -losgViewer -losgText -lm -lblas -llapack
+fi
+#####################################################################################################################################################
+if [ "$OPTION" == 7 ];  then 
+echo "Q TRAPEZOIDAL with Qgamma and MXdPhi_dqZero matrices with INVERSE";
+gcc -DTRAPEZOIDAL -DCOORD_DEP -DDDL -DINV $TOL -O2 -c read_config_file.c $COMMON $COORD_Q $L_A $LA_Q $DYN_DDL $TRAIN one_step_trapezoidal_q_train.c
+g++ -c $OSG
+gcc  -DTRAPEZOIDAL -DCOORD_DEP -DDDL -DINV $TOL -DLIN_ALG -O2  -o $MAIN $MAIN.cc $COMMON_o $COORD_Q_o $DYN_DDL_o $L_A_o $LA_Q_o $OSG_o $TRAIN_o read_config_file.c one_step_trapezoidal_q_train.o -lOpenThreads -losg -losgDB -losgGA -losgUtil -losgViewer -losgText -lm -lblas -llapack
+fi
+if [ "$OPTION" == 8 ];  then 
+echo "Q TRAPEZOIDAL with Qgamma and MXdPhi_dqZero matrices with Cholesky decomposition";
+gcc -DTRAPEZOIDAL -DCOORD_DEP -DDDL -DTRI $TOL -O2 -c read_config_file.c $COMMON $COORD_Q $L_A $LA_Q $DYN_DDL one_step_trapezoidal_q.c
+g++ -c $OSG
+gcc  -DTRAPEZOIDAL -DCOORD_DEP -DDDL -DTRI $TOL -DLIN_ALG -O2 -o $MAIN $MAIN.cc $COMMON_o $COORD_Q_o $DYN_DDL_o $L_A_o $LA_Q_o $OSG_o read_config_file.c one_step_trapezoidal_q.o -lOpenThreads -losg -losgDB -losgGA -losgUtil -losgViewer -losgText -lm -lblas -llapack
+fi
+if [ "$OPTION" == 9 ];  then 
+echo "Q TRAPEZOIDAL with Q and M matrices with INVERSE";
+gcc -DTRAPEZOIDAL -DCOORD_DEP -DDDQ -DINV $TOL -O2 -c read_config_file.c $COMMON $COORD_Q $L_A $LA_Q $DYN_DDQ one_step_trapezoidal_q.c
+g++ -c $OSG
+gcc  -DTRAPEZOIDAL -DCOORD_DEP -DDDQ -DINV $TOL -DLIN_ALG -O2 -o $MAIN $MAIN.cc $COMMON_o $COORD_Q_o $DYN_DDQ_o $L_A_o $LA_Q_o $OSG_o read_config_file.c one_step_trapezoidal_q.o -lOpenThreads -losg -losgDB -losgGA -losgUtil -losgViewer -losgText -lm -lblas -llapack
+fi
+if [ "$OPTION" == 10 ];  then 
+echo "Q TRAPEZOIDAL with Q and M matrices with Cholesky decomposition";
+gcc -DTRAPEZOIDAL -DCOORD_DEP -DDDQ -DTRI $TOL -O2 -c read_config_file.c $COMMON $COORD_Q $L_A $LA_Q $DYN_DDQ one_step_trapezoidal_q.c
+g++ -c $OSG
+gcc  -DTRAPEZOIDAL -DCOORD_DEP -DDDQ -DTRI $TOL -DLIN_ALG -O2 -o $MAIN $MAIN.cc $COMMON_o $COORD_Q_o $DYN_DDQ_o $L_A_o $LA_Q_o $OSG_o read_config_file.c one_step_trapezoidal_q.o -lOpenThreads -losg -losgDB -losgGA -losgUtil -losgViewer -losgText -lm -lblas -llapack
+fi
+#####################################################################################################################################################
+if [ "$OPTION" == 11 ];  then 
+echo "Q index-3 augmented Lagrangian with Q and M matrices with INVERSE";
+gcc  -DI3AL -DCOORD_DEP -DINV $TOL -DALFA -O2 -c read_config_file.c $COMMON $COORD_Q $L_A $LA_Q $I3AL_Q one_step_i3al_q.c
+g++ -c $OSG
+gcc  -DI3AL -DCOORD_DEP -DINV $TOL -DALFA -DLIN_ALG -O2 -o $MAIN $MAIN.cc $COMMON_o $COORD_Q_o $L_A_o $LA_Q_o $I3AL_Q_o $OSG_o read_config_file.c one_step_i3al_q.o  -lOpenThreads -losg -losgDB -losgGA -losgUtil -losgViewer -losgText -lm -lblas -llapack
+fi
+if [ "$OPTION" == 12 ];  then 
+echo "Q index-3 augmented Lagrangian with Q and M matrices with LU";
+gcc  -DI3AL -DCOORD_DEP -DTRI $TOL -DALFA -O2 -c read_config_file.c $COMMON $COORD_Q $L_A $LA_Q $I3AL_Q one_step_i3al_q.c
+g++ -c $OSG
+gcc  -DI3AL -DCOORD_DEP -DTRI $TOL -DALFA -DLIN_ALG -O2 -o $MAIN $MAIN.cc $COMMON_o $COORD_Q_o $L_A_o $LA_Q_o $I3AL_Q_o $OSG_o read_config_file.c one_step_i3al_q.o  -lOpenThreads -losg -losgDB -losgGA -losgUtil -losgViewer -losgText -lm -lblas -llapack
+fi
+#####################################################################################################################################################
+if [ "$OPTION" == 13 ];  then 
+echo "Z EULER with INVERSE";
+gcc -DEULER -DCOORD_IND -DINV $TOL -O2 -c read_config_file.c $COMMON $COORD_Z $L_A $LA_Z one_step_euler_z.c
+g++ -c $OSG
+gcc -DEULER -DCOORD_IND -DINV $TOL -DLIN_ALG -O2 -o $MAIN $MAIN.cc $COMMON_o $COORD_Z_o $L_A_o $LA_Z_o $OSG_o read_config_file.c one_step_euler_z.o -lOpenThreads -losg -losgDB -losgGA -losgUtil -losgViewer -losgText -lm -lblas -llapack
+fi
+if [ "$OPTION" == 14 ];  then 
+echo "Z EULER with LU Row Pivoting decomposition";
+gcc -DEULER -DCOORD_IND -DTRI -DROWPIV $TOL -O2 -c read_config_file.c $COMMON $COORD_Z $L_A $LA_Z one_step_euler_z.c
+g++ -c $OSG
+gcc -DEULER -DCOORD_IND -DTRI -DROWPIV $TOL -DLIN_ALG -O2 -o $MAIN $MAIN.cc $COMMON_o $COORD_Z_o $L_A_o $LA_Z_o $OSG_o read_config_file.c one_step_euler_z.o -lOpenThreads -losg -losgDB -losgGA -losgUtil -losgViewer -losgText -lm -lblas -llapack
+fi
+#####################################################################################################################################################
+if [ "$OPTION" == 15 ];  then 
+echo "Z TRAPEZOIDAL with INVERSE";
+gcc -DTRAPEZOIDAL -DCOORD_IND -DINV $TOL -O2 -c read_config_file.c $COMMON $COORD_Z $L_A $LA_Z one_step_trapezoidal_z.c
+g++ -c $OSG
+gcc -DTRAPEZOIDAL -DCOORD_IND -DINV $TOL -DLIN_ALG -O2 -o $MAIN $MAIN.cc $COMMON_o $COORD_Z_o $L_A_o $LA_Z_o $OSG_o read_config_file.c one_step_trapezoidal_z.o -lOpenThreads -losg -losgDB -losgGA -losgUtil -losgViewer -losgText -lm -lblas -llapack
+fi
+if [ "$OPTION" == 16 ];  then 
+echo "Z TRAPEZOIDAL with LU Row Pivoting decomposition";
+gcc -DTRAPEZOIDAL -DCOORD_IND -DTRI -DROWPIV $TOL -O2 -c read_config_file.c $COMMON $COORD_Z $L_A $LA_Z one_step_trapezoidal_z.c
+g++ -c $OSG
+gcc -DTRAPEZOIDAL -DCOORD_IND -DTRI -DROWPIV $TOL -DLIN_ALG -O2 -o $MAIN $MAIN.cc $COMMON_o $COORD_Z_o $L_A_o $LA_Z_o $OSG_o read_config_file.c one_step_trapezoidal_z.o -lOpenThreads -losg -losgDB -losgGA -losgUtil -losgViewer -losgText -lm -lblas -llapack
+fi
+#####################################################################################################################################################
+if [ "$OPTION" == 17 ];  then 
+echo "Z EULER LU Full Pivoting decomposition";
+gcc -DEULER -DCOORD_IND -DTRI -DFULLPIV $TOL -O2 -c read_config_file.c $COMMON $COORD_Z $L_A $LA_Z one_step_euler_z.c
+g++ -c $OSG
+gcc -DEULER -DCOORD_IND -DTRI -DFULLPIV $TOL -DLIN_ALG -O2 -o $MAIN $MAIN.cc $COMMON_o $COORD_Z_o $L_A_o $LA_Z_o $OSG_o read_config_file.c one_step_euler_z.o -lOpenThreads -losg -losgDB -losgGA -losgUtil -losgViewer -losgText -lm -lblas -llapack
+fi
+if [ "$OPTION" == 18 ];  then 
+echo "Z TRAPEZOIDAL LU Full Pivoting decomposition";
+gcc -DTRAPEZOIDAL -DCOORD_IND -DTRI -DFULLPIV $TOL -O2 -c read_config_file.c $COMMON $COORD_Z_mod2 $L_A $LA_Z $TRAIN one_step_trapezoidal_z.c
+g++ -c $OSG
+gcc -DTRAPEZOIDAL -DCOORD_IND -DTRI -DFULLPIV $TOL -DLIN_ALG -O2 -o $MAIN $MAIN.cc $COMMON_o $COORD_Z_mod2_o $L_A_o $LA_Z_o $OSG_o $TRAIN_o read_config_file.c one_step_trapezoidal_z.o -lOpenThreads -losg -losgDB -losgGA -losgUtil -losgViewer -losgText -lm -lblas -llapack
+fi
+#####################################################################################################################################################
+
+#####################################################################################################################################################
+if [ "$OPTION" == 19 ];  then 
+echo "Z EULER with LU Test Full Pivoting decomposition";
+gcc -DEULER -DCOORD_IND -DTRI -DFULLPIV $TOL -O2 -c read_config_file.c $COMMON $COORD_Z_mod2 $L_A $LA_Z one_step_euler_z.c
+g++ -c $OSG
+gcc -DEULER -DCOORD_IND -DTRI -DFULLPIV $TOL -DLIN_ALG  -O2 -o $MAIN $MAIN.cc $COMMON_o $COORD_Z_mod2_o $L_A_o $LA_Z_o $OSG_o read_config_file.c one_step_euler_z.o -lOpenThreads -losg -losgDB -losgGA -losgUtil -losgViewer -losgText -lm -lblas -llapack
+fi
+#####################################################################################################################################################
+
+# Clean and erase
+rm -f mu_div_mod_vel.*
+rm -f Includes_train.c
+rm -f get_spline_coefs.*
+rm -f breaks_rail.*
+rm -f breaks_wheelL.*
+rm -f breaks_wheelR.*
+rm -f coefs_rail.*
+rm -f coefs_wheelL.*
+rm -f coefs_wheelR.*
+rm -f Initial_position_velocity_with_splines.*
+rm -f main_numeric_osg_train.*
+rm -f direct_dynamics_lin_alg_train.c
+rm -f hertz_ellipse.*
+rm -f Table_Hertz.*
+rm -f Table_Kalker.*
+rm -f kalker_forces_calculation.c
+rm -f kalker_coeffs.*
+rm -f kalker_forces.*
+rm -f one_step_trapezoidal_q_train.*
+rm -f Integration_Trapezoidal_train.*
+
+
+./common_train/files_bash/aux_clear_common.bash
+./common_train/files_bash/aux_move.bash
+
+###################################################################################################
+# Organize
+cp ./solids/*.* ./GENERATED_OSG_bin/solids/
+cp ./common_train/files_osg/axes.osg ./GENERATED_OSG_bin
+cp ./common_train/files_osg/point.osg ./GENERATED_OSG_bin
+cp ./common_train/files_osg/vector.osg ./GENERATED_OSG_bin
+mv $MAIN ./GENERATED_OSG_bin

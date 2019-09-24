@@ -1,0 +1,137 @@
+/* ********************************************************************************************* */
+/*
+/* This program integrates the multibody problem with different integrators 
+/* Aitor Plaza & Roberto Yoldi
+/* 
+/* ********************************************************************************************* */
+#include "Includes_variables_parameters.h"
+#include "Includes_functions.h"
+#include "Includes_Init_functions.h"
+#include "defines.h"
+/* ********************************************************************************************* */
+/* ********************************************************************************************* */
+
+/* ********************************************************************************************* */
+/* If LIN_ALG library is used                                                                    */
+/* ********************************************************************************************* */
+#ifdef LIN_ALG
+  #include "one_step.h"
+  #include "lin_alg.h"
+  #include "Declare_Variables.h"
+  #include "timestamp.c"
+#endif
+
+/* ********************************************************************************************* */
+/* If LAPACK library is used                                                                     */
+/* ********************************************************************************************* */
+#ifdef LAPACK
+  #if !defined(_WIN32)
+    #define daxpy daxpy_
+    #define dnrm2 dnrm2_
+  #endif
+  #if defined(__MINGW32__)
+    #define dgelsd dgelsd_
+    #define dgemv dgemv_
+    #define daxpy daxpy_
+    #define dnrm2 dnrm2_
+  #endif
+
+  #include "newton_raphson_min_norm.h"
+  extern double dnrm2(int *n,double *x,int *incx);
+#endif
+
+/* ********************************************************************************************* */
+//#include "Energy.h"
+
+
+extern double dnrm2(int *n,double *x,int *incx);
+
+int main (int argc, char *argv[]) {
+
+#include "arguments.c"
+
+#include "Init_variables_parameters.c"
+#include "Init_functions.c"
+
+/* ********************************************************************************************* */
+/* Integration with LAPACK library                                                               */
+/* ********************************************************************************************* */
+
+#ifdef LAPACK
+  #ifdef EULER
+    #include "direct_dynamics_lagrange_with_multipliers_and_qr_proyection_euler_improved_init.c"
+  #endif
+  #ifdef TRAPEZOIDAL
+    #include "direct_dynamics_lagrange_with_multipliers_trapezoidal_init.c"
+  #endif
+#endif
+/* ********************************************************************************************* */
+
+/* ********************************************************************************************* */
+/* Integration with LIN_ALG library                                                              */
+/* ********************************************************************************************* */
+#ifdef LIN_ALG
+  #include "direct_dynamics_lin_alg.c"
+#endif
+
+#ifdef TIME_ON
+  start = timestamp();
+#endif
+#ifndef TIME_ON
+  FILE * data_file = fopen(output_file_name, "w");
+  write_data_file_header(data_file);
+  write_data_file(data_file);
+#endif
+/* ********************************************************************************************* */
+/* integration */	/* Solving for t > 0 */
+for (k=1; k<=steps; k++){
+
+#ifdef COORD_DEP
+	#ifdef EULER
+		one_step_euler_q(delta_t,q,dq);
+	#endif
+	#ifdef TRAPEZOIDAL
+		one_step_trapezoidal_q(delta_t,q,dq);
+	#endif
+	#ifdef I3AL
+		one_step_i3al_q(delta_t,q,dq);
+	#endif
+#endif
+
+#ifdef COORD_IND
+	#ifdef EULER
+		one_step_euler_z(delta_t,q,dq);
+	#endif
+	#ifdef TRAPEZOIDAL
+		one_step_trapezoidal_z(delta_t,q,dq);
+	#endif
+	#ifdef I3AL
+		one_step_i3al_z(delta_t,q,dq);
+	#endif
+#endif
+
+#ifndef TIME_ON
+  t=t+delta_t;
+  write_data_file(data_file);
+#endif
+
+}
+/* ********************************************************************************************* */
+#ifdef TIME_ON
+  end = timestamp();
+  printf("%s calculation time: %.9f secs\n",output_file_name,(end - start) / ((double) n_iterations));
+#endif
+#ifndef TIME_ON
+  fclose(data_file);
+  printf("The created file name is: %s\n",output_file_name);
+#endif
+/* ********************************************************************************************* */
+/* ********************************************************************************************* */
+#include "Done_variables_parameters.c"
+#include "Done_functions.c"
+
+
+
+    return 0;
+}
+

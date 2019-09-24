@@ -1,0 +1,7 @@
+MODEL=train_discrete_firction_noOSG
+NUMST=2
+NCSTATES=0
+HAVESTDIO
+UNIX
+INTEGER_CODE=0
+MT=0

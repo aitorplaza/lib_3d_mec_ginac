@@ -1,0 +1,164 @@
+
+
+
+
+#define thetaW_RFR 
+#define uW_RFR 
+#define uR_RFR 
+#define xR_RFR 
+#define thetaW_RFL 
+#define uW_RFL 
+#define uR_RFL 
+#define xR_RFL 
+#define thetaW_RRR 
+#define uW_RRR 
+#define uR_RRR 
+#define xR_RRR 
+#define thetaW_RRL 
+#define uW_RRL 
+#define uR_RRL 
+#define xR_RRL 
+#define thetaW_FFR 
+#define uW_FFR 
+#define uR_FFR 
+#define xR_FFR 
+#define thetaW_FFL 
+#define uW_FFL 
+#define uR_FFL 
+#define xR_FFL 
+#define thetaW_FRR 
+#define uW_FRR 
+#define uR_FRR 
+#define xR_FRR 
+#define thetaW_FRL 
+#define uW_FRL 
+#define uR_FRL 
+#define xR_FRL 
+
+
+#define aW_RFR
+#define bW_RFR
+#define cW_RFR 8.9361341199999996e-03
+#define dW_RFR -5.0000000000000000e-01
+#define lW_RFR 1.0000000000000000e-02
+#define aR_RFR 6.6403345669996000e+01
+#define bR_RFR -1.9988167283500000e+00
+#define cR_RFR 
+#define dR_RFR 1.5900000000000000e-01
+#define lR_RFR 5.0000000000000001e-03
+#define aW_RFL -5.9809409171410003e+01
+#define bW_RFL -2.3792495869999999e-02
+#define cW_RFL -8.9361341199999996e-03
+#define dW_RFL -5.0000000000000000e-01
+#define lW_RFL 1.0000000000000000e-02
+#define aR_RFL 6.6403345669996000e+01
+#define bR_RFL -1.9988167283500000e+00
+#define cR_RFL 
+#define dR_RFL 1.5900000000000000e-01
+#define lR_RFL 5.0000000000000001e-03
+#define aW_RRR 6.4567908346180005e+01
+#define bW_RRR -2.3792495869999999e-02
+#define cW_RRR 8.9361341199999996e-03
+#define dW_RRR -5.0000000000000000e-01
+#define lW_RRR 1.0000000000000000e-02
+#define aR_RRR 6.6403345669996000e+01
+#define bR_RRR -1.9988167283500000e+00
+#define cR_RRR 
+#define dR_RRR 1.5900000000000000e-01
+#define lR_RRR 5.0000000000000001e-03
+#define aW_RRL -5.9809409171410003e+01
+#define bW_RRL -2.3792495869999999e-02
+#define cW_RRL -8.9361341199999996e-03
+#define dW_RRL -5.0000000000000000e-01
+#define lW_RRL 1.0000000000000000e-02
+#define aR_RRL 6.6403345669996000e+01
+#define bR_RRL -1.9988167283500000e+00
+#define cR_RRL 
+#define dR_RRL 1.5900000000000000e-01
+#define lR_RRL 5.0000000000000001e-03
+#define aW_FFR 6.4567908346180005e+01
+#define bW_FFR -2.3792495869999999e-02
+#define cW_FFR 8.9361341199999996e-03
+#define dW_FFR -5.0000000000000000e-01
+#define lW_FFR 1.0000000000000000e-02
+#define aR_FFR 6.6403345669996000e+01
+#define bR_FFR -1.9988167283500000e+00
+#define cR_FFR 
+#define dR_FFR 1.5900000000000000e-01
+#define lR_FFR 5.0000000000000001e-03
+#define aW_FFL -5.9809409171410003e+01
+#define bW_FFL -2.3792495869999999e-02
+#define cW_FFL -8.9361341199999996e-03
+#define dW_FFL -5.0000000000000000e-01
+#define lW_FFL 1.0000000000000000e-02
+#define aR_FFL 6.6403345669996000e+01
+#define bR_FFL -1.9988167283500000e+00
+#define cR_FFL 
+#define dR_FFL 1.5900000000000000e-01
+#define lR_FFL 5.0000000000000001e-03
+#define aW_FRR 6.4567908346180005e+01
+#define bW_FRR -2.3792495869999999e-02
+#define cW_FRR 8.9361341199999996e-03
+#define dW_FRR -5.0000000000000000e-01
+#define lW_FRR 1.0000000000000000e-02
+#define aR_FRR 6.6403345669996000e+01
+#define bR_FRR -1.9988167283500000e+00
+#define cR_FRR 
+#define dR_FRR 1.5900000000000000e-01
+#define lR_FRR 5.0000000000000001e-03
+#define aW_FRL -5.9809409171410003e+01
+#define bW_FRL -2.3792495869999999e-02
+#define cW_FRL -8.9361341199999996e-03
+#define dW_FRL -5.0000000000000000e-01
+#define FlWRL 1.0000000000000000e-02
+#define aR_FRL 6.6403345669996000e+01
+#define bR_FRL -1.9988167283500000e+00
+#define cR_FRL 
+#define dR_FRL 1.5900000000000000e-01
+#define lR_FRL 5.0000000000000001e-03
+
+
+
+_coefs_rail = coefs_rail();
+_breaks_rail = breaks_rail();
+_coefs_wheelL = coefs_wheelL();
+_breaks_wheelL = breaks_wheelL();
+_coefs_wheelR = coefs_wheelR();
+_breaks_wheelR = breaks_wheelR();
+
+
+// REAR BOGIE, FRONT SIDE, RIGHT WHEEL RFR
+get_spline_coefs (param, aW_RFR, _coefs_wheelR, _breaks_wheelR, uW_RFR, breaks_wheelR_n_cols, coefs_wheelR_n_rows);
+get_spline_coefs (param, aR_RFR, _coefs_rail  , _breaks_rail  , uR_RFR, breaks_rail_n_cols, coefs_rail_n_rows);
+
+//REAR BOGIE, FRONT SIDE, LEFT WHEEL RFL
+get_spline_coefs (param, aW_RFL, _coefs_wheelL, _breaks_wheelL, uW_RFL, breaks_wheelL_n_cols, coefs_wheelL_n_rows);
+get_spline_coefs (param, aR_RFL, _coefs_rail  , _breaks_rail  , uR_RFL, breaks_rail_n_cols, coefs_rail_n_rows);
+
+//REAR BOGIE, REAR SIDE, RIGHT WHEEL RRR
+get_spline_coefs (param, aW_RRR, _coefs_wheelR, _breaks_wheelR, uW_RRR, breaks_wheelR_n_cols, coefs_wheelR_n_rows);
+get_spline_coefs (param, aR_RRR, _coefs_rail  , _breaks_rail  , uR_RRR, breaks_rail_n_cols, coefs_rail_n_rows);
+
+//REAR BOGIE, REAR SIDE, LEFT WHEEL RRL
+get_spline_coefs (param, aW_RRL, _coefs_wheelL, _breaks_wheelL, uW_RRL, breaks_wheelL_n_cols, coefs_wheelL_n_rows);
+get_spline_coefs (param, aR_RRL, _coefs_rail  , _breaks_rail  , uR_RRL, breaks_rail_n_cols, coefs_rail_n_rows);
+
+// FRONT BOGIE, FRONT SIDE, RIGHT WHEEL FFR
+get_spline_coefs (param, aW_FFR, _coefs_wheelR, _breaks_wheelR, uW_FFR, breaks_wheelR_n_cols, coefs_wheelR_n_rows);
+get_spline_coefs (param, aR_FFR, _coefs_rail  , _breaks_rail  , uR_FFR, breaks_rail_n_cols, coefs_rail_n_rows);
+
+// FRONT BOGIE, FRONT SIDE, LEFT WHEEL FFL
+get_spline_coefs (param, aW_FFL, _coefs_wheelL, _breaks_wheelL, uW_FFL, breaks_wheelL_n_cols, coefs_wheelL_n_rows);
+get_spline_coefs (param, aR_FFL, _coefs_rail  , _breaks_rail  , uR_FFL, breaks_rail_n_cols, coefs_rail_n_rows);
+
+// FRONT BOGIE, REAR SIDE, RIGHT WHEEL FRR
+get_spline_coefs (param, aW_FRR, _coefs_wheelR, _breaks_wheelR, uW_FRR, breaks_wheelR_n_cols, coefs_wheelR_n_rows);
+get_spline_coefs (param, aR_FRR, _coefs_rail  , _breaks_rail  , uR_FRR, breaks_rail_n_cols, coefs_rail_n_rows);
+
+// FRONT BOGIE, REAR SIDE, LEFT WHEEL FRL
+get_spline_coefs (param, aW_FRL, _coefs_wheelL, _breaks_wheelL, uW_FRL, breaks_wheelL_n_cols, coefs_wheelL_n_rows);
+get_spline_coefs (param, aR_FRL, _coefs_rail  , _breaks_rail  , uR_FRL, breaks_rail_n_cols, coefs_rail_n_rows);
+
+
+
+

@@ -1,0 +1,7 @@
+MODEL=trainCOMPLETE_discrete_firction_motors
+NUMST=3
+NCSTATES=0
+HAVESTDIO
+UNIX
+INTEGER_CODE=0
+MT=1

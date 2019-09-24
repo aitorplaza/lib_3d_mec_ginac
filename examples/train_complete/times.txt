@@ -1,0 +1,431 @@
+
+ +11.87000000
+  +0.00000000
+  +0.00000000
+  +0.00000000
+  +0.00000000
+  +0.00000000
+  +0.00000000
+  +0.00000000
+  +0.00000000
+  +0.00000000
+  +0.00000000
+  +0.00000000
+  +0.00000000
+  +0.00000000
+  +0.00000000
+  +0.00000000
+  +23.73000000
+  +0.00000000
+  +0.00000000
+  +23.73000000
+  +0.00000000
+  +0.00000000
+  +23.73000000
+  +0.00000000
+  +0.00000000
+  +23.73000000
+  +0.00000000
+  +0.00000000
+  +0.00000000
+  +0.00000000
+  
+
+ +76550.02927686
+  +76666.61243837
+  +14526.57590796
+  +14553.29720736
+  +38284.75914680
+  +38347.45871977
+  +38317.05666123
+  +38379.80577573
+  
+
+Integration  TOTAL=  349
+M Delta dPhic_dq Gammac=  74
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  51
+Splines  =  2
+Integration =  0
+Kalker=  64
+Dynamics=  115
+Projection=  40
+*********************************************************************************************
+Integration  TOTAL=  305
+M Delta dPhic_dq Gammac=  93
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  1
+Integration =  0
+Kalker=  35
+Dynamics=  103
+Projection=  38
+*********************************************************************************************
+Integration  TOTAL=  270
+M Delta dPhic_dq Gammac=  56
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  2
+Integration =  0
+Kalker=  35
+Dynamics=  107
+Projection=  37
+*********************************************************************************************
+Integration  TOTAL=  285
+M Delta dPhic_dq Gammac=  65
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  1
+Integration =  0
+Kalker=  33
+Dynamics=  115
+Projection=  38
+*********************************************************************************************
+Integration  TOTAL=  264
+M Delta dPhic_dq Gammac=  56
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  1
+Integration =  0
+Kalker=  32
+Dynamics=  104
+Projection=  37
+*********************************************************************************************
+Integration  TOTAL=  265
+M Delta dPhic_dq Gammac=  56
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  1
+Integration =  0
+Kalker=  32
+Dynamics=  105
+Projection=  38
+*********************************************************************************************
+Integration  TOTAL=  267
+M Delta dPhic_dq Gammac=  55
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  29
+Splines  =  1
+Integration =  0
+Kalker=  30
+Dynamics=  108
+Projection=  38
+*********************************************************************************************
+Integration  TOTAL=  273
+M Delta dPhic_dq Gammac=  61
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  1
+Integration =  0
+Kalker=  31
+Dynamics=  108
+Projection=  37
+*********************************************************************************************
+Integration  TOTAL=  263
+M Delta dPhic_dq Gammac=  55
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  1
+Integration =  0
+Kalker=  32
+Dynamics=  105
+Projection=  37
+*********************************************************************************************
+Integration  TOTAL=  267
+M Delta dPhic_dq Gammac=  56
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  2
+Integration =  0
+Kalker=  32
+Dynamics=  107
+Projection=  37
+*********************************************************************************************
+Integration  TOTAL=  266
+M Delta dPhic_dq Gammac=  56
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  29
+Splines  =  1
+Integration =  0
+Kalker=  32
+Dynamics=  107
+Projection=  38
+*********************************************************************************************
+Integration  TOTAL=  272
+M Delta dPhic_dq Gammac=  62
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  1
+Integration =  0
+Kalker=  31
+Dynamics=  107
+Projection=  38
+*********************************************************************************************
+Integration  TOTAL=  265
+M Delta dPhic_dq Gammac=  55
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  2
+Integration =  0
+Kalker=  32
+Dynamics=  106
+Projection=  38
+*********************************************************************************************
+Integration  TOTAL=  269
+M Delta dPhic_dq Gammac=  58
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  29
+Splines  =  1
+Integration =  0
+Kalker=  33
+Dynamics=  107
+Projection=  38
+*********************************************************************************************
+Integration  TOTAL=  271
+M Delta dPhic_dq Gammac=  54
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  33
+Splines  =  1
+Integration =  0
+Kalker=  32
+Dynamics=  108
+Projection=  39
+*********************************************************************************************
+Integration  TOTAL=  287
+M Delta dPhic_dq Gammac=  66
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  1
+Integration =  0
+Kalker=  32
+Dynamics=  117
+Projection=  37
+*********************************************************************************************
+Integration  TOTAL=  266
+M Delta dPhic_dq Gammac=  57
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  2
+Integration =  0
+Kalker=  31
+Dynamics=  105
+Projection=  37
+*********************************************************************************************
+Integration  TOTAL=  268
+M Delta dPhic_dq Gammac=  55
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  33
+Splines  =  1
+Integration =  0
+Kalker=  32
+Dynamics=  105
+Projection=  38
+*********************************************************************************************
+Integration  TOTAL=  269
+M Delta dPhic_dq Gammac=  57
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  1
+Integration =  0
+Kalker=  33
+Dynamics=  106
+Projection=  38
+*********************************************************************************************
+Integration  TOTAL=  269
+M Delta dPhic_dq Gammac=  57
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  1
+Integration =  0
+Kalker=  33
+Dynamics=  106
+Projection=  37
+*********************************************************************************************
+Integration  TOTAL=  265
+M Delta dPhic_dq Gammac=  56
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  1
+Integration =  0
+Kalker=  31
+Dynamics=  106
+Projection=  38
+*********************************************************************************************
+Integration  TOTAL=  266
+M Delta dPhic_dq Gammac=  55
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  1
+Integration =  0
+Kalker=  32
+Dynamics=  107
+Projection=  37
+*********************************************************************************************
+Integration  TOTAL=  268
+M Delta dPhic_dq Gammac=  55
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  1
+Integration =  0
+Kalker=  31
+Dynamics=  109
+Projection=  38
+*********************************************************************************************
+Integration  TOTAL=  267
+M Delta dPhic_dq Gammac=  57
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  1
+Integration =  0
+Kalker=  32
+Dynamics=  107
+Projection=  37
+*********************************************************************************************
+Integration  TOTAL=  265
+M Delta dPhic_dq Gammac=  55
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  1
+Integration =  0
+Kalker=  32
+Dynamics=  106
+Projection=  38
+*********************************************************************************************
+Integration  TOTAL=  263
+M Delta dPhic_dq Gammac=  56
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  1
+Integration =  0
+Kalker=  31
+Dynamics=  105
+Projection=  37
+*********************************************************************************************
+Integration  TOTAL=  315
+M Delta dPhic_dq Gammac=  55
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  59
+Splines  =  1
+Integration =  0
+Kalker=  32
+Dynamics=  107
+Projection=  56
+*********************************************************************************************
+Integration  TOTAL=  368
+M Delta dPhic_dq Gammac=  85
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  40
+Splines  =  1
+Integration =  0
+Kalker=  48
+Dynamics=  152
+Projection=  38
+*********************************************************************************************
+Integration  TOTAL=  280
+M Delta dPhic_dq Gammac=  70
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  29
+Splines  =  1
+Integration =  0
+Kalker=  35
+Dynamics=  103
+Projection=  38
+*********************************************************************************************
+Integration  TOTAL=  296
+M Delta dPhic_dq Gammac=  56
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  53
+Splines  =  1
+Integration =  0
+Kalker=  31
+Dynamics=  105
+Projection=  45
+*********************************************************************************************
+Integration  TOTAL=  268
+M Delta dPhic_dq Gammac=  59
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  1
+Integration =  0
+Kalker=  32
+Dynamics=  105
+Projection=  37
+*********************************************************************************************
+Integration  TOTAL=  262
+M Delta dPhic_dq Gammac=  55
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  1
+Integration =  0
+Kalker=  32
+Dynamics=  103
+Projection=  38
+*********************************************************************************************
+Integration  TOTAL=  263
+M Delta dPhic_dq Gammac=  55
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  2
+Integration =  0
+Kalker=  31
+Dynamics=  104
+Projection=  37
+*********************************************************************************************
+Integration  TOTAL=  291
+M Delta dPhic_dq Gammac=  56
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  34
+Splines  =  1
+Integration =  0
+Kalker=  32
+Dynamics=  107
+Projection=  39
+*********************************************************************************************
+Integration  TOTAL=  272
+M Delta dPhic_dq Gammac=  57
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  33
+Splines  =  1
+Integration =  0
+Kalker=  33
+Dynamics=  107
+Projection=  38
+*********************************************************************************************
+Integration  TOTAL=  266
+M Delta dPhic_dq Gammac=  55
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  1
+Integration =  0
+Kalker=  33
+Dynamics=  106
+Projection=  37
+*********************************************************************************************
+Integration  TOTAL=  266
+M Delta dPhic_dq Gammac=  56
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  1
+Integration =  0
+Kalker=  32
+Dynamics=  106
+Projection=  37
+*********************************************************************************************
+Integration  TOTAL=  268
+M Delta dPhic_dq Gammac=  56
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  31
+Splines  =  1
+Integration =  0
+Kalker=  32
+Dynamics=  107
+Projection=  37
+*********************************************************************************************
+Integration  TOTAL=  266
+M Delta dPhic_dq Gammac=  57
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  1
+Integration =  0
+Kalker=  31
+Dynamics=  106
+Projection=  38
+*********************************************************************************************
+Integration  TOTAL=  279
+M Delta dPhic_dq Gammac=  56
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  2
+Integration =  0
+Kalker=  31
+Dynamics=  106
+Projection=  49
+*********************************************************************************************
+Integration  TOTAL=  273
+M Delta dPhic_dq Gammac=  64
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  2
+Integration =  0
+Kalker=  32
+Dynamics=  105
+Projection=  37
+*********************************************************************************************
+Integration  TOTAL=  268
+M Delta dPhic_dq Gammac=  56
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  31
+Splines  =  1
+Integration =  0
+Kalker=  30
+Dynamics=  108
+Projection=  37
+*********************************************************************************************
+Integration  TOTAL=  265
+M Delta dPhic_dq Gammac=  56
+dPhit_ds() Phit() dPhic_dq() Phic() Betac() =  30
+Splines  =  1
+Integration =  0
+Kalker=  32
+Dynamics=  105
+Projection=  38
+*********************************************************************************************
+Integration  TOTA

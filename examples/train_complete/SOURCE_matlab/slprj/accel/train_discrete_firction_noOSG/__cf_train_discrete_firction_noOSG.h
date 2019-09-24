@@ -1,0 +1,3 @@
+#ifndef CF_train_discrete_firction_noOSG_H__
+#define CF_train_discrete_firction_noOSG_H__
+#endif

@@ -1,0 +1,9 @@
+
+
+guárdate el mker.m por ahí, proque desaparece, por los hitorias de roberto
+
+
+luego ejecuta ./main_symbolic.bash > ker_ele.txt
+
+
+si lo quiere ejecutar otra vez, copiate el mker.m

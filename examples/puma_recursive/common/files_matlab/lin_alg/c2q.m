@@ -1,0 +1,93 @@
+%function c2q(criterio,q,c1,vcri);
+function c2q(criterio,c1,vcri);
+
+% Create the file name
+%  s0='TRAJ_NLCONS3_';	% old boundary conditions, maximum iteration number = 200
+%  s0='TRAJ_NLCONS4_';	% new boundary conditions, maximum iteration number = 200
+%  s0='TRAJ_NLCONS5_';	% new boundary conditions, maximum iteration number = inf
+s0='TRAJ_NLCONS6_';	% new boundary conditions, maximum iteration number = inf, matrix equilibration for ncond calculation
+
+
+if criterio==1	s1='ML';	end
+if criterio==2	s1='COND';	end
+if criterio==3	s1='DETMAX';	end
+if criterio==4	s1='TR';	end
+
+
+s2='_ml';
+if vcri(1)<0
+	if floor(-vcri(1))<10
+		s3='_m00';
+	elseif floor(-vcri(1))<100
+		s3='_m0';
+	else
+		s3='_m';
+	end
+else
+	if floor(vcri(1))<10
+		s3='_00';
+	elseif floor(vcri(1))<100
+		s3='_0';
+	else
+		s3='_';
+	end
+end
+
+%  s4=num2str(floor(-vcri(1)));
+s4=num2str(floor(abs(vcri(1))));
+
+s5='_cond';
+if floor(vcri(2))<100
+	s6='_00';
+elseif floor(vcri(2))<1000
+	s6='_0';
+else
+	s6='_';
+end
+s7=num2str(floor(vcri(2)));
+
+s8='_detmax';
+if floor(-vcri(3))<100
+	s9='_00';
+elseif floor(-vcri(3))<1000
+	s9='_0';
+else
+	s9='_';
+end
+%  s10=num2str(floor(-vcri(3)));
+s10=num2str(floor(abs(vcri(3))));
+
+s11='_tr';
+if floor(vcri(4))<100
+	s12='_00';
+elseif floor(vcri(4))<1000
+	s12='_0';
+else
+	s12='_';
+end
+s13=num2str(floor(vcri(4)));
+
+s14q='_Q';
+s14f='_F';
+s15='.txt';
+
+%!mkdir trajectories
+disp('Escribiendo los ficheros:');
+%  [s0 s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14q s15]
+[s0 s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14f s15]
+
+%file1=fopen([s0 s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14q s15], 'w');
+file2=fopen([s0 s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14f s15], 'w');
+%for i=1:length(q(:,1))
+%	fprintf(file1, '%20.16f %20.16f %20.16f \n', q(i,:));
+%end
+for i=1:length(c1)
+	fprintf(file2,'%20.16f \n',c1(i));
+%  	fprintf(file2,'%20.16f \n',0.0);
+end
+%fclose(file1);
+fclose(file2);
+
+
+
+

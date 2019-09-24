@@ -1,0 +1,51 @@
+function write_trajectory_parameters;
+
+
+%  for one harmonic
+%  s=['FS001','FSa11','FSb11','FS002','FSa12','FSb12','FS003','FSa13','FSb13','FS004','FSa14','FSb14','FS005','FSa15','FSb15','FS006','FSa16','FSb16'];
+
+%  for two harmonics
+s=['FS001','FSa11','FSb11','FSa21','FSb21','FS002','FSa12','FSb12','FSa22','FSb22','FS003','FSa13','FSb13','FSa23','FSb23','FS004','FSa14','FSb14','FSa24','FSb24','FS005','FSa15','FSb15','FSa25','FSb25','FS006','FSa16','FSb16','FSa26','FSb26'];
+
+
+%  sname='TRAJ_NLCONS4_COND_ml_m364_cond_1271_detmax_0352_tr_1419889_F';
+%  sname='TRAJ_NLCONS4_COND_ml_m371_cond_1045_detmax_0358_tr_2310882_F';
+%  sname='TRAJ_NLCONS4_COND_ml_m383_cond_1107_detmax_0371_tr_1725857_F';
+%  sname='TRAJ_NLCONS4_COND_ml_m398_cond_1315_detmax_0385_tr_2388319_F';
+%  sname='TRAJ_NLCONS4_COND_ml_m401_cond_1095_detmax_0389_tr_2543124_F';
+%  sname='TRAJ_NLCONS4_COND_ml_m403_cond_1168_detmax_0390_tr_2829950_F';
+%  sname='TRAJ_NLCONS4_COND_ml_m406_cond_1251_detmax_0393_tr_2773903_F';
+%  sname='TRAJ_NLCONS4_COND_ml_m407_cond_1283_detmax_0395_tr_3200387_F';
+%  sname='TRAJ_NLCONS4_COND_ml_m410_cond_1175_detmax_0397_tr_2743472_F';
+%  sname='TRAJ_NLCONS4_COND_ml_m413_cond_0920_detmax_0400_tr_3328254_F';
+%  sname='TRAJ_NLCONS4_COND_ml_m408_cond_1050_detmax_0395_tr_2918091_F';
+%  sname='TRAJ_NLCONS4_COND_ml_m410_cond_1033_detmax_0397_tr_2881775_F';
+
+sname='TRAJ_NLCONS6_COND_ml_m514_cond_0192_detmax_0496_tr_280196961_F';
+
+
+eval(['load ../',sname,'.txt;']);
+eval(['c=',sname,';']);
+
+fprintf(['// Values of the parameters for the optimized trajectory: ',sname,'\n']);
+for i=1:length(s)/5
+	fprintf('\tsymbol_numeric ');
+	fprintf(s(5*(i-1)+1:5*i));
+	fprintf(' = *sys.new_Parameter("');
+	fprintf(s(5*(i-1)+1:5*i));
+	fprintf('",');
+	fprintf('%3.10f',c(i+1));
+	fprintf(');\n');
+end
+
+fprintf('\n\n\n');
+
+	
+fprintf(['// 3D_MEC Values of the parameters for the optimized trajectory: ',sname,'\n']);
+for i=1:length(s)/5
+	fprintf(s(5*(i-1)+1:5*i));
+	fprintf(':=');
+	fprintf('%3.10f',c(i+1));
+	fprintf('\n');
+end
+

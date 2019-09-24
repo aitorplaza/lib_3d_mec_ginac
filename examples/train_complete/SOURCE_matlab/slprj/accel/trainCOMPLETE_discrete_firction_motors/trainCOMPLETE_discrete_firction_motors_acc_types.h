@@ -1,0 +1,7 @@
+#include "__cf_trainCOMPLETE_discrete_firction_motors.h"
+#ifndef RTW_HEADER_trainCOMPLETE_discrete_firction_motors_acc_types_h_
+#define RTW_HEADER_trainCOMPLETE_discrete_firction_motors_acc_types_h_
+#include "rtwtypes.h"
+typedef struct Parameters_trainCOMPLETE_discrete_firction_motors_
+Parameters_trainCOMPLETE_discrete_firction_motors ;
+#endif

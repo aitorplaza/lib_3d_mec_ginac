@@ -1,0 +1,108 @@
+#include <stdio.h>
+#include <math.h>
+
+
+
+#define Q11 T_kalker[index_ab + index_nu * T_kalker_rows ]
+#define Q12 T_kalker[(index_ab + 1) + index_nu * T_kalker_rows ]
+#define Q21 T_kalker[index_ab + (index_nu + 1 ) * T_kalker_rows ]
+#define Q22 T_kalker[(index_ab + 1) + (index_nu + 1) * T_kalker_rows ]
+
+
+void kalker_coeffs ( double * T_kalker, int T_kalker_rows, double * param, int pos_c11, int pos_a, int pos_nu ){
+
+    int index_ab, index_nu;
+    
+    double a = param[pos_a];
+    double b = param[pos_a+1];
+    double nu = param[pos_nu];   
+    
+    double y1, y2, x1, x2, x, y;
+
+printf("a1\n");
+
+    if ( (0.1 <= a/b) && (a/b < 1.0) ){
+      index_ab = (int) floor( (a / b) / 0.1 ) - 1;
+ 	  y1 = (index_ab + 1) * 0.10;
+      y2 = (index_ab + 2) * 0.10; 
+      y  = a / b;
+      x = nu;
+    }
+    if ( (0.1 <= b/a) && (b/a <=1.0) ){
+	  index_ab = 18 - (int) floor( (b / a) / 0.1 );
+	  y1 = 0.9 - (index_ab - 10) * 0.10;
+      y2 = 0.9 - (index_ab - 10) * 0.10 - 0.1;
+      y  = b / a;
+      x = nu;
+	}
+    if ( b/a < 0.1 ){
+	  index_ab = 0;
+ 	  y1 = (index_ab + 1) * 0.10;
+      y2 = (index_ab + 2) * 0.10; 
+      y  = 0.1;
+      x = nu;
+	}
+    index_nu = (int) floor( nu / 0.25 );
+    x1 = (index_nu + 0) * 0.25;
+    x2 = (index_nu + 1) * 0.25;
+  
+printf("a2\n");
+    /* Bilinear Interpolation Equation => http://www.ajdesigner.com/phpinterpolation/bilinear_interpolation_equation.php */
+    
+    param [pos_c11 ] = ((x2-x)*(y2-y))/((x2-x1)*(y2-y1))*Q11 +
+                       ((x-x1)*(y2-y))/((x2-x1)*(y2-y1))*Q21 + 
+                       ((x2-x)*(y-y1))/((x2-x1)*(y2-y1))*Q12 + 
+                       ((x-x1)*(y-y1))/((x2-x1)*(y2-y1))*Q22 ;
+
+/*    printf ("====== 1 =======\n");
+    printf ("         %f %f\n",x1,x2);
+    printf ("%f %f %f\n",y1,Q11,Q21);
+    printf ("%f %f %f\n",y2,Q12,Q22);
+    printf ("param [pos_c11 +0 ] = %f\n",param [pos_c11 + 0 ] );*/
+  
+printf("a3\n");
+
+    index_nu = index_nu + 3;
+    param [pos_c11 +1 ] = ((x2-x)*(y2-y))/((x2-x1)*(y2-y1))*Q11 +
+                          ((x-x1)*(y2-y))/((x2-x1)*(y2-y1))*Q21 + 
+                          ((x2-x)*(y-y1))/((x2-x1)*(y2-y1))*Q12 + 
+                          ((x-x1)*(y-y1))/((x2-x1)*(y2-y1))*Q22 ;
+                          
+/*    printf ("====== 2 =======\n");
+    printf ("         %f %f\n",x1,x2);
+    printf ("%f %f %f\n",y1,Q11,Q21);
+    printf ("%f %f %f\n",y2,Q12,Q22);
+    printf ("param [pos_c11 +1 ] = %f\n",param [pos_c11 + 1 ] );*/
+                        
+    index_nu = index_nu + 3;
+    param [pos_c11  +2 ] = ((x2-x)*(y2-y))/((x2-x1)*(y2-y1))*Q11 +
+                           ((x-x1)*(y2-y))/((x2-x1)*(y2-y1))*Q21 + 
+                           ((x2-x)*(y-y1))/((x2-x1)*(y2-y1))*Q12 + 
+                           ((x-x1)*(y-y1))/((x2-x1)*(y2-y1))*Q22 ;
+                           
+/*    printf ("====== 3 =======\n");
+    printf ("         %f %f\n",x1,x2);
+    printf ("%f %f %f\n",y1,Q11,Q21);
+    printf ("%f %f %f\n",y2,Q12,Q22);
+    printf ("param [pos_c11 +2 ] = %f\n",param [pos_c11 + 2 ] );*/
+                       
+    index_nu = index_nu + 3;
+    param [pos_c11 + 3 ] = ((x2-x)*(y2-y))/((x2-x1)*(y2-y1))*Q11 +
+                           ((x-x1)*(y2-y))/((x2-x1)*(y2-y1))*Q21 + 
+                           ((x2-x)*(y-y1))/((x2-x1)*(y2-y1))*Q12 + 
+                           ((x-x1)*(y-y1))/((x2-x1)*(y2-y1))*Q22 ;
+
+ /*   printf ("====== 4 =======\n");
+    printf ("         %f %f\n",x1,x2);
+    printf ("%f %f %f\n",y1,Q11,Q21);
+    printf ("%f %f %f\n",y2,Q12,Q22);
+    printf ("param [pos_c11 +3 ] = %f\n",param [pos_c11 + 3 ] );*/
+
+
+//~ printf ("param [pos_c11 + 0 ] = %f\n",param [pos_c11 + 0 ] );
+//~ printf ("param [pos_c11 + 1 ] = %f\n",param [pos_c11 + 1 ] );
+//~ printf ("param [pos_c11 + 2 ] = %f\n",param [pos_c11 + 2 ] );
+//~ printf ("param [pos_c11 + 3 ] = %f\n",param [pos_c11 + 3 ] );
+
+
+}

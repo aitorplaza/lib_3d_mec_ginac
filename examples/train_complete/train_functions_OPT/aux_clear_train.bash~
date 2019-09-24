@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# delete files comming from train functions
+rm -f Output.*
+rm -f mu_div_mod_vel.*
+rm -f get_spline_coefs.*
+rm -f breaks_rail.*
+rm -f breaks_wheelL.*
+rm -f breaks_wheelR.*
+rm -f coefs_rail.*
+rm -f coefs_wheelL.*
+rm -f coefs_wheelR.*
+rm -f Initial_position_velocity_with_splines.*
+rm -f hertz_ellipse.* 
+rm -f Table_Hertz.*
+rm -f kalker_coeffs.* 
+rm -f Table_Kalker.*
+rm -f kalker_forces.*   
+rm -f one_step_trapezoidal_q_train.*
+
+rm -f *.*~
+
+

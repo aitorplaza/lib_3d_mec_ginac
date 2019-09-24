@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# compile objects
+
+# files from common
+gcc -O2 -c ./common/files_c_h/gen_coord_vect_def.c
+gcc -O2 -c ./common/files_c_h/gen_vel_vect_def.c
+gcc -O2 -c ./common/files_c_h/gen_accel_vect_def.c
+gcc -O2 -c ./common/files_c_h/param_vect_def.c
+gcc -O2 -c ./common/files_c_h/unknowns_vect_def.c
+gcc -O2 -c ./common/files_c_h/inputs_vect_def.c
+gcc -O2 -c ./common/files_c_h/newton_raphson_min_norm.c
+gcc -O2 -c ./common/files_c_h/print_mat.c
+gcc -O2 -c ./common/files_c_h/main_numeric.c
+gcc -O2 -c ./common/files_c_h/atom_def.c
+gcc -O2 -c ./common/files_c_h/step.c
+gcc -O2 -c ./common/files_c_h/lin_alg.c
+gcc -O2 -c ./common/files_c_h/read_config_file.c
+
+# files from project
+gcc -O2 -c var_def.c
+gcc -O2 -c var_init.c
+gcc -O2 -c gen_coord_vect_init.c
+gcc -O2 -c gen_vel_vect_init.c
+gcc -O2 -c gen_accel_vect_init.c
+gcc -O2 -c param_vect_init.c
+gcc -O2 -c unknowns_vect_init.c
+gcc -O2 -c inputs_vect_init.c
+gcc -O2 -c Phi.c
+gcc -O2 -c Phi_q.c
+gcc -O2 -c Beta.c
+gcc -O2 -c Gamma.c
+gcc -O2 -c dPhi_dq.c
+gcc -O2 -c PhiInit.c
+gcc -O2 -c PhiInit_q.c
+gcc -O2 -c dPhiInit_dq.c
+gcc -O2 -c BetaInit.c
+gcc -O2 -c write_state_file.c
+gcc -O2 -c write_state_file_header.c
+gcc -O2 -c Qgamma.c
+gcc -O2 -c MXdPhi_dqZero.c
+gcc -O2 -c Output.c
+gcc -O2 -c Energy.c
+
+

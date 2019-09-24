@@ -1,0 +1,30 @@
+#!/bin/bash
+
+cp state_zd_rt_woh.dat state.dat
+
+if [ -f coordinates.gnuplot ]
+then gnuplot coordinates.gnuplot
+mv coordinates.eps GENERATED_files_graphics/coordinates_rt.eps
+mv coordinates.gnuplot GENERATED_files_graphics/
+fi
+
+if [ -f velocities.gnuplot ]
+then gnuplot velocities.gnuplot
+mv velocities.eps GENERATED_files_graphics/velocities_rt.eps
+mv velocities.gnuplot GENERATED_files_graphics/
+fi
+
+if [ -f accelerations.gnuplot ]
+then gnuplot accelerations.gnuplot
+mv accelerations.eps GENERATED_files_graphics/accelerations_rt.eps
+mv accelerations.gnuplot GENERATED_files_graphics/
+fi
+
+if [ -f joint_unknowns.gnuplot ]
+then gnuplot joint_unknowns.gnuplot
+mv joint_unknowns.eps GENERATED_files_graphics/joint_unknowns_rt.eps
+mv joint_unknowns.gnuplot GENERATED_files_graphics/
+fi
+
+rm state.dat
+

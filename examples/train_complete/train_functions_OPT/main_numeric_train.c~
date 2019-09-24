@@ -1,0 +1,128 @@
+/* ********************************************************************************************* */
+/*
+/* This program integrates the multibody problem with different integrators 
+/* Aitor Plaza & Roberto Yoldi
+/* 
+/* ********************************************************************************************* */
+#include "defines.h"
+#include "Includes_variables_parameters.h"
+#include "Includes_functions.h"
+#include "Includes_Init_functions.h"
+//#include "one_step.h"
+/* ********************************************************************************************* */
+/* ********************************************************************************************* */
+
+/* ********************************************************************************************* */
+/* If LIN_ALG library is used                                                                    */
+/* ********************************************************************************************* */
+#ifdef LIN_ALG
+  #include "lin_alg.h"
+  #include "Declare_Variables.h"
+  #ifdef TIME_ON
+    #include "timestamp.c"
+  #endif
+
+  extern void Initial_position_velocity_with_splines (double * q, double *dq);
+ 
+
+  #ifdef EULER
+    extern void one_step_euler (double delta_t, double * q, double *dq);
+  #endif
+  #ifdef TRAPEZOIDAL
+    extern void one_step_trapezoidal (double delta_t, double * q, double *dq);
+  #endif
+#endif
+
+/* ********************************************************************************************* */
+/* If LAPACK library is used                                                                     */
+/* ********************************************************************************************* */
+#ifdef LAPACK
+  #if !defined(_WIN32)
+    #define daxpy daxpy_
+    #define dnrm2 dnrm2_
+  #endif
+  #if defined(__MINGW32__)
+    #define dgelsd dgelsd_
+    #define dgemv dgemv_
+    #define daxpy daxpy_
+    #define dnrm2 dnrm2_
+  #endif
+        
+#ifdef MATLAB_MEX_FILE
+    #define printf mexPrintf
+#endif 
+        
+  #include "newton_raphson_min_norm.h"
+  extern double dnrm2(int *n,double *x,int *incx);
+#endif
+
+
+//*********************************************************************************
+//includes needed in train model
+  #include "Output.h"
+  #include "mu_div_mod_vel.h"
+  #include "get_spline_coefs.h"
+  #include "breaks_rail.h"
+  #include "breaks_wheelL.h"
+  #include "breaks_wheelR.h"
+  #include "coefs_rail.h"
+  #include "coefs_wheelL.h"
+  #include "coefs_wheelR.h"
+  #include "Initial_position_velocity_with_splines.h"
+  #include "hertz_ellipse.h" 
+  #include "Table_Hertz.h"
+  #include "kalker_coeffs.h" 
+  #include "Table_Kalker.h"
+  #include "kalker_forces.h"   
+  #include "one_step_trapezoidal_q_train.h"
+
+
+/* ********************************************************************************************* */
+/*#include "Energy.h"*/
+
+int main (int argc, char *argv[]) {
+
+#include "arguments.c"
+
+#include "Init_variables_parameters.c"
+#include "Init_functions.c"
+
+
+//*********************************************************************************
+
+
+/* ********************************************************************************************* */
+/* Integration with LAPACK library                                                               */
+/* ********************************************************************************************* */
+
+#ifdef LAPACK
+  #ifdef EULER
+    #include "direct_dynamics_lagrange_with_multipliers_and_qr_proyection_euler_improved_init.c"
+  #endif
+  #ifdef TRAPEZOIDAL
+    #include "direct_dynamics_lagrange_with_multipliers_trapezoidal_init.c"
+  #endif
+#endif
+
+/* ********************************************************************************************* */
+/* Integration with LIN_ALG library                                                              */
+/* ********************************************************************************************* */
+#ifdef LIN_ALG
+  #include "direct_dynamics_lin_alg_train.c"
+#endif
+
+/* ********************************************************************************************* */
+#ifdef TIME_ON
+  printf("%s One step calculation time: %.9f secs\n",output_file_name,(end - start) / ((double) n_iterations));
+#endif
+#ifndef TIME_ON
+  printf("The created file name is: %s\n",output_file_name);
+#endif
+/* ********************************************************************************************* */
+/* ********************************************************************************************* */
+#include "Done_variables_parameters.c"
+#include "Done_functions.c"
+
+    return 0;
+}
+

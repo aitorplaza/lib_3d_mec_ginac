@@ -1,0 +1,5 @@
+2000-08-16  Javier Ros  <jros@unavarra.es>
+
+	* Bug in Rotation Matrix computation fixed.
+	* Some complilation warnigns with the new g++ 4.3 series are removed
+

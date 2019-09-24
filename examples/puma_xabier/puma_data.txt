@@ -1,0 +1,22 @@
+Data taken from: https://alliance.seas.upenn.edu/~medesign/wiki/index.php/Guides/PUMA260
+
+Link Lengths
+------------
+a = 13.0 inches
+b = 2.5 inches
+c = 8.0 inches
+d = 2.5 inches
+e = 8.0 inches
+f = 2.5 inches (front of the flange)
+g = 0.5 inches
+h = 1.1 inches
+
+
+Joint Angle Limits
+------------------
+θ1 (waist) range = 290 deg , lowerlimit = - 180 deg , upperlimit = 110 deg
+θ2 (shoulder) range = 315 deg , lowerlimit = - 75 deg , upperlimit = 240 deg
+θ3 (elbow) range = 295 deg , lowerlimit = -235 deg , upperlimit = 60 deg
+θ4 (wrist) range = 620 deg , lowerlimit = -580 deg , upperlimit = 40 deg
+θ5 (bend) range = 230 deg , lowerlimit = -30 deg , upperlimit = 200 deg
+θ6 (flange) range = 510 deg , lowerlimit = -215 deg , upperlimit = 295 deg 

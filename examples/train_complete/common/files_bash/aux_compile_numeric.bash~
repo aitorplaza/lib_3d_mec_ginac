@@ -1,0 +1,13 @@
+#!/bin/bash
+
+cp ../common/files_c_h/* .
+cp ./GENERATED_files_process_c_h/* .
+
+./aux_compile_main.bash
+
+gcc -D$1 -O2 -o main_numeric main_numeric.c var_def.o var_init.o gen_coord_vect_def.o gen_coord_vect_init.o gen_vel_vect_def.o gen_vel_vect_init.o gen_accel_vect_def.o gen_accel_vect_init.o param_vect_def.o param_vect_init.o unknowns_vect_def.o unknowns_vect_init.o inputs_vect_def.o inputs_vect_init.o Phi.o Phi_q.o Beta.o dPhi_dq.o PhiInit.o PhiInit_q.o dPhiInit_dq.o BetaInit.o Energy.o Qgamma.o MXdPhi_dqZero.o write_state_file.o write_state_file_header.o newton_raphson_min_norm.o print_mat.o Output.o -lm -lblas -llapack
+
+#./aux_move.bash
+#rm -f *.c
+#rm -f *.h
+

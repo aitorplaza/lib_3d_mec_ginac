@@ -1,0 +1,701 @@
+ 
+************************************************
+*             Hexaglide Platform               *
+************************************************
+ 
+jue mar 31 13:11:38 CEST 2016
+ 
+Gravity DOWN
+Atomize YES
+integration_time 0 delta_t 0
+Define Wrenches
+Vectors needed to take diferent Jacobians
+Kinematic Equations
+Non-linear Constraint Inequalities
+Output Vector
+Energy Equations
+Matrix Calculation
+ dPhi Calculating
+ ddPhi Calculating
+ Beta Calculating
+ Gamma Calculating
+ Init Calculating
+ dInit Calculating
+ PhiInit Calculating
+ dPhiInit Calculating
+ PhiInit_q Calculating
+ dPhiInit_dq Calculating
+ BetaInit Calculating
+ Phi_q Calculating
+ dPhi_dq Calculating
+ M and Q Calculating
+Export C code for Direct Simulation 
+ PhiInit Optimizing
+ PhiInit_q Optimizing
+ dPhiInit_dq Optimizing
+ BetaInit Optimizing
+ Phi Optimizing
+ Beta Optimizing
+ Gamma Optimizing
+ Phi_q Optimizing
+ dPhi_dq Optimizing
+ M Optimizing
+ Q Optimizing
+ MQ Optimizing
+ Output  Optimizing
+ Energy  Optimizing
+ Code Exporting 
+ Total atoms = 3915
+symb = FULL
+M atom = 90
+Mnew.m ops = 397
+Q atom = 213
+Qnew.m ops = 1134
+MQ atom = 251
+MQnew.m ops = 1462
+Singular = 0
+
+symb = Iyy1
+M atom = 90
+Mnew.m ops = 396
+Q atom = 213
+Qnew.m ops = 1131
+MQ atom = 251
+MQnew.m ops = 1458
+Singular = 0
+
+symb = Ixx5
+M atom = 90
+Mnew.m ops = 394
+Q atom = 213
+Qnew.m ops = 1126
+MQ atom = 251
+MQnew.m ops = 1451
+Singular = 0
+
+symb = Iyy6
+M atom = 90
+Mnew.m ops = 393
+Q atom = 213
+Qnew.m ops = 1122
+MQ atom = 251
+MQnew.m ops = 1446
+Singular = 0
+
+symb = Iyy3
+M atom = 90
+Mnew.m ops = 392
+Q atom = 213
+Qnew.m ops = 1119
+MQ atom = 251
+MQnew.m ops = 1442
+Singular = 0
+
+symb = Ixx1
+M atom = 90
+Mnew.m ops = 390
+Q atom = 213
+Qnew.m ops = 1112
+MQ atom = 251
+MQnew.m ops = 1433
+Singular = 0
+
+symb = Ixx4
+M atom = 90
+Mnew.m ops = 388
+Q atom = 213
+Qnew.m ops = 1106
+MQ atom = 251
+MQnew.m ops = 1425
+Singular = 0
+
+symb = Iyy2
+M atom = 90
+Mnew.m ops = 387
+Q atom = 213
+Qnew.m ops = 1102
+MQ atom = 251
+MQnew.m ops = 1420
+Singular = 0
+
+symb = Ixx2
+M atom = 90
+Mnew.m ops = 385
+Q atom = 213
+Qnew.m ops = 1095
+MQ atom = 251
+MQnew.m ops = 1411
+Singular = 0
+
+symb = Iyy4
+M atom = 90
+Mnew.m ops = 384
+Q atom = 213
+Qnew.m ops = 1090
+MQ atom = 251
+MQnew.m ops = 1405
+Singular = 0
+
+symb = Ixx3
+M atom = 90
+Mnew.m ops = 382
+Q atom = 213
+Qnew.m ops = 1084
+MQ atom = 251
+MQnew.m ops = 1397
+Singular = 0
+
+symb = Ixx6
+M atom = 90
+Mnew.m ops = 380
+Q atom = 213
+Qnew.m ops = 1078
+MQ atom = 251
+MQnew.m ops = 1389
+Singular = 0
+
+symb = Ixy6
+M atom = 90
+Mnew.m ops = 378
+Q atom = 211
+Qnew.m ops = 1065
+MQ atom = 249
+MQnew.m ops = 1374
+Singular = 0
+
+symb = Ixy3
+M atom = 90
+Mnew.m ops = 376
+Q atom = 209
+Qnew.m ops = 1051
+MQ atom = 247
+MQnew.m ops = 1358
+Singular = 0
+
+symb = Ixy2
+M atom = 90
+Mnew.m ops = 374
+Q atom = 207
+Qnew.m ops = 1038
+MQ atom = 245
+MQnew.m ops = 1343
+Singular = 0
+
+symb = Ixy5
+M atom = 90
+Mnew.m ops = 372
+Q atom = 205
+Qnew.m ops = 1025
+MQ atom = 243
+MQnew.m ops = 1328
+Singular = 0
+
+symb = Ixy4
+M atom = 90
+Mnew.m ops = 370
+Q atom = 203
+Qnew.m ops = 1012
+MQ atom = 241
+MQnew.m ops = 1313
+Singular = 0
+
+symb = Ixy1
+M atom = 90
+Mnew.m ops = 368
+Q atom = 201
+Qnew.m ops = 999
+MQ atom = 239
+MQnew.m ops = 1298
+Singular = 0
+
+symb = Izz5
+M atom = 90
+Mnew.m ops = 364
+Q atom = 201
+Qnew.m ops = 993
+MQ atom = 239
+MQnew.m ops = 1288
+Singular = 0
+
+symb = Izz2
+M atom = 90
+Mnew.m ops = 360
+Q atom = 201
+Qnew.m ops = 986
+MQ atom = 239
+MQnew.m ops = 1277
+Singular = 0
+
+symb = Izz3
+M atom = 90
+Mnew.m ops = 356
+Q atom = 201
+Qnew.m ops = 980
+MQ atom = 239
+MQnew.m ops = 1267
+Singular = 0
+
+symb = Izz6
+M atom = 90
+Mnew.m ops = 352
+Q atom = 201
+Qnew.m ops = 973
+MQ atom = 239
+MQnew.m ops = 1256
+Singular = 0
+
+symb = Ixz1
+M atom = 90
+Mnew.m ops = 347
+Q atom = 200
+Qnew.m ops = 960
+MQ atom = 238
+MQnew.m ops = 1238
+Singular = 0
+
+symb = Iyz2
+M atom = 89
+Mnew.m ops = 344
+Q atom = 198
+Qnew.m ops = 949
+MQ atom = 235
+MQnew.m ops = 1224
+Singular = 0
+
+symb = Ixz5
+M atom = 89
+Mnew.m ops = 340
+Q atom = 196
+Qnew.m ops = 934
+MQ atom = 233
+MQnew.m ops = 1205
+Singular = 0
+
+symb = Iyz6
+M atom = 88
+Mnew.m ops = 337
+Q atom = 194
+Qnew.m ops = 921
+MQ atom = 230
+MQnew.m ops = 1189
+Singular = 0
+
+symb = Iyz4
+M atom = 87
+Mnew.m ops = 334
+Q atom = 193
+Qnew.m ops = 910
+MQ atom = 228
+MQnew.m ops = 1175
+Singular = 0
+
+symb = Izz1
+M atom = 87
+Mnew.m ops = 331
+Q atom = 192
+Qnew.m ops = 902
+MQ atom = 227
+MQnew.m ops = 1164
+Singular = 0
+
+symb = IyzP
+M atom = 87
+Mnew.m ops = 325
+Q atom = 191
+Qnew.m ops = 889
+MQ atom = 226
+MQnew.m ops = 1145
+Singular = 0
+
+symb = IxzP
+M atom = 86
+Mnew.m ops = 318
+Q atom = 189
+Qnew.m ops = 878
+MQ atom = 223
+MQnew.m ops = 1127
+Singular = 0
+
+symb = Iyz1
+M atom = 85
+Mnew.m ops = 315
+Q atom = 188
+Qnew.m ops = 862
+MQ atom = 221
+MQnew.m ops = 1108
+Singular = 1
+
+symb = Iyz5
+M atom = 84
+Mnew.m ops = 312
+Q atom = 187
+Qnew.m ops = 849
+MQ atom = 219
+MQnew.m ops = 1092
+Singular = 1
+
+symb = Ixz4
+M atom = 84
+Mnew.m ops = 307
+Q atom = 185
+Qnew.m ops = 834
+MQ atom = 217
+MQnew.m ops = 1072
+Singular = 1
+
+symb = Ixz6
+M atom = 84
+Mnew.m ops = 303
+Q atom = 184
+Qnew.m ops = 816
+MQ atom = 216
+MQnew.m ops = 1050
+Singular = 1
+
+symb = mx6
+M atom = 82
+Mnew.m ops = 297
+Q atom = 180
+Qnew.m ops = 806
+MQ atom = 212
+MQnew.m ops = 1035
+Singular = 1
+
+symb = Ixz2
+M atom = 82
+Mnew.m ops = 293
+Q atom = 179
+Qnew.m ops = 787
+MQ atom = 211
+MQnew.m ops = 1012
+Singular = 1
+
+symb = Ixz3
+M atom = 82
+Mnew.m ops = 289
+Q atom = 177
+Qnew.m ops = 772
+MQ atom = 209
+MQnew.m ops = 993
+Singular = 1
+
+symb = mx2
+M atom = 80
+Mnew.m ops = 285
+Q atom = 174
+Qnew.m ops = 761
+MQ atom = 206
+MQnew.m ops = 978
+Singular = 1
+
+symb = IxyP
+M atom = 80
+Mnew.m ops = 277
+Q atom = 171
+Qnew.m ops = 747
+MQ atom = 203
+MQnew.m ops = 956
+Singular = 1
+
+symb = my2
+M atom = 76
+Mnew.m ops = 271
+Q atom = 169
+Qnew.m ops = 736
+MQ atom = 202
+MQnew.m ops = 941
+Singular = 1
+
+symb = Iyz3
+M atom = 75
+Mnew.m ops = 268
+Q atom = 168
+Qnew.m ops = 720
+MQ atom = 200
+MQnew.m ops = 922
+Singular = 1
+
+symb = my6
+M atom = 71
+Mnew.m ops = 263
+Q atom = 164
+Qnew.m ops = 705
+MQ atom = 197
+MQnew.m ops = 902
+Singular = 1
+
+symb = Izz4
+M atom = 71
+Mnew.m ops = 260
+Q atom = 164
+Qnew.m ops = 694
+MQ atom = 197
+MQnew.m ops = 888
+Singular = 1
+
+symb = mz5
+M atom = 69
+Mnew.m ops = 255
+Q atom = 160
+Qnew.m ops = 682
+MQ atom = 193
+MQnew.m ops = 873
+Singular = 1
+
+symb = my3
+M atom = 67
+Mnew.m ops = 250
+Q atom = 156
+Qnew.m ops = 669
+MQ atom = 189
+MQnew.m ops = 856
+Singular = 1
+
+symb = my5
+M atom = 63
+Mnew.m ops = 244
+Q atom = 152
+Qnew.m ops = 656
+MQ atom = 186
+MQnew.m ops = 837
+Singular = 1
+
+symb = mx4
+M atom = 61
+Mnew.m ops = 240
+Q atom = 148
+Qnew.m ops = 645
+MQ atom = 182
+MQnew.m ops = 822
+Singular = 1
+
+symb = Iyy5
+M atom = 61
+Mnew.m ops = 239
+Q atom = 148
+Qnew.m ops = 637
+MQ atom = 182
+MQnew.m ops = 813
+Singular = 1
+
+symb = mz3
+M atom = 57
+Mnew.m ops = 232
+Q atom = 144
+Qnew.m ops = 625
+MQ atom = 179
+MQnew.m ops = 795
+Singular = 1
+
+symb = my1
+M atom = 55
+Mnew.m ops = 229
+Q atom = 142
+Qnew.m ops = 618
+MQ atom = 177
+MQnew.m ops = 785
+Singular = 1
+
+symb = my4
+M atom = 51
+Mnew.m ops = 223
+Q atom = 138
+Qnew.m ops = 602
+MQ atom = 174
+MQnew.m ops = 766
+Singular = 1
+
+symb = mz1
+M atom = 47
+Mnew.m ops = 216
+Q atom = 135
+Qnew.m ops = 589
+MQ atom = 172
+MQnew.m ops = 748
+Singular = 1
+
+symb = mx1
+M atom = 45
+Mnew.m ops = 203
+Q atom = 124
+Qnew.m ops = 546
+MQ atom = 158
+MQnew.m ops = 697
+Singular = 1
+
+symb = mx5
+M atom = 43
+Mnew.m ops = 190
+Q atom = 109
+Qnew.m ops = 482
+MQ atom = 140
+MQnew.m ops = 625
+Singular = 1
+
+symb = mxP
+M atom = 39
+Mnew.m ops = 175
+Q atom = 103
+Qnew.m ops = 459
+MQ atom = 134
+MQnew.m ops = 588
+Singular = 1
+
+symb = mz6
+M atom = 37
+Mnew.m ops = 161
+Q atom = 85
+Qnew.m ops = 395
+MQ atom = 113
+MQnew.m ops = 516
+Singular = 1
+
+symb = IyyP
+M atom = 36
+Mnew.m ops = 153
+Q atom = 85
+Qnew.m ops = 382
+MQ atom = 112
+MQnew.m ops = 495
+Singular = 1
+
+symb = mz2
+M atom = 34
+Mnew.m ops = 139
+Q atom = 74
+Qnew.m ops = 339
+MQ atom = 98
+MQnew.m ops = 443
+Singular = 1
+
+symb = IxxP
+M atom = 32
+Mnew.m ops = 130
+Q atom = 73
+Qnew.m ops = 327
+MQ atom = 95
+MQnew.m ops = 422
+Singular = 1
+
+symb = m4
+M atom = 32
+Mnew.m ops = 129
+Q atom = 73
+Qnew.m ops = 326
+MQ atom = 95
+MQnew.m ops = 419
+Singular = 1
+
+symb = IzzP
+M atom = 31
+Mnew.m ops = 123
+Q atom = 70
+Qnew.m ops = 309
+MQ atom = 91
+MQnew.m ops = 396
+Singular = 1
+
+symb = m3
+M atom = 31
+Mnew.m ops = 122
+Q atom = 70
+Qnew.m ops = 307
+MQ atom = 91
+MQnew.m ops = 393
+Singular = 1
+
+symb = myP
+M atom = 26
+Mnew.m ops = 97
+Q atom = 65
+Qnew.m ops = 274
+MQ atom = 85
+MQnew.m ops = 337
+Singular = 1
+
+symb = m2
+M atom = 26
+Mnew.m ops = 96
+Q atom = 65
+Qnew.m ops = 272
+MQ atom = 85
+MQnew.m ops = 334
+Singular = 1
+
+symb = mx3
+M atom = 24
+Mnew.m ops = 83
+Q atom = 50
+Qnew.m ops = 209
+MQ atom = 67
+MQnew.m ops = 263
+Singular = 1
+
+symb = mzP
+M atom = 2
+Mnew.m ops = 20
+Q atom = 18
+Qnew.m ops = 77
+MQ atom = 21
+MQnew.m ops = 92
+Singular = 1
+
+symb = m5
+M atom = 2
+Mnew.m ops = 19
+Q atom = 18
+Qnew.m ops = 75
+MQ atom = 21
+MQnew.m ops = 89
+Singular = 1
+
+symb = m6
+M atom = 2
+Mnew.m ops = 18
+Q atom = 18
+Qnew.m ops = 73
+MQ atom = 21
+MQnew.m ops = 86
+Singular = 1
+
+symb = m1
+M atom = 2
+Mnew.m ops = 17
+Q atom = 18
+Qnew.m ops = 71
+MQ atom = 21
+MQnew.m ops = 83
+Singular = 1
+
+symb = mz4
+M atom = 0
+Mnew.m ops = 3
+Q atom = 0
+Qnew.m ops = 7
+MQ atom = 0
+MQnew.m ops = 10
+Singular = 1
+
+symb = mP
+M atom = 0
+Mnew.m ops = 0
+Q atom = 0
+Qnew.m ops = 6
+MQ atom = 0
+MQnew.m ops = 6
+Singular = 1
+
+Export ENVIRONMENT file 
+Export config.ini file 
+Export C++ code for Openscenegraph.
+Export State File
+Export GNUPLOT file
+
+***********************************************
+** COMPILED WITH OPTIONS                     **
+***********************************************
+** Dynamic equations ===> LAGRANGE           **
+** Matrix Order      ===> Col_MO             **
+** Maple             ===> OFF                **
+***********************************************
+main_symbolic execution time: 37 secs.

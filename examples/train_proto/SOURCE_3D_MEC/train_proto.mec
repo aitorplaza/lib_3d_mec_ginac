@@ -1,0 +1,284 @@
+// 3d_mec MODEL - PROTOTYPE ARESSE_TRAIN
+// Roberto Yoldi June-2011
+// Length units: m
+
+// *********************************************************************
+// CONSTANTS DEFINITION. STRUCTURE DIDMENSIONS & KINEMATIC CONSTANTS.
+// *********************************************************************
+// Data from CAD
+Sp			:=	0.0900
+Lp			:=	0.4325
+Ln			:=	0.3848
+Ww			:=	0.6500
+W				:=	0.3650
+Hn			:=	0.6100
+Hi			:=	0.2626
+Hs			:=	0.2294
+Hb			:=	0.4825
+Rw			:=	0.0750
+Rr			:=	0.0750
+Rx			:=	0.1550
+Bx			:=	0.0570
+Mx			:=	0.2318
+Si			:=	0.4000
+Ss			:=	0.3427
+//Hm			:=	Hb - Rw - Rr
+
+// Other data
+SR			:=	0.020
+VS			:=	1
+
+g				:=	9.8
+//PI			:=	3.14159265358979
+
+a1			:=	3.14159265358979/12
+a2			:=	3.14159265358979/4
+	
+W1			:=	3.14159265358979/4
+W2			:=	3.14159265358979/2
+W3			:=	0
+W4			:=	3.14159265358979
+W5			:=	3.14159265358979
+
+// *********************************************************************
+// CONSTANTS DEFINITION. DYNAMICS CONSTANTS.
+// *********************************************************************
+
+Ki		:=	161000
+Li0		:=	0.0500
+Li		:=	0.0400
+
+//Ks		:=	161000
+Ls0		:=	0.0500
+Ls		:=	0.0400
+
+//K		:=	161000
+L0		:=	0.0500
+// L: = L0 - ((mx6 * g) / (k * (Ln + Ss))) 
+L			:=	0.0500 - (((1.1543302E+01 * (+1.6951865E-03 -	(-0.3848))) * 9.8) / (161000 * (0.3848 + 0.3427)))
+
+Ds		:=	0.3200
+//Di		:=	Hi + Hs - Ds - L;
+Di		:=	0.2294 + 0.2626 - 0.3200 - (0.0500 - (((1.1543302E+01 * (+1.6951865E-03 -	(-0.3848))) * 9.8) / (161000 * (0.3848 + 0.3427))))
+
+// *********************************************************************
+// GENERALISED COORDINATES DEFINITION
+// *********************************************************************
+
+// Gyroscope (solid 1) vs Inertial reference rotation. ROLL
+q1:=	0.0
+// Road-Chassis (Solid 2) vs Gyroscope rotation. PITCH
+q2:=	0.2
+// Road (solid 3) rotation vs Road-Chassis.
+q3:=	0.0
+// Wheel-Chassis (solid 4) vs Road-Chassis rotation.
+q4:=	-0.3
+// Wheel (solid 5) rotation vs Wheel-Chassis.
+q5:=	0.0
+// Mass (solid 6) rotation vs Road-Chassis rotation.
+q6:=	-0.6
+
+D(q1)		:=	dq1
+D(dq1)	:=	ddq1
+D(q2)		:=	dq2
+D(dq2)	:=	ddq2
+D(q3)		:=	dq3
+D(dq3)	:=	ddq3
+D(q4)		:=	dq4
+D(dq4)	:=	ddq4
+D(q5)		:=	dq5
+D(dq5)	:=	ddq5
+D(q6)		:=	dq6
+D(dq6)	:=	ddq6
+
+// *********************************************************************
+// BASES REFERENCES AND POINTS
+// *********************************************************************
+
+// Bases
+// ---------------------------------------------------------------------
+BASE(B1,xyz,2,q1)
+BASE(B2,B1,1,q2)
+BASE(B3,B2,1,q3)
+BASE(B4,B2,2,q4)
+BASE(B5,B4,1,q5)
+BASE(B6,B2,2,q6)
+
+// Origin points of references
+// ---------------------------------------------------------------------
+POINT(O1,O,{[0,0,0]}xyz)
+POINT(O2,O1,{[0,0,Sp]}B1)
+POINT(O3,O2,{[Rx,0,-(Sp+Hb)]}B2)
+POINT(O4,O2,{[-Ln,0,-(Sp+Hi)]}B2)
+//POINT(O5,O4,{[(Ln+Rx),0,-(Hm-Hi)]}B4)
+POINT(O5,O4,{[(Ln+Rx),0,-(Hb - Rw - Rr-Hi)]}B4)
+POINT(O6,O2,{[-Ln,0,+(Hs-Sp)]}B2)
+
+// Points P# (# = solid)
+// ---------------------------------------------------------------------
+// POINTS AT 4 BEARINGS
+POINT(BRG1POS,O1,{[0,+Ww,0]}xyz)
+POINT(BRG1NEG,O1,{[0,-Ww,0]}xyz)
+POINT(BRG2POS,O2,{[Lp,0,0]}B1)
+POINT(BRG2NEG,O2,{[-Lp,0,0]}B1)
+
+// POINTS AT SOLID #
+POINT(A2,O2,{[-Lp,0,-(Sp+Hn)]}B2)
+POINT(Z2,A2,{[+(Lp+Lp),0,0]}B2)
+POINT(M2,A2,{[+(Si+Lp),0,0]}B2)
+POINT(A3,O3,{[-(Bx+Rx),0,0]}B3)
+POINT(Z4,O4,{[+(Lp+Ln),0,0]}B4)
+POINT(M4,O4,{[+(Si+Ln),0,0]}B4)
+POINT(D4,O4,{[+(Ss+Ln),0,0]}B4)
+POINT(MS4,D4,{[0,0,Di]}B4)
+POINT(A5,O5,{[-(Mx+Rx),0,0]}B5)
+POINT(Z6,O6,{[+(Lp+Ln),0,0]}B6)
+POINT(D6,O6,{[+(Ss+Ln),0,0]}B6)
+POINT(MS6,D6,{[0,0,-Ds]}B6)
+//Points MI 6 MS Spring assy.
+//Points A3 & A5 Brake & Motor assy.
+
+// Contact Point PG# (# = solid)
+// ---------------------------------------------------------------------
+// GEOMETRIC POINT AT SOLID 3
+POINT(PG3,O3,{[0,0,Rr]}B2)
+// GEOMETRIC POINT AT SOLID 5
+POINT(PG5,O5,{[0,0,-Rw]}B4)
+
+// References R#
+// ---------------------------------------------------------------------
+REF(R1,O1,B1)
+REF(R2,O2,B2)
+REF(R3,O3,B3)
+REF(R4,O4,B4)
+REF(R5,O5,B5)
+REF(R6,O6,B6)
+
+// Springs
+// ---------------------------------------------------------------------
+U_MI			:=	P(M2,M4) / ((P(M2,M4)*P(M2,M4))^.5)
+U_MS			:=	P(MS4,MS6) / ((P(MS4,MS6)*P(MS4,MS6))^.5)
+
+POINT(MI2,M4,{-Li*U_MI}B2)
+POINT(MS2,M4,{Ls*U_MI}B2)
+POINT(MI02,M4,{-Li0*U_MI}B2)
+POINT(MS02,M4,{Ls0*U_MI}B2)
+
+// *********************************************************************
+// VISUALIZATION
+// *********************************************************************
+
+// Draw references
+// ---------------------------------------------------------------------
+DRAW_REFERENCE(abs,1)
+DRAW_REFERENCE(R1,1)
+DRAW_REFERENCE(R2,1)
+DRAW_REFERENCE(R3,1)
+DRAW_REFERENCE(R4,1)
+DRAW_REFERENCE(R5,1)
+DRAW_REFERENCE(R6,1)
+
+// Draw solids #	// see manual info
+// ---------------------------------------------------------------------
+RGB(0,0,0)
+DRAW_SPHERE(O1,xyz,SR)
+DRAW_SPHERE(BRG1POS,xyz,SR)
+DRAW_SPHERE(BRG1NEG,xyz,SR)
+DRAW_SPHERE(BRG2POS,B1,SR)
+DRAW_SPHERE(BRG2NEG,B1,SR)
+
+DRAW_SPHERE(O2,B2,SR)
+DRAW_SPHERE(A2,B2,SR)
+DRAW_SPHERE(Z2,B2,SR)
+DRAW_SPHERE(O3,B3,SR)
+DRAW_SPHERE(A3,B2,SR)
+DRAW_SPHERE(O4,B4,SR)
+DRAW_SPHERE(Z4,B4,SR)
+DRAW_SPHERE(O5,B5,SR)
+DRAW_SPHERE(A5,B4,SR)
+DRAW_SPHERE(O6,B6,SR)
+DRAW_SPHERE(Z6,B6,SR)
+
+
+DRAW_SPHERE(D4,B4,SR)
+DRAW_SPHERE(D6,B6,SR)
+
+DRAW_SPHERE(PG3,B3,SR)
+DRAW_SPHERE(PG5,B5,SR)
+
+RGB(1,0,1,0.3)
+DRAW_CYLINDER_P(BRG1POS,BRG1NEG,Rw/10,0)
+DRAW_CYLINDER_P(O1,O2,Rw/10,0)
+DRAW_CYLINDER_P(BRG2POS,BRG2NEG,Rw/10,0)
+
+// CYLINDERS AT 4 BEARINGS (Just visual)
+RGB(0,0,1,0.3)
+DRAW_CYLINDER(BRG1POS,xyz,Rw/2,-W/10,2,0)
+DRAW_CYLINDER(BRG1NEG,xyz,Rw/2,W/10,2,0)
+DRAW_CYLINDER(BRG2POS,B1,Rw/2,-Lp/10,1,0)
+DRAW_CYLINDER(BRG2NEG,B1,Rw/2,Lp/10,1,0)
+
+RGB(0,1,0,0.5)
+DRAW_PARALLELEPIPED(BRG2POS,B2,W/10,W/10,-(Hn+Sp),1,3)
+DRAW_PARALLELEPIPED(A2,B2,(Lp+Lp),W,Hi/100,1,1)
+DRAW_PARALLELEPIPED(A2,B2,W/10,W/10,(Hn+Hs),1,3)
+
+RGB(1,1,0,0.5)
+DRAW_PARALLELEPIPED(O6,B6,(Ln+Lp),W,Hi/100,1,1)
+
+RGB(1,1,1,0.5)
+DRAW_PARALLELEPIPED(O4,B4,(Ln+Lp),W,Hi/100,1,1)
+
+RGB(0,1,1,0.3)
+DRAW_CYLINDER(O3,B3,Rr,Lp/10,1,0)
+DRAW_CYLINDER(A3,B3,Rr/2,Lp/2,1,0)
+DRAW_CYLINDER_P(A3,O3,Rr/4,1)
+
+RGB(1,0,0,0.3)
+DRAW_CYLINDER(O5,B5,Rw,Lp/10,1,0)
+DRAW_CYLINDER(A5,B4,Rw/2,Lp/2,1,0)
+DRAW_CYLINDER_P(A5,O5,Rw/4,1)
+
+// Springs
+// ---------------------------------------------------------------------
+DRAW_VECTOR(M2, U_MI, VS/2, RGB(0,1,0))
+DRAW_VECTOR(MS4, U_MS, VS/2, RGB(0,1,0))
+
+RGB(0,0,0)
+DRAW_SPHERE(M2,B2,SR)
+DRAW_SPHERE(M4,B4,SR)
+DRAW_SPHERE(MI2,B4,SR)
+DRAW_SPHERE(MS2,B4,SR)
+DRAW_SPHERE(MI02,B4,SR)
+DRAW_SPHERE(MS02,B4,SR)
+DRAW_SPHERE(MS4,B4,SR)
+DRAW_SPHERE(MS6,B6,SR)
+
+RGB(1,0,0)
+DRAW_CYLINDER_P(M4,MI2,Rr/5,1)
+DRAW_CYLINDER_P(M4,MS2,Rr/5,1)
+DRAW_CYLINDER_P(MS4,MS6,Rr/5,1)
+
+RGB(1,0,1)
+DRAW_CYLINDER_P(M2,MS02,Rr/10,1)
+DRAW_CYLINDER_P(D4,MS4,Rr/2,1)
+DRAW_CYLINDER_P(D6,MS6,Rr/2,1)
+
+// Visualization point and orientation configuration
+// ---------------------------------------------------------------------
+ORTHOGRAPHIC_PERSPECTIVE
+VISUAL(45,30,2)
+
+
+WRITE_STATE
+PAUSE
+PRINT
+SET_STATE_FILE(state.dat)
+READ_STATE(1)
+
+PAUSE
+
+READ_STATE(1,10000000,100)
+
+PAUSE
+

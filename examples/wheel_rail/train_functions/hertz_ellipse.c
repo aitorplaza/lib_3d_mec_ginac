@@ -1,0 +1,67 @@
+/*
+ * Calculates the a and b semiaxes of an ellipse               
+ * using Hetz contact theory 
+ * N in newtons
+ * R in mm
+ * E in Pa
+ */
+#include <stdio.h>
+#include <math.h>
+#define PI 3.141592653589793
+
+void hertz_ellipse (double * param, int pos_a, int pos_E, double * output, int pos_r1x, int pos_N,  double * T_Hertz, int T_hertz_rows ){
+
+
+    /* Ry_wL Ry_rL Rx_wL Rx_rL */
+    double  R1x = output[pos_r1x + 0]; //w
+    double  R2x = output[pos_r1x + 1]; //r
+    double  R1y = output[pos_r1x + 2]; //w
+    double  R2y = output[pos_r1x + 3]; //r
+	
+    double A = 0.5 * ( 1.0 / R1y + 1.0 / R2y );
+    double B = 0.5 * ( 1.0 / R1x + 1.0 / R2x );
+
+    double theta = acos( (A - B) / (A + B) ) * 180 / PI ;
+    
+    int index = (int) floor(theta / 0.5) - 1;
+
+    double m = T_Hertz[index + 1*T_hertz_rows] + ( theta - T_Hertz[index] )*(T_Hertz[index + 1*T_hertz_rows] - T_Hertz[index + 1 + 1*T_hertz_rows]) / (T_Hertz[index + 1] - T_Hertz[index]);
+    double n = T_Hertz[index + 2*T_hertz_rows] + ( theta - T_Hertz[index] )*(T_Hertz[index + 2*T_hertz_rows] - T_Hertz[index + 1 + 2*T_hertz_rows]) / (T_Hertz[index + 1] - T_Hertz[index]);
+
+    double E_elast = param[pos_E];
+    double nu = param[pos_E+1];
+    //double G_elast = param[pos_E+2];
+   
+    double N = output[pos_N];
+
+    double aux_m_n = pow( (3.0/2.0)*N*(1-pow(nu,2))/(E_elast*(A+B)),(1.0/3.0));
+
+    param[pos_a]   = m * aux_m_n; /* a */ 
+    param[pos_a+1] = n * aux_m_n; /* b */ 
+/*
+#define printf mexPrintf
+    printf ("a = %f\n",param[pos_a]);
+    printf ("b = %f\n",param[pos_a+1]);
+    printf ("G = %f\n",param[pos_E+2]);
+    printf ("================\n");
+    printf ("R1x = %f\n",R1x);
+    printf ("R2x = %f\n",R2x);
+    printf ("R1y= %f\n",R1y);
+    printf ("R2y = %f\n",R2y);
+    printf ("A = %f\n",A);
+    printf ("B = %f\n",B);
+    printf ("N = %f\n",output[pos_N]);
+    
+    printf ("   \n");
+    
+    printf ("theta = %f\n",theta);
+    printf ("index = %d\n",index);
+
+    printf ("m = %f\n",m);
+    printf ("n = %f\n",n);  
+    
+    printf ("a = %f\n",param[pos_a]);
+    printf ("b = %f\n",param[pos_a+1]); */    
+
+}
+

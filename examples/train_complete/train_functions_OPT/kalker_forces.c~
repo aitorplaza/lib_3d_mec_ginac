@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <math.h>
+//#define printf mexPrintf
+
+
+
+#define a param[pos_a]
+#define b param[pos_a+1]
+#define G param[pos_G]
+
+#define C11 param[pos_c11]
+#define C22 param[pos_c11+1]
+#define C23 param[pos_c11+2]
+#define C33 param[pos_c11+3]
+
+#define r output[pos_vx + 5]
+#define domega output[pos_vx + 3]
+#define dx output[pos_vx + 4]
+#define Vx_slip output[pos_vx + 0]
+#define Vy_slip output[pos_vx + 1]
+#define Omegaz_slip output[pos_vx + 2]
+
+
+
+
+void kalker_forces (double * output, int pos_vx, double * param, int pos_c11, int pos_a, int pos_G, double * inputs, int pos_fx ){
+
+ 
+    /*double Vx  = output[pos_vx + 0];
+    double Vy  = output[pos_vx + 1];
+    double Phi = output[pos_vx + 2];*/
+
+    
+
+
+    double Vx,Vy, Phi;
+
+    if ( fabs(output[pos_vx + 0]) < 1e-6 ) {  
+      Vx  = 0.0; Vy = 0.0; Phi = 0.0; 
+    }
+    else{
+      Vx  = Vx_slip / fabs(0.5* ( dx + domega * r ) );
+      Vy  = Vy_slip / fabs(0.5* ( dx + domega * r ) );
+      Phi = Omegaz_slip / fabs(0.5* ( dx + domega * r ) );
+    } 
+
+
+    /*
+    |Fx|                 | C11  0               0             |   |Vx |
+    |Fy| = - G * a * b * | 0    C22             sqrt(a*b)*C23 | * |Vy |
+    |Mz|                 | 0    -sqrt(a*b)*C23  a*b*C33       |   |Phi|
+    */
+    double scale = 1e-3;
+    if ( fabs(output[pos_vx + 0]) > 10.0 ) {//change !!!!!!!!!!!!
+    scale = 1.0;
+    }
+#define N output[pos_vx -1 ]
+double Vcrit = (0.001/2) * G *a *b*C11 *(N / 9.8 * r* r - 79.60) / (N / 9.8 *79.60 );
+printf ("Vcrict = %f\n", Vcrit);
+
+    inputs[pos_fx]   = - scale * G * a * b * ( C11 * Vx);
+    inputs[pos_fx+1] = - scale * G * a * b * ( C22 * Vy + sqrt(a*b) * C23 * Phi);
+    inputs[pos_fx+2] = - scale * G * a * b * ( -sqrt(a*b)* C23 * Vy + a * b * C33 * Phi );
+
+}

@@ -1,0 +1,11 @@
+prefix=/home/aitor/3D_mec/lib_3d_mec_ginac/..
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: lib_3d_mec_ginac
+Description: lib_3d_mec_ginac C++ library.
+Version: 2.0.0
+Libs: -L${libdir} -l_3d_mec_ginac-2.0
+Cflags: -I${includedir}
+

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+cp ../common/files_c_h/* .
+cp ./GENERATED_files_process_c_h/* .
+
+./aux_compile_rt.bash
+
+
+gcc  $1 $2 -O2 -o main_numeric_zd_rt main_numeric_zd_rt.o lin_alg.o var_def.o var_init.o gen_coord_vect_def.o gen_coord_vect_init.o gen_vel_vect_def.o gen_vel_vect_init.o gen_accel_vect_def.o gen_accel_vect_init.o param_vect_def.o param_vect_init.o unknowns_vect_def.o unknowns_vect_init.o inputs_vect_def.o inputs_vect_init.o Phi.o Phi_q.o Phi_z.o Phi_d.o Beta.o Gamma.o M_zz.o M_zd.o M_dd.o Q_z.o Q_d.o write_state_file.o write_state_file_header.o Qgamma.o MXdPhi_dqZero.o -lm

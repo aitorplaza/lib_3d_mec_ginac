@@ -1,0 +1,43 @@
+
+Las condiciones del proceso de optimización/reducción/validación son las siguientes:
+
+- Robot: Hexaglide
+- Condiciones de optimización:
+    - Número de puntos para las trayectorias: 	npts=101
+    - Tiempo de la trayectoria: 		T=2*pi
+    - Armónico fundamental: 			omega=1 ( cos(omega*t) )
+    - Número de armónicos: 			nh=2
+    - Número de gdl: 				ngdl=6
+    - Número de parámetros de optimización: 	ngdl*(2*nh+1)=30
+    - Criterio de optimización: número de condición
+    - Equilibrado de la matrix Wb: sí
+    - Número máximo de iteraciones: inf    
+    - Límites de actuadores: (restricciones lineales)
+            - Pos: ( 1,2) m
+            - Vel: (-1,1) m/s
+            - Acel: ningún límite
+    - Límites de plataforma: (restricciones no lineales)
+            - La plataforma no se sale del círculo circunscrito (0.9*R) al hexágono. 	x^2+y^2-(0.9*(R-r))^2<0
+            - El ángulo mínimo entre el plano de plataforma y cada barra es 15 grados
+
+- Trayectorias de reducción:
+    - Número de trayectorias para W_estimation: 10
+    - Número de condición de las trayectorias: entre 159 y 304.
+
+- Trayectoria de validación:
+    - Número de trayectorias para W_validation: 1
+    - Número de condición de la trayectoria: 1237
+
+- Reducción del modelo:
+    - Normas de reducción: norma infinito y norma 2
+    - Algoritmos de reducción: elim, add, qr
+    - Normalización de los pares de los motores: no es necesario (todos iguales)
+    - Eliminación de los parámetros más alejados de la raíz: NO
+    - SVD comparativa: SÍ
+
+- Validación del modelo reducido:
+    - Se toman los valores estimados de los parámetros con el modelo 
+
+
+
+

@@ -1,0 +1,247 @@
+#define S_FUNCTION_NAME  osg_c_s_func
+#define S_FUNCTION_LEVEL 2
+
+#ifndef __linux__
+#include <windows.h>
+#endif
+
+#ifdef __WIN32__
+#define WIN32_LEAN_AND_MEAN
+#endif
+
+#include "defines.h"
+
+#include <osg/Node>
+#include <osg/Group>
+#include <osg/Geode>
+#include <osg/MatrixTransform>
+#include <osg/PositionAttitudeTransform>
+#include <osgDB/ReadFile>
+#include <osgUtil/Optimizer>
+#include <osgViewer/Viewer>
+#include <osgViewer/ViewerEventHandlers>
+#include <osgGA/TrackballManipulator>
+
+#include "simstruc.h"
+
+#include <math.h>
+
+#include "osg_root.h"
+#include "osg_read_file.h"
+#include "solids_homogeneous_matrix.h"
+#include "osg_state.h"
+
+extern "C" {
+extern void Init_param_values ( void );
+extern void Init_q_values ( void );
+extern void Init_dq_values ( void );
+extern void Init_ddq_values ( void );
+extern void Init_unknowns_values ( void );
+extern void Init_inputs_values ( void );
+#include "param.h"
+#include "gen_coord.h"
+#include "gen_vel.h"
+#include "gen_accel.h"
+#include "unknowns.h"
+#include "inputs.h"
+};
+
+
+osgViewer::Viewer* viewer;
+
+static void mdlInitializeSizes(SimStruct *S)
+{
+
+    ssSetNumSFcnParams(S, 1);/* Number of expected parameters */
+
+    if (ssGetNumSFcnParams(S) != ssGetSFcnParamsCount(S)) {
+        return; /* Parameter mismatch will be reported by Simulink */
+    }
+    
+    ssSetNumContStates(S, 0);/*nuevo*/
+    ssSetNumDiscStates(S, 0);/*nuevo*/
+
+    #if  defined (INPUTS)  && defined (UNKNOWNS)
+      int_T nInputPorts = 4, i;
+      if (!ssSetNumInputPorts(S, nInputPorts)) return;
+      ssSetInputPortWidth(S, 0,n_gen_coord + n_gen_vel);
+      ssSetInputPortWidth(S, 1,n_gen_accel);
+      ssSetInputPortWidth(S, 2,n_unknowns);
+      ssSetInputPortWidth(S, 3,n_inputs);
+    #elif defined (INPUTS)  && !defined (UNKNOWNS)
+      int_T nInputPorts = 3, i;
+      if (!ssSetNumInputPorts(S, nInputPorts)) return;
+      ssSetInputPortWidth(S, 0,n_gen_coord + n_gen_vel);
+      ssSetInputPortWidth(S, 1,n_gen_accel);
+      ssSetInputPortWidth(S, 2,n_inputs);
+    #elif !defined (INPUTS)  && defined (UNKNOWNS)
+      int_T nInputPorts = 3, i;
+      if (!ssSetNumInputPorts(S, nInputPorts)) return;
+      ssSetInputPortWidth(S, 0,n_gen_coord + n_gen_vel);
+      ssSetInputPortWidth(S, 1,n_gen_accel);
+      ssSetInputPortWidth(S, 2,n_unknowns);
+    #elif !defined (INPUTS)  && !defined (UNKNOWNS)
+      int_T nInputPorts = 2, i;
+      if (!ssSetNumInputPorts(S, nInputPorts)) return;
+      ssSetInputPortWidth(S, 0,n_gen_coord + n_gen_vel);
+      ssSetInputPortWidth(S, 1,n_gen_accel);
+    #endif
+
+    ssSetNumOutputPorts(S,0);
+
+    ssSetNumSampleTimes(S, 1);
+
+    /* Take care when specifying exception free code - see sfuntmpl_doc.c */
+    /* Patxi removed this for using accelerated: SS_OPTION_USE_TLC_WITH_ACCELERATOR | */
+    ssSetOptions(S,
+                 SS_OPTION_WORKS_WITH_CODE_REUSE |
+                 SS_OPTION_EXCEPTION_FREE_CODE |
+                 SS_OPTION_SIM_VIEWING_DEVICE);
+}
+
+
+
+static void mdlInitializeSampleTimes(SimStruct *S)
+{
+
+    ssSetSampleTime(S, 0, INHERITED_SAMPLE_TIME);
+    ssSetOffsetTime(S, 0, 0.0);
+
+}
+
+
+static void mdlOutputs(SimStruct *S, int_T tid)
+{
+
+}
+
+#define MDL_INITIALIZE_CONDITIONS   /* Change to #undef to remove function */
+#if defined(MDL_INITIALIZE_CONDITIONS)
+  static void mdlInitializeConditions(SimStruct *S)
+  {
+        Init_param();
+        Init_q();
+        Init_dq();
+        Init_ddq();
+        Init_inputs();
+        Init_unknowns ();
+        Init_param_values();
+        Init_q_values();
+        Init_dq_values();
+        Init_ddq_values();
+        Init_unknowns_values ();
+        Init_inputs_values ();
+        memcpy(param, mxGetPr(ssGetSFcnParam(S,0)),n_param*sizeof(double));
+  }
+#endif /* MDL_INITIALIZE_CONDITIONS */
+
+
+
+#define MDL_START  /* Change to #undef to remove function */
+#if defined(MDL_START) 
+  static void mdlStart(SimStruct *S)
+  {
+
+       osg_read_file ();      
+
+	/*Could be good check if the files exit.*/
+   
+       osg_root();
+       osg_state();
+
+      viewer = new osgViewer::Viewer();
+      if (viewer)
+      {
+          osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
+          traits->x = 100;
+          traits->y = 100;
+          traits->width = 640;
+          traits->height = 480;
+          traits->windowDecoration = true;
+          traits->doubleBuffer = true;
+          traits->sharedContext = 0;
+          traits->windowName = "Open Scene Graph";
+          
+          osg::ref_ptr<osg::GraphicsContext> gc = osg::GraphicsContext::createGraphicsContext(traits.get());
+          osg::ref_ptr<osg::Camera> camera = viewer->getCamera();
+
+          camera->setClearColor(osg::Vec4(1.0f,1.0f,1.0f,1.0f));
+          camera->setGraphicsContext(gc.get());
+          camera->setViewport(new osg::Viewport(0,0, traits->width, traits->height));
+          GLenum buffer = traits->doubleBuffer ? GL_BACK : GL_FRONT;
+          camera->setDrawBuffer(buffer);
+          camera->setReadBuffer(buffer);
+
+          osgUtil::Optimizer optimizer;
+          optimizer.optimize(root);
+
+          viewer->setSceneData(root);
+
+
+          viewer->setCameraManipulator( new osgGA::TrackballManipulator );
+
+          viewer->realize();
+                  
+      }
+}
+#endif /*  MDL_START */
+
+#define MDL_UPDATE  /* Change to #undef to remove function */
+#if defined(MDL_UPDATE)
+static void mdlUpdate(SimStruct *S, int_T tid)
+    {                  
+        if (!viewer->done())
+        {
+        int_T idxPort,idxSignal;                  
+            real_T input;
+            InputRealPtrsType uPtrs = ssGetInputPortRealSignalPtrs(S,0);
+            int_T nPortWidth = ssGetInputPortWidth(S,0);
+            for (idxSignal = 0; idxSignal < nPortWidth; idxSignal++)
+            {                  
+              q[idxSignal] = *uPtrs[idxSignal];
+            }
+        solids_homogeneous_matrix ();
+
+        viewer->frame(); 
+      }
+  }
+#endif /* MDL_UPDATE */
+
+
+
+#define MDL_DERIVATIVES  /* Change to #undef to remove function */
+#if defined(MDL_DERIVATIVES)
+  static void mdlDerivatives(SimStruct *S)
+  {
+
+  }
+#endif /* MDL_DERIVATIVES */
+
+
+
+static void mdlTerminate(SimStruct *S)
+{
+   if (viewer)
+   {
+        delete viewer;
+        Done_q (  );
+        Done_dq (  );
+        Done_ddq (  );
+        #ifdef INPUTS
+        Done_inputs (  );
+        #endif
+        Done_param (  );
+        #ifdef UNKNOWNS
+        Done_unknowns (  );
+        #endif
+
+   }
+       
+}
+
+
+#ifdef  MATLAB_MEX_FILE    /* Is this file being compiled as a MEX-file? */
+#include "simulink.c"      /* MEX-file interface mechanism */
+#else
+#include "cg_sfun.h"       /* Code generation registration function */
+#endif

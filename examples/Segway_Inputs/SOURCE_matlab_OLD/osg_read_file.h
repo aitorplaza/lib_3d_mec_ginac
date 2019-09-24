@@ -1,0 +1,15 @@
+extern void osg_read_file ( void );
+extern osg::Geode* axis;
+extern osg::Geode* Sol_Plataforma3D;
+extern osg::Geode* Sol_RuedaIzq3D;
+extern osg::Geode* Sol_RuedaDcha3D;
+extern osg::Geode* Sol_Manillar3D;
+extern osg::Geode* Pnt_Rider3D;
+extern osg::Geode* Fra_FraABS_draw;
+extern osg::Geode* Sol_Ground3D;
+extern osg::Geode* Vec_VectorP_J1;
+extern osg::Geode* Vec_VectorP_J2;
+extern osg::Geode* Vec_VectorP_S0;
+extern osg::Geode* Vec_VectorP_S1;
+extern osg::Geode* Vec_VectorP_S2;
+extern osg::Geode* Vec_VectorO_P;

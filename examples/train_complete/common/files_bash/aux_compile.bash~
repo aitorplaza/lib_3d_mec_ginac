@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# compile objects
+
+# files from common
+gcc -O2 -c gen_coord_vect_def.c
+gcc -O2 -c gen_vel_vect_def.c
+gcc -O2 -c gen_accel_vect_def.c
+gcc -O2 -c param_vect_def.c
+gcc -O2 -c unknowns_vect_def.c
+gcc -O2 -c inputs_vect_def.c
+gcc -O2 -c newton_raphson_min_norm.c
+gcc -O2 -c print_mat.c
+gcc -O2 -c main_numeric.c
+gcc -O2 -c main_numeric_zd_rt.c
+gcc -O2 -c atom_def.c
+gcc -O2 -c step.c
+gcc -O2 -c lin_alg.c
+
+# files from project
+gcc -O2 -c var_def.c
+gcc -O2 -c var_init.c
+gcc -O2 -c gen_coord_vect_init.c
+gcc -O2 -c gen_vel_vect_init.c
+gcc -O2 -c gen_accel_vect_init.c
+gcc -O2 -c param_vect_init.c
+gcc -O2 -c unknowns_vect_init.c
+gcc -O2 -c inputs_vect_init.c
+gcc -O2 -c Phi.c
+gcc -O2 -c PhiInit.c
+gcc -O2 -c Phi_t.c
+gcc -O2 -c minus_Phi_t.c
+gcc -O2 -c PhiInit_t.c
+gcc -O2 -c minus_PhiInit_t.c
+gcc -O2 -c Phi_q.c
+gcc -O2 -c PhiInit_q.c
+gcc -O2 -c Phi_z.c
+gcc -O2 -c Phi_d.c
+gcc -O2 -c dPhi_q.c
+gcc -O2 -c dPhi_t.c
+gcc -O2 -c dPhi.c
+gcc -O2 -c write_state_file.c
+gcc -O2 -c write_state_file_header.c
+gcc -O2 -c Qgamma.c
+gcc -O2 -c Q_z.c
+gcc -O2 -c Q_d.c
+gcc -O2 -c MXPhi_qZero.c
+gcc -O2 -c M_zz.c
+gcc -O2 -c M_zd.c
+gcc -O2 -c M_dd.c
+gcc -O2 -c Output.c
+gcc -O2 -c Energy.c
+
+

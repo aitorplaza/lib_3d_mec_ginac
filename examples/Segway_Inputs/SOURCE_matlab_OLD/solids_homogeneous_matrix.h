@@ -1,0 +1,14 @@
+void solids_homogeneous_matrix ( void );
+extern osg::Matrix MSol_Plataforma3D;
+extern osg::Matrix MSol_RuedaIzq3D;
+extern osg::Matrix MSol_RuedaDcha3D;
+extern osg::Matrix MSol_Manillar3D;
+extern osg::Matrix MPnt_Rider3D;
+extern osg::Matrix MFra_FraABS_draw;
+extern osg::Matrix MSol_Ground3D;
+extern osg::Matrix MVec_VectorP_J1;
+extern osg::Matrix MVec_VectorP_J2;
+extern osg::Matrix MVec_VectorP_S0;
+extern osg::Matrix MVec_VectorP_S1;
+extern osg::Matrix MVec_VectorP_S2;
+extern osg::Matrix MVec_VectorO_P;

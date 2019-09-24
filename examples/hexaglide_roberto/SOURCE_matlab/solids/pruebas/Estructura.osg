@@ -1,0 +1,5 @@
+Group {
+  name "Estructura.3ds"
+  nodeMask 0xffffffff
+  cullingActive TRUE
+}

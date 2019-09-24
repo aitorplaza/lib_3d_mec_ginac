@@ -1,0 +1,94 @@
+function value=fobjetivo(c1,criterio)
+
+USER_defines;
+Init_variables_parameters;
+COORD='COORD_DEP';
+SIZE='DDL';
+INTEG='EULER';
+LIN='INV';
+
+global DOF;
+global NPTS;
+
+OPTIM_defines;
+
+
+% number of degrees of freedom
+dof=DOF;
+
+% number of trajectory points
+npts=NPTS;
+
+FS001=c1( 1);
+FSa11=c1( 2);
+FSb11=c1( 3);
+FS002=c1( 4);
+FSa12=c1( 5);
+FSb12=c1( 6);
+FS003=c1( 7);
+FSa13=c1( 8);
+FSb13=c1( 9);
+FS004=c1(10);
+FSa14=c1(11);
+FSb14=c1(12);
+FS005=c1(13);
+FSa15=c1(14);
+FSb15=c1(15);
+FS006=c1(16);
+FSa16=c1(17);
+FSb16=c1(18);
+
+
+
+%  % Independent q,dq,ddq of the trajectory defined by coeff
+%  dt=[0:1/(npts-1.0):1];
+%  [QindN,dQindN,ddQindN,dddQindN] = FourierSeries(coeff,dt,dof);
+
+% The mount boolean variable checks if the kinematic simulation is possible
+mount=true;
+try
+	Position_velocity_acceleration; %% Simulacion cinematica
+catch
+	mount=false;
+end
+
+
+if mount==false
+	value=	10^30;
+else
+	W_evaluation;
+
+
+%  	Weq=equilibrate(Wb);
+	Weq=Wb;
+
+	% The objective function to minimize is the following
+	switch criterio
+		case 1,
+			% Maximum likelihood
+			%  	Balance of the matrix Wb
+			M=Wb'*Wb;
+			Meq=balance(M);
+			ml=-log(det(Meq));
+			value=ml;
+		case 2,
+			% Condition Number
+			con=cond(Weq);
+			value=con;
+		case 3,
+			% Criteria 3
+			M=Weq'*Weq;
+			detmax=-log(det(M)/max(max(M)));
+			value=detmax;
+		case 4,
+			% Criteria 4
+			M=Weq'*Weq;
+			tr=trace(M);
+			value=tr;
+		otherwise
+			disp('Error en la funcion objetivo al tomar el criterio')
+			pause
+		end
+end
+
+

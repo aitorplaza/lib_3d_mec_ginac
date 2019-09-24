@@ -1,0 +1,3 @@
+
+
+double step(double a);

@@ -1,0 +1,465 @@
+REM Cambios respecto a hexaglide3.mec
+
+REM Se cambia el orden de los ángulos de Euler a 3(phi)2(theta)1(psi) asi
+REM A coincide con psi*180/pi, B coincide con theta*180/pi y C coincide con phi*180/pi.
+REM (ZXY RollPitchYaw^-1)
+
+REM Se introduce la altura h, para que en Z=0 z??=0.
+REM x y z -> XYZ
+
+
+//Longitud del brazo, medido entre centros de puntos de unión
+
+l:=0.9723
+
+//Radio de los puntos respecto eje cabeza
+
+lp:=0.073085
+REM (0.1^2-(e)^2)^0.5
+//en el diseño real el valor anterior parece razonable, ya que el spindle Kress 1050 FME, tiene un diámetroen la unión de 43mm y un diámetro del cuerpo de 71.4. El valor puesto sugiere un diámetro de 200, con lo que sobrarían (200-71.4)/2=64.3 mm a cada lado para para realizar las uniones
+
+
+pi:=3.141592653589793
+
+//Ángulo formado entre los puntos respecto eje de la cabeza
+
+alpha:=2*3.141592653589793/3
+
+//distancia entre ejes guias (unión con barras)
+
+e:=0.136508/2
+//En el diseño real e= 0.06825 +- las desviaciones respecto al centro de la guia que experimente el centro de unión entre guia y barra, que de momento despreciamos
+
+
+//Distancia  del eje central de la máquina al plano vertical de unión con las guias de un poste
+lb:=0.484
+
+//En el diseño real lb=0.5+0.12-0.068-0.068= 0.484 (16mm menos frente a la estimación inicial)
+//0.5+0.12, distancia del centro a el plano de la columna en que se unen las guias
+//0.068, altura de la guia, desde el plano de unión de la guia hasta el plano de unión del carro
+//0.068, estimación de la altura que ocupará el centro de la rótula frente al plano de unión del carro
+
+h:=0.881202
+
+
+REM Posición del extremo de la herramienta Op
+REM Coordenadas Cartesianas respecto de O (origen ref abs)
+
+X:=0.1
+D(X):=dX
+D(dX):=ddX
+
+Y:=0.1
+D(Y):=dY
+D(dY):=ddY
+
+Z:=1
+D(Z):=dZ
+D(dZ):=ddZ
+
+REM Orientación del extremo de la herramienta
+REM Ángulos de Euler respecto 123 (orientación ref abs)
+
+phi:=0.0
+D(phi):=dphi
+D(dphi):=ddphi
+
+theta:=0.0
+D(theta):=dtheta
+D(dtheta):=ddtheta
+
+psi:=0.0
+D(psi):=dpsi
+D(dpsi):=ddpsi
+
+DRAW_REFERENCE(abs)
+
+POINT(Op,O,{[X,Y,Z]}xyz)
+
+BASE(b123,xyz,3,phi)
+
+BASE(b1'2'3',b123,2,theta)
+
+BASE(b1''2''3'',b1'2'3',1,psi)
+
+REM Puntos de unión de las barras en la cabeza A1, A2, A3, definidos según un giro dextrógiro en eje 3 de la base de la cabeza b1''2''3''. Punto A1, en eje 1 de la cabeza.
+REM Esto es en el diseño original, ahora A1,A2,A3, los desplegamos a A11,A12, A21,A22,A31 y A32. Todos están a la misma distancia del centro.
+REM A11 junto A22, A21, junto A32 y A31 junto a A12.
+REM la distancia entre A11 y A12 (A21 y A22, y A31 y A32) es la misma que ente guias (2*e)
+
+
+POINT(A11,Op,{[lp*1,+e,0]}b1''2''3'')
+POINT(A12,Op,{[lp*1,-e,0]}b1''2''3'')
+
+POINT(A21,Op,{[lp*cos(alpha)-e*sin(alpha),lp*sin(alpha)+e*cos(alpha),0]}b1''2''3'')
+POINT(A22,Op,{[lp*cos(alpha)+e*sin(alpha),lp*sin(alpha)-e*cos(alpha),0]}b1''2''3'')
+
+POINT(A31,Op,{[lp*cos(alpha)+e*sin(alpha),-lp*sin(alpha)+e*cos(alpha),0]}b1''2''3'')
+POINT(A32,Op,{[lp*cos(alpha)-e*sin(alpha),-lp*sin(alpha)-e*cos(alpha),0]}b1''2''3'')
+
+
+//base para poste 1 xyz
+//Base para poste 2 x'y'z'
+BASE(x'y'z',xyz,3,alpha)
+//Base para poste 3 x''y''z''
+BASE(x''y''z'',xyz,3,-alpha)
+
+
+z11:=0
+D(z11):=dz11
+D(dz11):=ddz11
+
+
+POINT(O1,O,{[lb,0,0]}xyz)
+REF(RO1,O1,xyz)
+DRAW_REFERENCE(RO1)
+
+POINT(B11,O,{[lb,e,z11+h]}xyz)
+POINT(O11,O,{[lb,e,0]}xyz)
+
+
+//B11, centro unión brazo carro 11, Poste 1, guia 1 (a la izquierda del poste mirando desde el centro hacia el poste
+
+//DRAW_VECTOR(O,P(O,O11))
+
+z12:=0
+D(z12):=dz12
+D(dz12):=ddz12
+
+//B12, centro unión brazo carro 12, Poste 1, guia 2 (a la derecha del poste mirando desde el centro hacia el poste
+
+POINT(B12,O,{[lb,-e,z12+h]}xyz)
+POINT(O12,O,{[lb,-e,0]}xyz)
+
+z21:=0
+D(z21):=dz21
+D(dz21):=ddz21
+
+POINT(O2,O,{[lb,0,0]}x'y'z')
+REF(RO2,O2,x'y'z')
+DRAW_REFERENCE(RO2)
+
+//B21, centro unión brazo carro 21, Poste 2, guia 1 (a la izquierda del poste mirando desde el centro hacia el poste
+
+POINT(B21,O,{[lb,e,z21+h]}x'y'z')
+POINT(O21,O,{[lb,e,0]}x'y'z')
+
+z22:=0
+D(z22):=dz22
+D(dz22):=ddz22
+
+
+//B22, centro unión brazo carro 22, Poste 2, guia 2 (a la derecha del poste mirando desde el centro hacia el poste
+
+POINT(B22,O,{[lb,-e,z22+h]}x'y'z')
+POINT(O22,O,{[lb,-e,0]}x'y'z')
+
+z31:=0
+D(z31):=dz31
+D(dz31):=ddz31
+
+POINT(O3,O,{[lb,0,0]}x''y''z'')
+REF(RO3,O3,x''y''z'')
+DRAW_REFERENCE(RO3)
+
+//B31, centro unión brazo carro 31, Poste 3, guia 2 (a la izquierda del poste mirando desde el centro hacia el poste
+
+POINT(B31,O,{[lb,e,z31+h]}x''y''z'')
+POINT(O31,O,{[lb,e,0]}x''y''z'')
+
+z32:=0
+D(z32):=dz32
+D(dz32):=ddz32
+
+//B32, centro unión brazo carro 32, Poste 3, guia 2 (a la derecha del poste mirando desde el centro hacia el poste
+
+POINT(B32,O,{[lb,-e,z32+h]}x''y''z'')
+POINT(O32,O,{[lb,-e,0]}x''y''z'')
+
+
+DRAW_CYLINDER_P(O11,B11,0.01,0)
+
+DRAW_CYLINDER_P(O12,B12,0.01,0)
+
+DRAW_CYLINDER_P(O21,B21,0.01,0)
+
+DRAW_CYLINDER_P(O22,B22,0.01,0)
+
+DRAW_CYLINDER_P(O31,B31,0.01,0)
+
+DRAW_CYLINDER_P(O32,B32,0.01,0)
+
+RGB(1,0,0)
+
+DRAW_CYLINDER_P(A11,A12,0.01,0)
+
+DRAW_CYLINDER_P(A21,A22,0.01,0)
+
+DRAW_CYLINDER_P(A31,A32,0.01,0)
+
+RGB(0.5,0.5,0.5)
+
+phi11:=0.1
+D(phi11):=dphi11
+D(dphi11):=ddphi11
+
+phi12:=0.1
+D(phi12):=dphi12
+D(dphi12):=ddphi12
+
+phi21:=0.1
+D(phi21):=dphi21
+D(dphi21):=ddphi21
+
+phi22:=0.1
+D(phi22):=dphi22
+D(dphi22):=ddphi22
+
+phi31:=0.1
+D(phi31):=dphi31
+D(dphi31):=ddphi31
+
+phi32:=0.1
+D(phi32):=dphi32
+D(dphi32):=ddphi32
+
+
+theta11:=0.1
+D(theta11):=dtheta11
+D(dtheta11):=ddtheta11
+
+theta12:=0.1
+D(theta12):=dtheta12
+D(dtheta12):=ddtheta12
+
+theta21:=0.1
+D(theta21):=dtheta21
+D(dtheta21):=ddtheta21
+
+theta22:=0.1
+D(theta22):=dtheta22
+D(dtheta22):=ddtheta22
+
+theta31:=0.1
+D(theta31):=dtheta31
+D(dtheta31):=ddtheta31
+
+theta32:=0.1
+D(theta32):=dtheta32
+D(dtheta32):=ddtheta32
+
+
+BASE (BB11a,xyz,2,phi11)
+BASE (BB11,BB11a,1,theta11)
+
+BASE (BB12a,xyz,2,phi12)
+BASE (BB12,BB12a,1,theta12)
+
+BASE (BB21a,x'y'z',2,phi21)
+BASE (BB21,BB21a,1,theta21)
+
+BASE (BB22a,x'y'z',2,phi22)
+BASE (BB22,BB22a,1,theta22)
+
+BASE (BB31a,x''y''z'',2,phi31)
+BASE (BB31,BB31a,1,theta31)
+
+BASE (BB32a,x''y''z'',2,phi32)
+BASE (BB32,BB32a,1,theta32)
+
+POINT(A11b,B11,{[0,0,-l]}BB11)
+POINT(A12b,B12,{[0,0,-l]}BB12)
+
+POINT(A21b,B21,{[0,0,-l]}BB21)
+POINT(A22b,B22,{[0,0,-l]}BB22)
+
+POINT(A31b,B31,{[0,0,-l]}BB31)
+POINT(A32b,B32,{[0,0,-l]}BB32)
+
+DRAW_CYLINDER_P(B11,A11b,0.01,0)
+
+DRAW_CYLINDER_P(B12,A12b,0.01,0)
+
+DRAW_CYLINDER_P(B21,A21b,0.01,0)
+
+DRAW_CYLINDER_P(B22,A22b,0.01,0)
+
+DRAW_CYLINDER_P(B31,A31b,0.01,0)
+
+DRAW_CYLINDER_P(B32,A32b,0.01,0)
+
+//Until this point is what we need to do a animation with a external state.dat file
+
+//a:=e+cos(pi/6)*(lb-lp)
+//b:=lb+sin(pi/6)*(lb-lp)-lp
+
+//DRAW_VECTOR(O12,{[-b,a,0]}xyz)
+
+
+//Con esta longitud se consigue un ángulo de barra para posición central de 25 grados justos
+
+//Coordenadas cilindricas para el posicionamiento del centro de la cabeza (auxiliares)
+//phi_p es el ángulo con el eje 1 de la base xyz
+//rho_p:=0
+//phi_p:=0*3.141592653589793
+
+rho_p:=0.40
+phi_p:=11*3.141592653589793/6
+
+PAUSE
+//Sistema modificado frente a hexaglide3-bis.mec,
+// para obtener el jacobiano directo
+
+NON_LINEAR_EQUATION_SYSTEM(X,Y,Z,phi,theta,psi,z11,z12,z21,z22,z31,z32,phi11,phi12,phi21,phi22,phi31,phi32,theta11,theta12,theta21,theta22,theta31,theta32)
+{P(A11,A11b)}xyz={[0,0,0]}xyz
+{P(A12,A12b)}xyz={[0,0,0]}xyz
+{P(A21,A21b)}xyz={[0,0,0]}xyz
+{P(A22,A22b)}xyz={[0,0,0]}xyz
+{P(A31,A31b)}xyz={[0,0,0]}xyz
+{P(A32,A32b)}xyz={[0,0,0]}xyz
+X=rho_p*cos(phi_p)
+Y=rho_p*sin(phi_p)
+Z=0
+phi=0
+theta=0
+psi=0
+END
+
+PRINT(rho_p)
+PRINT(phi_p)
+PRINT(z11)
+PRINT(z12)
+PRINT(z21)
+PRINT(z22)
+PRINT(z31)
+PRINT(z32)
+PAUSE
+
+VISUAL(0,89.9)
+
+rho_p:=0.0
+phi_p:=0*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("0.png")
+PAUSE
+rho_p:=0.40
+phi_p:=0*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("1.png")
+PAUSE
+rho_p:=0.40
+phi_p:=1*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("2.png")
+PAUSE
+rho_p:=0.40
+phi_p:=2*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("3.png")
+PAUSE
+rho_p:=0.40
+phi_p:=3*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("4.png")
+PAUSE
+rho_p:=0.40
+phi_p:=4*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("5.png")
+PAUSE
+rho_p:=0.40
+phi_p:=5*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("6.png")
+PAUSE
+rho_p:=0.40
+phi_p:=6*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("7.png")
+PAUSE
+rho_p:=0.40
+phi_p:=7*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("8.png")
+PAUSE
+rho_p:=0.40
+phi_p:=8*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("9.png")
+PAUSE
+rho_p:=0.40
+phi_p:=9*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("10.png")
+PAUSE
+rho_p:=0.40
+phi_p:=10*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("11.png")
+PAUSE
+rho_p:=0.40
+phi_p:=11*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("12.png")
+PAUSE
+
+rho_p:=0.20
+phi_p:=0*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("13.png")
+PAUSE
+rho_p:=0.20
+phi_p:=1*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("14.png")
+PAUSE
+rho_p:=0.20
+phi_p:=2*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("15.png")
+PAUSE
+rho_p:=0.20
+phi_p:=3*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("16.png")
+PAUSE
+rho_p:=0.20
+phi_p:=4*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("17.png")
+PAUSE
+rho_p:=0.20
+phi_p:=5*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("18.png")
+PAUSE
+rho_p:=0.20
+phi_p:=6*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("19.png")
+PAUSE
+rho_p:=0.20
+phi_p:=7*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("20.png")
+PAUSE
+rho_p:=0.20
+phi_p:=8*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("21.png")
+PAUSE
+rho_p:=0.20
+phi_p:=9*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("22.png")
+PAUSE
+rho_p:=0.20
+phi_p:=10*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("23.png")
+PAUSE
+rho_p:=0.20
+phi_p:=11*3.141592653589793/6
+EULER(0.001,0.001,0.001,0)
+SAVE_GRAPHIC_OUTPUT("24.png")
+PAUSE

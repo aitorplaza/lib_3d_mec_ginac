@@ -1,0 +1,8 @@
+    if (argc!=3){
+        printf("Error: The program %s takes two parameters: %s integration_time delta_t newton-raphson-precision\n",argv[0],argv[0]);
+        exit(1);
+    }
+
+    double integration_time=strtod(argv[1], NULL);
+    double delta_t= strtod(argv[2], NULL);
+    long int k,steps;

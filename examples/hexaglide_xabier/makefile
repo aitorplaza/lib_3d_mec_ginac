@@ -1,0 +1,181 @@
+
+
+##INIT SOLVER
+INIT=
+# INIT=-DROBUST_INIT_SOLVER
+
+NEWTON_RAPHSON_TOLERANCE=1.0e-8
+NR_TOL=-DNEWTON_RAPHSON_TOLERANCE=$(NEWTON_RAPHSON_TOLERANCE)
+TRAPEZOIDAL_TOLERANCE=1.0e-8
+TR_TOL=-DTRAPEZOIDAL_TOLERANCE=$(TRAPEZOIDAL_TOLERANCE)
+INVERSE_TOLERANCE=1.0e-12
+INV_TOL=-DINV_TOL=$INVERSE_TOLERANCE
+TOL=$(NR_TOL) $(TR_TOL $INV_TOL)
+ALFA=1.0e+12
+
+GEN_FILE_PRO_CH_DIR=./GENERATED_files_process_c_h
+COM_FILE_CH_OSG_DIR=./common/files_c_h/osg
+COM_FILE_CH_LAP_DIR=./common/files_c_h/lapack
+COM_FILE_CH_LIN_DIR=./common/files_c_h/lin_alg
+COM_FILE_CH_COM_DIR=./common/files_c_h/common_c
+GEN_FILE_OSG_CP_DIR=./GENERATED_files_osg/cpp
+GEN_FILE_OSG_H__DIR=./GENERATED_files_osg/h
+
+
+COMMON=	$(GEN_FILE_PRO_CH_DIR)/time_3D_mec.c		\
+	$(GEN_FILE_PRO_CH_DIR)/gen_coord.c		\
+	$(GEN_FILE_PRO_CH_DIR)/gen_vel.c			\
+	$(GEN_FILE_PRO_CH_DIR)/gen_accel.c		\
+	$(GEN_FILE_PRO_CH_DIR)/param.c			\
+	$(GEN_FILE_PRO_CH_DIR)/unknowns.c			\
+	$(GEN_FILE_PRO_CH_DIR)/inputs.c			\
+	$(GEN_FILE_PRO_CH_DIR)/Phi.c			\
+	$(GEN_FILE_PRO_CH_DIR)/Beta.c			\
+	$(GEN_FILE_PRO_CH_DIR)/Gamma.c			\
+	$(GEN_FILE_PRO_CH_DIR)/write_data_file.c		\
+	$(COM_FILE_CH_COM_DIR)/step.c			\
+	$(COM_FILE_CH_OSG_DIR)/read_config_file.c
+	
+COMMON_o=time_3D_mec.o gen_coord.o gen_vel.o gen_accel.o param.o unknowns.o inputs.o Phi.o Beta.o Gamma.o write_data_file.o step.o read_config_file.o
+
+
+
+COORD_Q=		$(GEN_FILE_PRO_CH_DIR)/PhiInit.c		\
+		$(GEN_FILE_PRO_CH_DIR)/PhiInit_q.c	\
+		$(GEN_FILE_PRO_CH_DIR)/dPhiInit_dq.c	\
+		$(GEN_FILE_PRO_CH_DIR)/BetaInit.c 	\
+		$(GEN_FILE_PRO_CH_DIR)/Phi_q.c	\
+		$(GEN_FILE_PRO_CH_DIR)/dPhi_dq.c
+COORD_Q_o=PhiInit.o PhiInit_q.o dPhiInit_dq.o BetaInit.o Phi_q.o dPhi_dq.o
+
+COORD_Z=		$(GEN_FILE_PRO_CH_DIR)/PhiInit.c		\
+		$(GEN_FILE_PRO_CH_DIR)/PhiInit_q.c	\
+		$(GEN_FILE_PRO_CH_DIR)/dPhiInit_dq.c	\
+		$(GEN_FILE_PRO_CH_DIR)/BetaInit.c 	\
+		$(GEN_FILE_PRO_CH_DIR)/Phi_q.c		\
+		$(GEN_FILE_PRO_CH_DIR)/dPhi_dq.c		\
+		$(GEN_FILE_PRO_CH_DIR)/M.c		\
+		$(GEN_FILE_PRO_CH_DIR)/Q.c
+
+COORD_Z_o=PhiInit.o PhiInit_q.o dPhiInit_dq.o BetaInit.o Phi_q.o dPhi_dq.o M.o Q.o
+
+DYN_DDL=		$(GEN_FILE_PRO_CH_DIR)/Qgamma.c		\
+		$(GEN_FILE_PRO_CH_DIR)/MXdPhi_dqZero.c
+
+DYN_DDL_o=Qgamma.o MXdPhi_dqZero.o
+
+
+
+DYN_DDQ=	$(GEN_FILE_PRO_CH_DIR)/M.c	\
+	$(GEN_FILE_PRO_CH_DIR)/Q.c
+
+DYN_DDQ_o=M.o Q.o
+
+L_A=		$(COM_FILE_CH_LIN_DIR)/one_step_euler.c		\
+		$(COM_FILE_CH_LIN_DIR)/Declare_Variables.c 	\
+		$(COM_FILE_CH_LIN_DIR)/lin_alg.c			\
+		$(COM_FILE_CH_LIN_DIR)/Initial_position_velocity.c
+		
+L_A_o=one_step_euler.o Declare_Variables.o lin_alg.o Initial_position_velocity.o 
+
+
+
+OSG=	$(GEN_FILE_OSG_CP_DIR)/solids_homogeneous_matrix.cpp	\
+	$(GEN_FILE_OSG_CP_DIR)/osg_read_file.cpp			\
+	$(GEN_FILE_OSG_CP_DIR)/osg_root.cpp			\
+	$(GEN_FILE_OSG_CP_DIR)/osg_state.cpp
+
+OSG_o=solids_homogeneous_matrix.o osg_read_file.o osg_root.o osg_state.o
+
+###################################################################################################
+MAIN=main_numeric_osg
+MAIN_o=main_numeric_osg.o
+
+
+
+###################################################################################################
+#######################DEFAULT OPTIONS#############################################################
+###################################################################################################
+FORM1=-DCOORD_DEP
+FORM2=-DDDL
+INTEG=-DEULER
+MATH=-DLIN_ALG
+SOLVER=-DTRI_LU
+# SOLVER=-DINV
+# FORM1=-DCOORD_DEP FORM2=-DDDL INTEG=-DEULER MATH=-DLIN_ALG SOLVER=-DTRI_LU
+
+
+ifeq ($(FORM1),-DCOORD_DEP)
+        COORD=$(COORD_Q)
+        COORD_o=$(COORD_Q_o)
+endif
+ifeq ($(FORM1),-DCOORD_IND)
+        COORD=$(COORD_Z)
+        COORD_o=$(COORD_Z_o)
+endif
+
+ifeq ($(FORM2),-DDDL)
+        DYN=$(DYN_DDL)
+        DYN_o=$(DYN_DDL_o)
+endif
+ifeq ($(FORM2),-DDDQ)
+        DYN=$(DYN_DDQ)
+        DYN_o=$(DYN_DDQ_o)
+endif
+
+
+
+###################################################################################################
+################################# COMPILATION #####################################################
+###################################################################################################
+
+all:	./GENERATED_OSG_bin/$(MAIN)
+	
+
+./GENERATED_OSG_bin/$(MAIN):$(COMMON_o) $(COORD_o) $(L_A_o) $(DYN_o) $(OSG_o) $(COM_FILE_CH_OSG_DIR)/$(MAIN).cc $(COM_FILE_CH_LIN_DIR)/direct_dynamics_lin_alg.c
+			 #--------------------------------------------------------------------------------
+			 #-------------------------------- Linking --------------------------------------
+			 #--------------------------------------------------------------------------------
+			g++  $(INTEG) $(FORM1) $(FORM2) $(INIT)  $(SOLVER) $(TOL) $(MATH) -O2 -o $(MAIN) $(COM_FILE_CH_OSG_DIR)/$(MAIN).cc $(COMMON_o) $(COORD_o) $(DYN_o) $(L_A_o) $(OSG_o) -I$(COM_FILE_CH_OSG_DIR) -I$(GEN_FILE_OSG_CP_DIR) -I$(GEN_FILE_OSG_H__DIR) -I$(COM_FILE_CH_LIN_DIR) -I$(COM_FILE_CH_COM_DIR) -I$(GEN_FILE_PRO_CH_DIR) -lOpenThreads -losg -losgDB -losgGA -losgUtil -losgViewer -losgText -lm -lblas -llapack -ansi -funroll-loops
+			mv main_numeric_osg ./GENERATED_OSG_bin
+			cp ./solids/*.* ./GENERATED_OSG_bin/solids/
+			cp ./common/files_osg/axes.osg ./GENERATED_OSG_bin
+			cp ./common/files_osg/point.osg ./GENERATED_OSG_bin
+			cp ./common/files_osg/vector.osg ./GENERATED_OSG_bin
+	
+$(COMMON_o):	$(COMMON)
+		 #------------------------------------------------------------------------------
+		 #-------------------------------- Compiling COMMON ----------------------------
+		 #------------------------------------------------------------------------------
+		gcc $(INTEG) $(FORM1) $(FORM2) $(INIT) $(SOLVER) $(TOL) -O2 -c $(COMMON) -I$(GEN_FILE_PRO_CH_DIR) -I$(COM_FILE_CH_COM_DIR) 
+
+$(COORD_o):	$(COORD)
+		 #------------------------------------------------------------------------------
+		 #-------------------------------- Compiling COORD -----------------------------
+		 #------------------------------------------------------------------------------
+		gcc $(INTEG) $(FORM1) $(FORM2) $(INIT) $(SOLVER) $(TOL) -O2 -c $(COORD) -I$(GEN_FILE_PRO_CH_DIR) -I$(COM_FILE_CH_COM_DIR) 
+
+$(L_A_o):	$(L_A) $(COM_FILE_CH_LIN_DIR)/Integration_Euler.c $(COM_FILE_CH_LIN_DIR)/Projection.c $(COM_FILE_CH_LIN_DIR)/Solve_Dynamics.c 
+		 #------------------------------------------------------------------------------
+		 #-------------------------------- Compiling L_A -------------------------------
+		 #------------------------------------------------------------------------------
+		gcc $(INTEG) $(FORM1) $(FORM2) $(INIT) $(SOLVER) $(TOL) -O2 -c $(L_A) -I$(COM_FILE_CH_LIN_DIR) -I$(COM_FILE_CH_COM_DIR)   -I$(GEN_FILE_PRO_CH_DIR)
+
+$(DYN_o):	$(DYN)
+		 #------------------------------------------------------------------------------
+		 #-------------------------------- Compiling DYN_DDL ---------------------------
+		 #------------------------------------------------------------------------------
+		gcc $(INTEG) $(FORM1) $(FORM2) $(INIT) $(SOLVER) $(TOL) -O2 -c $(DYN) -I$(GEN_FILE_PRO_CH_DIR) -I$(COM_FILE_CH_COM_DIR)
+
+$(OSG_o):	$(OSG)
+		 #------------------------------------------------------------------------------
+		 #-------------------------------- Compiling OSG -------------------------------
+		 #------------------------------------------------------------------------------
+		 g++ -c $(OSG) -I$(GEN_FILE_OSG_CP_DIR) -I$(GEN_FILE_OSG_H__DIR) -I$(GEN_FILE_PRO_CH_DIR) 
+
+clean:
+		./common/files_bash/aux_clear_common.bash
+		./common/files_bash/aux_move.bash
+		rm ./GENERATED_OSG_bin/$(MAIN)
+
+

@@ -1,0 +1,11 @@
+extern void osg_read_file ( void );
+extern osg::Geode* axis;
+extern osg::Geode* Sol_Arm1_3D;
+extern osg::Geode* Sol_Arm2_3D;
+extern osg::Geode* Sol_Plane_3D;
+extern osg::Geode* Sol_Disc_3D;
+extern osg::Geode* Fra_FraARM1_draw;
+extern osg::Geode* Fra_FraARM2_draw;
+extern osg::Geode* Fra_FraDISC_draw;
+extern osg::Geode* Fra_FraPLANE_draw;
+extern osg::Geode* Fra_FraABS_draw;

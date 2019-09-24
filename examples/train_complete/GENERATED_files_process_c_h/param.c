@@ -1,0 +1,592 @@
+#include <stdlib.h>
+#include "param.h"
+
+#define g 9.8000000000000007e+00
+#define L_OBOG_OAXBy 8.1499999999999995e-01
+#define L_OBOG_OAXBz 1.9718200000000000e-01
+#define L_OBOG_OSUSPy 8.1499999999999995e-01
+#define L_OBOG_OSUSPx 5.0000000000000000e-01
+#define L_OBOG_OSUSPz 1.2218200000000000e-01
+#define L_OBOG_OWHS 1.0925000000000000e+00
+#define L_OBOG_P1BOG 3.5249999999999998e-01
+#define L_MOT 3.9600000000000002e-01
+#define L_GEAR 3.4399999999999997e-01
+#define L_AXB1 5.1500000000000001e-01
+#define L_AXB2 9.1999999999999998e-02
+#define L_SUSP 2.6900000000000002e-01
+#define L_WHS 1.0700000000000001e+00
+#define L_RAIL 1.0699999999999998e+00
+#define L_WAG 9.5000000000000000e+00
+#define L_SUSPBEAM1 5.0000000000000000e-01
+#define L_SUSPBEAM2 1.7000000000000001e-01
+#define L_SLDx 1.7000000000000001e-01
+#define L_SLDy 8.1499999999999995e-01
+#define b_pend 0.0000000000000000e+00
+#define a_pend 0.0000000000000000e+00
+#define L0_1 3.1000000000000000e-01
+#define L0_2 3.7800000000000000e-01
+#define m_WAG 2.2608000000000000e+04
+#define I_WAGx 7.8000000000000000e+03
+#define I_WAGy 5.3079000000000000e+04
+#define I_WAGz 1.7000000000000000e+04
+#define xCGWAG -1.3719999999999999e-01
+#define yCGWAG 0.0000000000000000e+00
+#define zCGWAG 3.5000000000000000e+00
+#define G_BOGz 2.8100000000000003e-01
+#define m_BOG 1.5078599999999999e+03
+#define I_BOGx 7.1689999999999998e+02
+#define I_BOGy 1.7383000000000000e+03
+#define I_BOGz 2.3473000000000002e+03
+#define m_MOT 5.6879999999999995e+02
+#define I_MOTx 4.9299999999999997e+01
+#define I_MOTy 1.3909999999999999e+02
+#define I_MOTz 6.6900000000000004e+00
+#define m_ROT 5.6879999999999995e+02
+#define I_ROTx 1.7699999999999999e+01
+#define I_ROTy 1.7000000000000000e+00
+#define I_ROTz 1.7699999999999999e+01
+#define m_WHS 1.2220000000000000e+03
+#define I_WHSx 3.7660000000000002e+02
+#define I_WHSy 7.9599999999999994e+01
+#define I_WHSz 3.7660000000000002e+02
+#define I_CORy 6.1364809999999999e+00
+#define m_AXB 6.7719999999999999e+01
+#define I_AXBx 9.5999999999999996e-01
+#define I_AXBy 4.5700000000000003e+00
+#define I_AXBz 4.2900000000000000e+00
+#define m_SLD 4.6100000000000000e+02
+#define I_SLDx 2.1640000000000001e+02
+#define I_SLDy 2.5899999999999999e+01
+#define I_SLDz 2.3209999999999999e+02
+#define K_SSl 5.0000000000000000e+05
+#define C_SSl 5.0000000000000000e+03
+#define C_SSr 5.0000000000000000e+03
+#define K_SSr 5.0000000000000000e+05
+#define Kgear 1.0000000000000000e+06
+#define Cgear 10000.0
+#define alpha_gear 3.4906999999999999e-01
+#define zROT 1.6000000000000000e+01
+#define zWHS 6.8000000000000000e+01
+#define K_S1 261954.0
+#define C_S1 5.0000000000000000e+03
+#define K_S2 277046.0
+#define C_S2 5.0000000000000000e+03
+#define aW_RFR 0.0000000000000000e+00
+#define bW_RFR 0.0000000000000000e+00
+#define cW_RFR -1.0000000000000001e-01
+#define dW_RFR -5.0000000000000000e-01
+#define lW_RFR 0.0000000000000000e+00
+#define aR_RFR 0.0000000000000000e+00
+#define bR_RFR -2.0000000000000000e+01
+#define cR_RFR 0.0000000000000000e+00
+#define dR_RFR 1.0000000000000001e-01
+#define lR_RFR 0.0000000000000000e+00
+#define RFRas 0.0000000000000000e+00
+#define RFRbs 0.0000000000000000e+00
+#define RFRcs 0.0000000000000000e+00
+#define RFRds 0.0000000000000000e+00
+#define RFRes 0.0000000000000000e+00
+#define RFRfs 0.0000000000000000e+00
+#define RFRstas 0.0000000000000000e+00
+#define RFRends 1.0000000000000000e+01
+#define irrRFRz 0.0000000000000000e+00
+#define aW_RFL 0.0000000000000000e+00
+#define bW_RFL 0.0000000000000000e+00
+#define cW_RFL 1.0000000000000001e-01
+#define dW_RFL -5.0000000000000000e-01
+#define lW_RFL 0.0000000000000000e+00
+#define aR_RFL 0.0000000000000000e+00
+#define bR_RFL -2.0000000000000000e+01
+#define cR_RFL 0.0000000000000000e+00
+#define dR_RFL 1.0000000000000001e-01
+#define lR_RFL 0.0000000000000000e+00
+#define RFLas 0.0000000000000000e+00
+#define RFLbs 0.0000000000000000e+00
+#define RFLcs 0.0000000000000000e+00
+#define RFLds 0.0000000000000000e+00
+#define RFLes 0.0000000000000000e+00
+#define RFLfs 0.0000000000000000e+00
+#define RFLstas 0.0000000000000000e+00
+#define RFLends 1.0000000000000000e+01
+#define irrRFLz 0.0000000000000000e+00
+#define aW_RRR 0.0000000000000000e+00
+#define bW_RRR 0.0000000000000000e+00
+#define cW_RRR -1.0000000000000001e-01
+#define dW_RRR -5.0000000000000000e-01
+#define lW_RRR 0.0000000000000000e+00
+#define aR_RRR 0.0000000000000000e+00
+#define bR_RRR -2.0000000000000000e+01
+#define cR_RRR 0.0000000000000000e+00
+#define dR_RRR 1.0000000000000001e-01
+#define lR_RRR 0.0000000000000000e+00
+#define RRRas 0.0000000000000000e+00
+#define RRRbs 0.0000000000000000e+00
+#define RRRcs 0.0000000000000000e+00
+#define RRRds 0.0000000000000000e+00
+#define RRRes 0.0000000000000000e+00
+#define RRRfs 0.0000000000000000e+00
+#define RRRstas 0.0000000000000000e+00
+#define RRRends 1.0000000000000000e+01
+#define irrRRRz 0.0000000000000000e+00
+#define aW_RRL 0.0000000000000000e+00
+#define bW_RRL 0.0000000000000000e+00
+#define cW_RRL 1.0000000000000001e-01
+#define dW_RRL -5.0000000000000000e-01
+#define lW_RRL 0.0000000000000000e+00
+#define aR_RRL 0.0000000000000000e+00
+#define bR_RRL -2.0000000000000000e+01
+#define cR_RRL 0.0000000000000000e+00
+#define dR_RRL 1.0000000000000001e-01
+#define lR_RRL 0.0000000000000000e+00
+#define RRLas 0.0000000000000000e+00
+#define RRLbs 0.0000000000000000e+00
+#define RRLcs 0.0000000000000000e+00
+#define RRLds 0.0000000000000000e+00
+#define RRLes 0.0000000000000000e+00
+#define RRLfs 0.0000000000000000e+00
+#define RRLstas 0.0000000000000000e+00
+#define RRLends 1.0000000000000000e+01
+#define irrRRLz 0.0000000000000000e+00
+#define aW_FFR 0.0000000000000000e+00
+#define bW_FFR 0.0000000000000000e+00
+#define cW_FFR -1.0000000000000001e-01
+#define dW_FFR -5.0000000000000000e-01
+#define lW_FFR 0.0000000000000000e+00
+#define aR_FFR 0.0000000000000000e+00
+#define bR_FFR -2.0000000000000000e+01
+#define cR_FFR 0.0000000000000000e+00
+#define dR_FFR 1.0000000000000001e-01
+#define lR_FFR 0.0000000000000000e+00
+#define FFRas 0.0000000000000000e+00
+#define FFRbs 0.0000000000000000e+00
+#define FFRcs 0.0000000000000000e+00
+#define FFRds 0.0000000000000000e+00
+#define FFRes 0.0000000000000000e+00
+#define FFRfs 0.0000000000000000e+00
+#define FFRstas 0.0000000000000000e+00
+#define FFRends 1.0000000000000000e+01
+#define irrFFRz 0.0000000000000000e+00
+#define aW_FFL 0.0000000000000000e+00
+#define bW_FFL 0.0000000000000000e+00
+#define cW_FFL 1.0000000000000001e-01
+#define dW_FFL -5.0000000000000000e-01
+#define lW_FFL 0.0000000000000000e+00
+#define aR_FFL 0.0000000000000000e+00
+#define bR_FFL -2.0000000000000000e+01
+#define cR_FFL 0.0000000000000000e+00
+#define dR_FFL 1.0000000000000001e-01
+#define lR_FFL 0.0000000000000000e+00
+#define FFLas 0.0000000000000000e+00
+#define FFLbs 0.0000000000000000e+00
+#define FFLcs 0.0000000000000000e+00
+#define FFLds 0.0000000000000000e+00
+#define FFLes 0.0000000000000000e+00
+#define FFLfs 0.0000000000000000e+00
+#define FFLstas 0.0000000000000000e+00
+#define FFLends 1.0000000000000000e+01
+#define irrFFLz 0.0000000000000000e+00
+#define aW_FRR 0.0000000000000000e+00
+#define bW_FRR 0.0000000000000000e+00
+#define cW_FRR -1.0000000000000001e-01
+#define dW_FRR -5.0000000000000000e-01
+#define lW_FRR 0.0000000000000000e+00
+#define aR_FRR 0.0000000000000000e+00
+#define bR_FRR -2.0000000000000000e+01
+#define cR_FRR 0.0000000000000000e+00
+#define dR_FRR 1.0000000000000001e-01
+#define lR_FRR 0.0000000000000000e+00
+#define FRRas 0.0000000000000000e+00
+#define FRRbs 0.0000000000000000e+00
+#define FRRcs 0.0000000000000000e+00
+#define FRRds 0.0000000000000000e+00
+#define FRRes 0.0000000000000000e+00
+#define FRRfs 0.0000000000000000e+00
+#define FRRstas 0.0000000000000000e+00
+#define FRRends 1.0000000000000000e+01
+#define irrFRRz 0.0000000000000000e+00
+#define aW_FRL 0.0000000000000000e+00
+#define bW_FRL 0.0000000000000000e+00
+#define cW_FRL 1.0000000000000001e-01
+#define dW_FRL -5.0000000000000000e-01
+#define lW_FRL 0.0000000000000000e+00
+#define aR_FRL 0.0000000000000000e+00
+#define bR_FRL -2.0000000000000000e+01
+#define cR_FRL 0.0000000000000000e+00
+#define dR_FRL 1.0000000000000001e-01
+#define lR_FRL 0.0000000000000000e+00
+#define FRLas 0.0000000000000000e+00
+#define FRLbs 0.0000000000000000e+00
+#define FRLcs 0.0000000000000000e+00
+#define FRLds 0.0000000000000000e+00
+#define FRLes 0.0000000000000000e+00
+#define FRLfs 0.0000000000000000e+00
+#define FRLstas 0.0000000000000000e+00
+#define FRLends 1.0000000000000000e+01
+#define irrFRLz 0.0000000000000000e+00
+#define E_elastic 2.1000000000000000e+11
+#define nu_poisson 2.7000000000000002e-01
+#define G_elastic 1.4384000000000000e+11
+#define aRFR 0.0000000000000000e+00
+#define bRFR 0.0000000000000000e+00
+#define C11RFR 0.0000000000000000e+00
+#define C22RFR 0.0000000000000000e+00
+#define C23RFR 0.0000000000000000e+00
+#define C33RFR 0.0000000000000000e+00
+#define aRFL 0.0000000000000000e+00
+#define bRFL 0.0000000000000000e+00
+#define C11RFL 0.0000000000000000e+00
+#define C22RFL 0.0000000000000000e+00
+#define C23RFL 0.0000000000000000e+00
+#define C33RFL 0.0000000000000000e+00
+#define aRRR 0.0000000000000000e+00
+#define bRRR 0.0000000000000000e+00
+#define C11RRR 0.0000000000000000e+00
+#define C22RRR 0.0000000000000000e+00
+#define C23RRR 0.0000000000000000e+00
+#define C33RRR 0.0000000000000000e+00
+#define aRRL 0.0000000000000000e+00
+#define bRRL 0.0000000000000000e+00
+#define C11RRL 0.0000000000000000e+00
+#define C22RRL 0.0000000000000000e+00
+#define C23RRL 0.0000000000000000e+00
+#define C33RRL 0.0000000000000000e+00
+#define aFFR 0.0000000000000000e+00
+#define bFFR 0.0000000000000000e+00
+#define C11FFR 0.0000000000000000e+00
+#define C22FFR 0.0000000000000000e+00
+#define C23FFR 0.0000000000000000e+00
+#define C33FFR 0.0000000000000000e+00
+#define aFFL 0.0000000000000000e+00
+#define bFFL 0.0000000000000000e+00
+#define C11FFL 0.0000000000000000e+00
+#define C22FFL 0.0000000000000000e+00
+#define C23FFL 0.0000000000000000e+00
+#define C33FFL 0.0000000000000000e+00
+#define aFRR 0.0000000000000000e+00
+#define bFRR 0.0000000000000000e+00
+#define C11FRR 0.0000000000000000e+00
+#define C22FRR 0.0000000000000000e+00
+#define C23FRR 0.0000000000000000e+00
+#define C33FRR 0.0000000000000000e+00
+#define aFRL 0.0000000000000000e+00
+#define bFRL 0.0000000000000000e+00
+#define C11FRL 0.0000000000000000e+00
+#define C22FRL 0.0000000000000000e+00
+#define C23FRL 0.0000000000000000e+00
+#define C33FRL 0.0000000000000000e+00
+#define epsiRFR 1.0000000000000000e+00
+#define epsiRFL 1.0000000000000000e+00
+#define epsiRRR 1.0000000000000000e+00
+#define epsiRRL 1.0000000000000000e+00
+#define epsiFFR 1.0000000000000000e+00
+#define epsiFFL 1.0000000000000000e+00
+#define epsiFRR 1.0000000000000000e+00
+#define epsiFRL 1.0000000000000000e+00
+
+double * param=NULL; 
+
+void Init_param_values ( void )
+{
+param[0]=g;
+param[1]=L_OBOG_OAXBy;
+param[2]=L_OBOG_OAXBz;
+param[3]=L_OBOG_OSUSPy;
+param[4]=L_OBOG_OSUSPx;
+param[5]=L_OBOG_OSUSPz;
+param[6]=L_OBOG_OWHS;
+param[7]=L_OBOG_P1BOG;
+param[8]=L_MOT;
+param[9]=L_GEAR;
+param[10]=L_AXB1;
+param[11]=L_AXB2;
+param[12]=L_SUSP;
+param[13]=L_WHS;
+param[14]=L_RAIL;
+param[15]=L_WAG;
+param[16]=L_SUSPBEAM1;
+param[17]=L_SUSPBEAM2;
+param[18]=L_SLDx;
+param[19]=L_SLDy;
+param[20]=b_pend;
+param[21]=a_pend;
+param[22]=L0_1;
+param[23]=L0_2;
+param[24]=m_WAG;
+param[25]=I_WAGx;
+param[26]=I_WAGy;
+param[27]=I_WAGz;
+param[28]=xCGWAG;
+param[29]=yCGWAG;
+param[30]=zCGWAG;
+param[31]=G_BOGz;
+param[32]=m_BOG;
+param[33]=I_BOGx;
+param[34]=I_BOGy;
+param[35]=I_BOGz;
+param[36]=m_MOT;
+param[37]=I_MOTx;
+param[38]=I_MOTy;
+param[39]=I_MOTz;
+param[40]=m_ROT;
+param[41]=I_ROTx;
+param[42]=I_ROTy;
+param[43]=I_ROTz;
+param[44]=m_WHS;
+param[45]=I_WHSx;
+param[46]=I_WHSy;
+param[47]=I_WHSz;
+param[48]=I_CORy;
+param[49]=m_AXB;
+param[50]=I_AXBx;
+param[51]=I_AXBy;
+param[52]=I_AXBz;
+param[53]=m_SLD;
+param[54]=I_SLDx;
+param[55]=I_SLDy;
+param[56]=I_SLDz;
+param[57]=K_SSl;
+param[58]=C_SSl;
+param[59]=C_SSr;
+param[60]=K_SSr;
+param[61]=Kgear;
+param[62]=Cgear;
+param[63]=alpha_gear;
+param[64]=zROT;
+param[65]=zWHS;
+param[66]=K_S1;
+param[67]=C_S1;
+param[68]=K_S2;
+param[69]=C_S2;
+param[70]=aW_RFR;
+param[71]=bW_RFR;
+param[72]=cW_RFR;
+param[73]=dW_RFR;
+param[74]=lW_RFR;
+param[75]=aR_RFR;
+param[76]=bR_RFR;
+param[77]=cR_RFR;
+param[78]=dR_RFR;
+param[79]=lR_RFR;
+param[80]=RFRas;
+param[81]=RFRbs;
+param[82]=RFRcs;
+param[83]=RFRds;
+param[84]=RFRes;
+param[85]=RFRfs;
+param[86]=RFRstas;
+param[87]=RFRends;
+param[88]=irrRFRz;
+param[89]=aW_RFL;
+param[90]=bW_RFL;
+param[91]=cW_RFL;
+param[92]=dW_RFL;
+param[93]=lW_RFL;
+param[94]=aR_RFL;
+param[95]=bR_RFL;
+param[96]=cR_RFL;
+param[97]=dR_RFL;
+param[98]=lR_RFL;
+param[99]=RFLas;
+param[100]=RFLbs;
+param[101]=RFLcs;
+param[102]=RFLds;
+param[103]=RFLes;
+param[104]=RFLfs;
+param[105]=RFLstas;
+param[106]=RFLends;
+param[107]=irrRFLz;
+param[108]=aW_RRR;
+param[109]=bW_RRR;
+param[110]=cW_RRR;
+param[111]=dW_RRR;
+param[112]=lW_RRR;
+param[113]=aR_RRR;
+param[114]=bR_RRR;
+param[115]=cR_RRR;
+param[116]=dR_RRR;
+param[117]=lR_RRR;
+param[118]=RRRas;
+param[119]=RRRbs;
+param[120]=RRRcs;
+param[121]=RRRds;
+param[122]=RRRes;
+param[123]=RRRfs;
+param[124]=RRRstas;
+param[125]=RRRends;
+param[126]=irrRRRz;
+param[127]=aW_RRL;
+param[128]=bW_RRL;
+param[129]=cW_RRL;
+param[130]=dW_RRL;
+param[131]=lW_RRL;
+param[132]=aR_RRL;
+param[133]=bR_RRL;
+param[134]=cR_RRL;
+param[135]=dR_RRL;
+param[136]=lR_RRL;
+param[137]=RRLas;
+param[138]=RRLbs;
+param[139]=RRLcs;
+param[140]=RRLds;
+param[141]=RRLes;
+param[142]=RRLfs;
+param[143]=RRLstas;
+param[144]=RRLends;
+param[145]=irrRRLz;
+param[146]=aW_FFR;
+param[147]=bW_FFR;
+param[148]=cW_FFR;
+param[149]=dW_FFR;
+param[150]=lW_FFR;
+param[151]=aR_FFR;
+param[152]=bR_FFR;
+param[153]=cR_FFR;
+param[154]=dR_FFR;
+param[155]=lR_FFR;
+param[156]=FFRas;
+param[157]=FFRbs;
+param[158]=FFRcs;
+param[159]=FFRds;
+param[160]=FFRes;
+param[161]=FFRfs;
+param[162]=FFRstas;
+param[163]=FFRends;
+param[164]=irrFFRz;
+param[165]=aW_FFL;
+param[166]=bW_FFL;
+param[167]=cW_FFL;
+param[168]=dW_FFL;
+param[169]=lW_FFL;
+param[170]=aR_FFL;
+param[171]=bR_FFL;
+param[172]=cR_FFL;
+param[173]=dR_FFL;
+param[174]=lR_FFL;
+param[175]=FFLas;
+param[176]=FFLbs;
+param[177]=FFLcs;
+param[178]=FFLds;
+param[179]=FFLes;
+param[180]=FFLfs;
+param[181]=FFLstas;
+param[182]=FFLends;
+param[183]=irrFFLz;
+param[184]=aW_FRR;
+param[185]=bW_FRR;
+param[186]=cW_FRR;
+param[187]=dW_FRR;
+param[188]=lW_FRR;
+param[189]=aR_FRR;
+param[190]=bR_FRR;
+param[191]=cR_FRR;
+param[192]=dR_FRR;
+param[193]=lR_FRR;
+param[194]=FRRas;
+param[195]=FRRbs;
+param[196]=FRRcs;
+param[197]=FRRds;
+param[198]=FRRes;
+param[199]=FRRfs;
+param[200]=FRRstas;
+param[201]=FRRends;
+param[202]=irrFRRz;
+param[203]=aW_FRL;
+param[204]=bW_FRL;
+param[205]=cW_FRL;
+param[206]=dW_FRL;
+param[207]=lW_FRL;
+param[208]=aR_FRL;
+param[209]=bR_FRL;
+param[210]=cR_FRL;
+param[211]=dR_FRL;
+param[212]=lR_FRL;
+param[213]=FRLas;
+param[214]=FRLbs;
+param[215]=FRLcs;
+param[216]=FRLds;
+param[217]=FRLes;
+param[218]=FRLfs;
+param[219]=FRLstas;
+param[220]=FRLends;
+param[221]=irrFRLz;
+param[222]=E_elastic;
+param[223]=nu_poisson;
+param[224]=G_elastic;
+param[225]=aRFR;
+param[226]=bRFR;
+param[227]=C11RFR;
+param[228]=C22RFR;
+param[229]=C23RFR;
+param[230]=C33RFR;
+param[231]=aRFL;
+param[232]=bRFL;
+param[233]=C11RFL;
+param[234]=C22RFL;
+param[235]=C23RFL;
+param[236]=C33RFL;
+param[237]=aRRR;
+param[238]=bRRR;
+param[239]=C11RRR;
+param[240]=C22RRR;
+param[241]=C23RRR;
+param[242]=C33RRR;
+param[243]=aRRL;
+param[244]=bRRL;
+param[245]=C11RRL;
+param[246]=C22RRL;
+param[247]=C23RRL;
+param[248]=C33RRL;
+param[249]=aFFR;
+param[250]=bFFR;
+param[251]=C11FFR;
+param[252]=C22FFR;
+param[253]=C23FFR;
+param[254]=C33FFR;
+param[255]=aFFL;
+param[256]=bFFL;
+param[257]=C11FFL;
+param[258]=C22FFL;
+param[259]=C23FFL;
+param[260]=C33FFL;
+param[261]=aFRR;
+param[262]=bFRR;
+param[263]=C11FRR;
+param[264]=C22FRR;
+param[265]=C23FRR;
+param[266]=C33FRR;
+param[267]=aFRL;
+param[268]=bFRL;
+param[269]=C11FRL;
+param[270]=C22FRL;
+param[271]=C23FRL;
+param[272]=C33FRL;
+param[273]=epsiRFR;
+param[274]=epsiRFL;
+param[275]=epsiRRR;
+param[276]=epsiRRL;
+param[277]=epsiFFR;
+param[278]=epsiFFL;
+param[279]=epsiFRR;
+param[280]=epsiFRL;
+}
+
+void Init_param ( )
+{
+ param = malloc ( n_param * sizeof(double) );
+ {int i;
+  for ( i = 0 ; i < n_param ; i++ ) {param[i]=0.0;}
+ }
+}
+
+void Done_param( ) 
+{
+if ( param != NULL) 
+free ( param ); 
+param = NULL; 
+}
+
+void Reallocate_param( double * user_param ) 
+{
+param = user_param; 
+}
+

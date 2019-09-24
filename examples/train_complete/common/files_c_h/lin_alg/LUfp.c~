@@ -1,0 +1,13 @@
+/* Solving Dynamics Forward */
+_Phi=Phi();
+_Phi_q=Phi_q();
+_dPhi_dq=dPhi_dq();
+
+lufp3(dPhi_dq_n_rows,Phi_q_n_rows, dPhi_dq_n_cols, _dPhi_dq, LU, p_vector, perm_vel, iter);//*applied on dPhi_dq for coordinate partitioning*/
+
+/* ********************************************************************************************* */
+
+
+
+
+

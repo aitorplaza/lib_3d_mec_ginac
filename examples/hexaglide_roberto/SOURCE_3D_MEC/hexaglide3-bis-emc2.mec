@@ -1,0 +1,415 @@
+REM Cambios respecto a hexaglide3.mec
+
+REM Se cambia el orden de los ángulos de Euler a 3(phi)2(theta)1(psi) asi
+REM A coincide con psi*180/pi, B coincide con theta*180/pi y C coincide con phi*180/pi.
+REM (ZXY RollPitchYaw^-1)
+
+REM Se introduce la altura h, para que en Z=0 z??=0.
+REM x y z -> XYZ
+
+REM Posición del extremo de la herramienta Op
+REM Coordenadas Cartesianas respecto de O (origen ref abs)
+
+X:=0.3
+D(X):=dX
+D(dX):=ddX
+
+Y:=0.3
+D(Y):=dY
+D(dY):=ddY
+
+Z:=0.3
+D(Z):=dZ
+D(dZ):=ddZ
+
+REM Orientación del extremo de la herramienta
+REM Ángulos de Euler respecto 123 (orientación ref abs)
+
+phi:=0.1
+D(phi):=dphi
+D(dphi):=ddphi
+
+theta:=0.1
+D(theta):=dtheta
+D(dtheta):=ddtheta
+
+psi:=0.1
+D(psi):=dpsi
+D(dpsi):=ddpsi
+
+
+DRAW_REFERENCE(abs)
+
+POINT(Op,O,{[X,Y,Z]}xyz)
+
+BASE(b123,xyz,3,phi)
+
+BASE(b1'2'3',b123,2,theta)
+
+BASE(b1''2''3'',b1'2'3',1,psi)
+
+REM Puntos de unión de las barras en la cabeza A1, A2, A3, definidos según un giro dextrógiro en eje 3 de la base de la cabeza b1''2''3''. Punto A1, en eje 1 de la cabeza.
+REM Esto es en el diseño original, ahora A1,A2,A3, los desplegamos a A11,A12, A21,A22,A31 y A32. Todos están a la misma distancia del centro.
+REM A11 junto A22, A21, junto A32 y A31 junto a A12.
+REM la distancia entre A11 y A12 (A21 y A22, y A31 y A32) es la misma que ente guias (2*e)
+
+//Radio de los puntos respecto eje cabeza
+
+lp:=0.073085
+REM (0.1^2-(e)^2)^0.5
+//en el diseño real el valor anterior parece razonable, ya que el spindle Kress 1050 FME, tiene un diámetroen la unión de 43mm y un diámetro del cuerpo de 71.4. El valor puesto sugiere un diámetro de 200, con lo que sobrarían (200-71.4)/2=64.3 mm a cada lado para para realizar las uniones
+
+
+pi:=3.141592653589793
+
+//Ángulo formado entre los puntos respecto eje de la cabeza
+
+alpha:=2*3.141592653589793/3
+
+//distancia entre ejes guias (unión con barras)
+
+e:=0.136508/2
+//En el diseño real e= 0.06825 +- las desviaciones respecto al centro de la guia que experimente el centro de unión entre guia y barra, que de momento despreciamos
+
+
+POINT(A11,Op,{[lp*1,+e,0]}b1''2''3'')
+POINT(A12,Op,{[lp*1,-e,0]}b1''2''3'')
+
+POINT(A21,Op,{[lp*cos(alpha)-e*sin(alpha),lp*sin(alpha)+e*cos(alpha),0]}b1''2''3'')
+POINT(A22,Op,{[lp*cos(alpha)+e*sin(alpha),lp*sin(alpha)-e*cos(alpha),0]}b1''2''3'')
+
+POINT(A31,Op,{[lp*cos(alpha)+e*sin(alpha),-lp*sin(alpha)+e*cos(alpha),0]}b1''2''3'')
+POINT(A32,Op,{[lp*cos(alpha)-e*sin(alpha),-lp*sin(alpha)-e*cos(alpha),0]}b1''2''3'')
+
+
+//Distancia  del eje central de la máquina al plano vertical de unión con las guias de un poste
+lb:=0.484
+
+//En el diseño real lb=0.5+0.12-0.068-0.068= 0.484 (16mm menos frente a la estimación inicial)
+//0.5+0.12, distancia del centro a el plano de la columna en que se unen las guias
+//0.068, altura de la guia, desde el plano de unión de la guia hasta el plano de unión del carro
+//0.068, estimación de la altura que ocupará el centro de la rótula frente al plano de unión del carro
+
+
+//base para poste 1 xyz
+//Base para poste 2 x'y'z'
+BASE(x'y'z',xyz,3,alpha)
+//Base para poste 3 x''y''z''
+BASE(x''y''z'',xyz,3,-alpha)
+
+h:=0.881202
+
+z11:=0.881202
+D(z11):=dz11
+D(dz11):=ddz11
+
+POINT(B11,O,{[lb,e,z11+h]}xyz)
+POINT(O11,O,{[lb,e,0]}xyz)
+
+//B11, centro unión brazo carro 11, Poste 1, guia 1 (a la izquierda del poste mirando desde el centro hacia el poste
+
+//DRAW_VECTOR(O,P(O,O11))
+
+z12:=0.881202
+D(z12):=dz12
+D(dz12):=ddz12
+
+//B12, centro unión brazo carro 12, Poste 1, guia 2 (a la derecha del poste mirando desde el centro hacia el poste
+
+POINT(B12,O,{[lb,-e,z12+h]}xyz)
+POINT(O12,O,{[lb,-e,0]}xyz)
+
+z21:=0.881202
+D(z21):=dz21
+D(dz21):=ddz21
+
+
+//B21, centro unión brazo carro 21, Poste 2, guia 1 (a la izquierda del poste mirando desde el centro hacia el poste
+
+POINT(B21,O,{[lb,e,z21+h]}x'y'z')
+POINT(O21,O,{[lb,e,0]}x'y'z')
+
+z22:=0.881202
+D(z22):=dz22
+D(dz22):=ddz22
+
+
+//B22, centro unión brazo carro 22, Poste 2, guia 2 (a la derecha del poste mirando desde el centro hacia el poste
+
+POINT(B22,O,{[lb,-e,z22+h]}x'y'z')
+POINT(O22,O,{[lb,-e,0]}x'y'z')
+
+z31:=0.881202
+D(z31):=dz31
+D(dz31):=ddz31
+
+//B31, centro unión brazo carro 31, Poste 3, guia 2 (a la izquierda del poste mirando desde el centro hacia el poste
+
+POINT(B31,O,{[lb,e,z31+h]}x''y''z'')
+POINT(O31,O,{[lb,e,0]}x''y''z'')
+
+z32:=0.881202
+D(z32):=dz32
+D(dz32):=ddz32
+
+//B32, centro unión brazo carro 32, Poste 3, guia 2 (a la derecha del poste mirando desde el centro hacia el poste
+
+POINT(B32,O,{[lb,-e,z32+h]}x''y''z'')
+POINT(O32,O,{[lb,-e,0]}x''y''z'')
+
+
+DRAW_CYLINDER_P(O11,B11,0.01,0)
+
+DRAW_CYLINDER_P(O12,B12,0.01,0)
+
+DRAW_CYLINDER_P(O21,B21,0.01,0)
+
+DRAW_CYLINDER_P(O22,B22,0.01,0)
+
+DRAW_CYLINDER_P(O31,B31,0.01,0)
+
+DRAW_CYLINDER_P(O32,B32,0.01,0)
+
+RGB(1,0,0)
+
+DRAW_CYLINDER_P(A11,A12,0.01,0)
+
+DRAW_CYLINDER_P(A21,A22,0.01,0)
+
+DRAW_CYLINDER_P(A31,A32,0.01,0)
+
+RGB(0.5,0.5,0.5)
+
+DRAW_CYLINDER_P(B11,A11,0.01,0)
+
+DRAW_CYLINDER_P(B12,A12,0.01,0)
+
+DRAW_CYLINDER_P(B21,A21,0.01,0)
+
+DRAW_CYLINDER_P(B22,A22,0.01,0)
+
+DRAW_CYLINDER_P(B31,A31,0.01,0)
+
+DRAW_CYLINDER_P(B32,A32,0.01,0)
+
+//a:=e+cos(pi/6)*(lb-lp)
+//b:=lb+sin(pi/6)*(lb-lp)-lp
+
+//DRAW_VECTOR(O12,{[-b,a,0]}xyz)
+
+//Longitud del brazo, medido entre centros de puntos de unión
+
+l:=0.9723
+
+//Con esta longitud se consigue un ángulo de barra para posición central de 25 grados justos
+
+//Coordenadas cilindricas para el posicionamiento del centro de la cabeza (auxiliares)
+//phi_p es el ángulo con el eje 1 de la base xyz
+//rho_p:=0
+//phi_p:=0*3.141592653589793
+
+rho_p:=0.9
+phi_p:=5.4461
+
+
+
+PAUSE
+//Sistema modificado frente a hexaglide3-bis.mec,
+// para obtener el jacobiano directo
+
+NON_LINEAR_EQUATION_SYSTEM(X,Y,Z,phi,theta,psi)
+{P(B11,A11)}xyz*{P(B11,A11)}xyz=l^2
+{P(B12,A12)}xyz*{P(B12,A12)}xyz=l^2
+{P(B21,A21)}xyz*{P(B21,A22)}xyz=l^2
+{P(B22,A22)}xyz*{P(B22,A22)}xyz=l^2
+{P(B31,A31)}xyz*{P(B31,A31)}xyz=l^2
+{P(B32,A32)}xyz*{P(B32,A32)}xyz=l^2
+END
+
+PRINT({P(B11,A11)}xyz)
+PRINT(NON_LINEAR_EQUATION_SYSTEM_1)
+
+//PAUSE
+
+//Sistema modificado frente a hexaglide3-bis.mec,
+// para obtener el jacobiano inverso
+
+//NON_LINEAR_EQUATION_SYSTEM(z11,z12,z21,z22,z31,z32)
+//{P(B11,A11)}xyz*{P(B11,A11)}xyz=l^2
+//{P(B12,A12)}xyz*{P(B12,A12)}xyz=l^2
+//{P(B21,A21)}xyz*{P(B21,A22)}xyz=l^2
+//{P(B22,A22)}xyz*{P(B22,A22)}xyz=l^2
+//{P(B31,A31)}xyz*{P(B31,A31)}xyz=l^2
+//{P(B32,A32)}xyz*{P(B32,A32)}xyz=l^2
+//END
+
+PRINT(X)
+PRINT(Y)
+PRINT(Z)
+PRINT(psi)
+PRINT(theta)
+PRINT(phi)
+
+//PRINT(NON_LINEAR_EQUATION_SYSTEM_1)
+PRINT(z11)
+PRINT(z12)
+PRINT(z21)
+PRINT(z22)
+PRINT(z31)
+PRINT(z32)
+PAUSE
+
+PRINT({P(B11,A11)}xyz*{[0,0,1]}xyz/l)
+
+//Simulación estática, las velocidades son cero
+LINEAR_EQUATION_SYSTEM(dX,dY,dZ,dphi,dtheta,dpsi,dz11,dz12,dz21,dz22,dz31,dz32)
+dX=0
+dY=0
+dZ=0
+dphi=0
+dtheta=0
+dpsi=0
+dz11=0
+dz12=0
+dz21=0
+dz22=0
+dz31=0
+dz32=0
+END
+
+
+F1:=0
+F2:=0
+F3:=0
+F4:=0
+F5:=0
+F6:=0
+
+F111:=0
+F112:=0
+F113:=0
+{FB11A11}xyz:={[F111,F112,F113]}xyz
+F121:=0
+F122:=0
+F123:=0
+{FB12A12}xyz:={[F121,F122,F123]}xyz
+
+F211:=0
+F212:=0
+F213:=0
+{FB21A21}x'y'z':={[F211,F212,F213]}x'y'z'
+F221:=0
+F222:=0
+F223:=0
+{FB22A22}x'y'z':={[F221,F222,F223]}x'y'z'
+
+F311:=0
+F312:=0
+F313:=0
+{FB31A31}x''y''z'':={[F311,F312,F313]}x''y''z''
+F321:=0
+F322:=0
+F323:=0
+{FB32A32}x''y''z'':={[F321,F322,F323]}x''y''z''
+
+
+//P punto extremo extremo de la herramienta, en el eje z y a una distancia d hacia abajo de Op
+d:=0.09
+
+//En el diseño real con el spindle de kress 1050 FME, las uniones de las juntas cardan tomarán un mímimo de 5cm
+//en la vertical a los que deben sumarse otros 5cm como mínimo, ocupados por el alojamiento + collet + fresa
+//Asi que una mejor estimación para d supondría sería 10cm, aproximadamente.
+
+POINT(P,Op,{[0,0,-d]}b1'2'3')
+
+DRAW_CYLINDER_P(Op,P,0.01,0)
+
+//Se aplica una fuerza Fx, Fy, Fz en el extremo de la herramienta de cara al cálculo de las solicitaciones estáticas de la máquina, la fuerza se expresa en la base base_p, base asociada a las coordenadas cilíndricas utilizadas para especificar el movimiento de la cabeza
+
+BASE(base_p,xyz,3,phi_p)
+
+Fx:=1
+Fy:=0
+Fz:=1
+
+{Fp}base_p:={[Fx,Fy,Fz]}base_p
+
+LINEAR_EQUATION_SYSTEM(ddX,ddY,ddZ,ddphi,ddtheta,ddpsi,ddz11,ddz12,ddz21,ddz22,ddz31,ddz32,F1,F2,F3,F4,F5,F6,F111,F112,F113,F121,F122,F123,F211,F212,F213,F221,F222,F223,F311,F312,F313,F321,F322,F323)
+ddX=0
+ddY=0
+ddZ=0
+ddphi=0
+ddtheta=0
+ddpsi=0
+ddz11=0
+ddz12=0
+ddz21=0
+ddz22=0
+ddz31=0
+ddz32=0
+{[0,0,F1]}xyz*{[0,0,1]}xyz+{FB11A11}xyz*{[0,0,1]}xyz=0
+{[0,0,F2]}xyz*{[0,0,1]}xyz+{FB12A12}xyz*{[0,0,1]}xyz=0
+{[0,0,F3]}xyz*{[0,0,1]}xyz+{FB21A21}x'y'z'*{[0,0,1]}x'y'z'=0
+{[0,0,F4]}xyz*{[0,0,1]}xyz+{FB22A22}x'y'z'*{[0,0,1]}x'y'z'=0
+{[0,0,F5]}xyz*{[0,0,1]}xyz+{FB31A31}x''y''z''*{[0,0,1]}x''y''z''=0
+{[0,0,F6]}xyz*{[0,0,1]}xyz+{FB32A32}x''y''z''*{[0,0,1]}x''y''z''=0
+
+{FB11A11}xyz^{P(B11,A11)}xyz={[0,0,0]}xyz
+{FB12A12}xyz^{P(B12,A12)}xyz={[0,0,0]}xyz
+{FB21A21}xyz^{P(B21,A21)}xyz={[0,0,0]}xyz
+{FB22A22}xyz^{P(B22,A22)}xyz={[0,0,0]}xyz
+{FB31A31}xyz^{P(B31,A31)}xyz={[0,0,0]}xyz
+{FB32A32}xyz^{P(B32,A32)}xyz={[0,0,0]}xyz
+
+-({FB11A11}xyz+{FB12A12}xyz+{FB21A21}xyz+{FB22A22}xyz+{FB31A31}xyz+{FB32A32}xyz)+{Fp}xyz={[0,0,0]}xyz
+
+-({P(Op,A11)}xyz^{FB11A11}xyz+{P(Op,A12)}xyz^{FB12A12}xyz+{P(Op,A21)}xyz^{FB21A21}xyz+{P(Op,A22)}xyz^{FB22A22}xyz+{P(Op,A31)}xyz^{FB31A31}xyz+{P(Op,A32)}xyz^{FB32A32}xyz)+{P(Op,P)}xyz^{Fp}xyz={[0,0,0]}xyz
+END
+
+PRINT(LINEAR_EQUATION_SYSTEM_2)
+
+DRAW_VECTOR(B11,{[F111,F112,F113]}xyz)
+DRAW_VECTOR(B12,{[F121,F122,F123]}xyz)
+DRAW_VECTOR(B21,{[F211,F212,F213]}x'y'z')
+DRAW_VECTOR(B22,{[F221,F222,F223]}x'y'z')
+DRAW_VECTOR(B31,{[F311,F312,F313]}x''y''z'')
+DRAW_VECTOR(B32,{[F321,F322,F323]}x''y''z'')
+
+DRAW_VECTOR(O11,{[0,0,1]}xyz)
+
+DRAW_VECTOR(O12,{[0,0,z12]}xyz)
+
+
+DRAW_VECTOR(P,{Fp}base_p)
+
+DRAW_VECTOR(P,-({FB11A11}xyz+{FB12A12}xyz+{FB21A21}xyz+{FB22A22}xyz+{FB31A31}xyz+{FB32A32}xyz))
+
+PRINT(z11)
+PRINT(z12)
+PRINT(z21)
+PRINT(z22)
+PRINT(z31)
+PRINT(z32)
+PRINT(F1)
+PRINT(F2)
+PRINT(F3)
+PRINT(F4)
+PRINT(F5)
+PRINT(F6)
+
+
+
+PAUSE
+
+SET_STATE_FILE(state3d_mec.dat)
+WRITE_STATE
+REM READ_STATE(1,1280,1)
+REM SAVE_GRAPHIC_OUTPUT_ANIMATION(1,"state1$t$.ext")
+
+EXPORT_TO_MATLAB(hexaglide.m)
+
+PAUSE
+
+RK4(0.01,0.3,0.01,0)
+
+

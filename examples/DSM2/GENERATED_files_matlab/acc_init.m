@@ -1,0 +1,10 @@
+global ddtheta1;
+global ddtheta2;
+global ddpsi;
+global ddy;
+global ddz;
+ddtheta1 = 0.0;
+ddtheta2 = 0.0;
+ddpsi = 0.0;
+ddy = 0;
+ddz = 0;
