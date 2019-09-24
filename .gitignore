@@ -35,5 +35,7 @@
 # Ignore libtool
 libtool
 
-# Ignore code object files
-./**/*.o
+
+# Ignoring include/ and lib/ directories
+include/
+lib/
