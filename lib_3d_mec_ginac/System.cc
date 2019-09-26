@@ -1168,7 +1168,7 @@ Method for build a new Matrix in the System
 */
 Matrix * System::new_Matrix ( Matrix * m ) {
     Matrixs.push_back ( m );
-    return m
+    return m;
 }
 
 
