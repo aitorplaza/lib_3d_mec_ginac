@@ -28,13 +28,13 @@ using std::ostream;
 		long last_row;
 		long last_col;
 
-		//Protected methods		
+		//Protected methods
 
 		void set_matrix ( matrix new_mat );
 
 		//Protected constructor
 
-		
+
 
 	private:
 
@@ -62,7 +62,7 @@ using std::ostream;
 		Matrix ( string name , lst expression_list );
 
 		//Access methods
-	
+
 		string get_name ( void );
 		//System * get_System ( void );
 		matrix get_matrix ( void );
@@ -83,9 +83,12 @@ using std::ostream;
         void set_col ( const int j , Matrix VectorC );
         void set_row ( const int i , Matrix VectorR );
         Matrix remove_col ( int jth );
-        Matrix remove_row ( int i );       
-        
-        
+        Matrix remove_row ( int i );
+
+		void set(int row, int col, const ex& value);
+		ex& get(int row, int col);
+
+
 		//Operators
 
 		friend Matrix operator + ( const Matrix & MatrixA , const Matrix & MatrixB );
