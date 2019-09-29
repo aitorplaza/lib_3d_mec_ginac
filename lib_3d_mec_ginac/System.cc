@@ -601,6 +601,12 @@ Vector3D * System::new_Vector3D ( string name , Matrix * mat , string base_name 
 
 }
 
+/*
+Method to insert an already created Vector3D in the system
+*/
+void System::new_Vector3D(Vector3D* v) {
+    Vectors.push_back(v);
+}
 
 /*
 Method for build a new Tensor3D in the System
