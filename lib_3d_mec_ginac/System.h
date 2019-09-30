@@ -36,8 +36,10 @@ using std::vector;
 class System{
 
         //Atributes
-
+    public:
         symbol_numeric t;
+
+    private:
         vector < symbol_numeric * > coordinates; //q
         vector < symbol_numeric * > velocities; //dq
         vector < symbol_numeric * > accelerations; //ddq
