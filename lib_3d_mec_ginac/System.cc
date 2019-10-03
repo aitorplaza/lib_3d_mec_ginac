@@ -601,6 +601,12 @@ Vector3D * System::new_Vector3D ( string name , Matrix * mat , string base_name 
 
 }
 
+/*
+Method to insert an already created Vector3D in the system
+*/
+void System::new_Vector3D(Vector3D* v) {
+    Vectors.push_back(v);
+}
 
 /*
 Method for build a new Tensor3D in the System
@@ -775,8 +781,8 @@ Solid * System::new_Solid ( string name , Point * p , Base * base, symbol_numeri
     try{
         if ( Search_Object ( Solids , name ) != NULL )throw 1;
         //if ( new_IT->get_Base ( ) != base ) throw 2;
-        if ( new_IT->get_Base ( ) != base ) {cout <<"   Warning: " + new_IT->get_name() + " Intertia Tensor is not fixed to " +name + " solid" <<endl;};
-        if ( new_CM->get_Base ( ) != base ) {cout <<"   Warning: " + new_CM->get_name() + " Intertia Center Vector is not fixed to " +name + " solid" <<endl;};
+        if ( new_IT->get_Base ( ) != base ) {cout <<"   Warning: " + new_IT->get_name() + " Inertia Tensor is not fixed to " +name + " solid" <<endl;};
+        if ( new_CM->get_Base ( ) != base ) {cout <<"   Warning: " + new_CM->get_name() + " Inertia Center Vector is not fixed to " +name + " solid" <<endl;};
         //if ( new_CM->get_Base ( ) != base )  throw 3;
         if ( Search_Object ( Points , p->get_name() ) == NULL )throw 4;
         if ( Search_Object ( Bases , base->get_name() ) == NULL )throw 5;
@@ -796,8 +802,8 @@ Solid * System::new_Solid ( string name , Point * p , Base * base, symbol_numeri
         outError ( "ERR -  Solid not build" );
     }catch ( int e ) {
         if (e==1) {outError ( "ERR -  Name of Solid already used" );}
-        else if (e==2){outError ( "ERR -  Intertia Tensor is not fixed to the solid" );}
-        else if (e==3){outError ( "ERR -  Intertia Center Vector is not fixed to the solid " );}
+        else if (e==2){outError ( "ERR -  Inertia Tensor is not fixed to the solid" );}
+        else if (e==3){outError ( "ERR -  Inertia Center Vector is not fixed to the solid " );}
         else if (e==4) {outError ( (string("ERR - The point ") + p->get_name() + string(" used to define ") + name + string(" solid is not defined.")).c_str() );}
         else if (e==5) {outError ( (string("ERR - The base ") + base->get_name() + string(" used to define ") + name + string(" solid is not defined.")).c_str() );}
         else if (e==6) {outError ( (string("ERR - The Parameter ") + new_mass->get_name() + string(" used to define ") + name + string(" solid is not defined.")).c_str() );}
