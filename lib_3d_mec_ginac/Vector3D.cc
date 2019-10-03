@@ -166,7 +166,7 @@ void Vector3D::set_Base ( Base * new_base ){
 }
 
 /* 
-Put one System in this Vector3D
+Set Vector3D System
 */
 void Vector3D::set_System ( System * new_system ) {
 	system = new_system;
@@ -243,7 +243,7 @@ Return the derivate of Vector3D's Base
 //}
 
 /* 
-Method that substitute the expresions indicates in the relational form.
+Method that substitute the expresions given in the relational form.
 */
 Vector3D Vector3D::subs ( relational relation ){
 	Vector3D sol = * this; 
@@ -326,7 +326,7 @@ Vector3D operator - ( const Vector3D & Vector3DA , const Vector3D & Vector3DB ){
     Matrix VB = (Matrix) Vector3DB;
     
     if (VA(0,0) == 0 && VA(1,0)== 0   && VA(2,0)== 0)
-        return Vector3DB;
+        return -Vector3DB;
         
     if (VB(0,0) == 0 && VB(1,0)== 0   && VB(2,0)== 0)
         return Vector3DA;

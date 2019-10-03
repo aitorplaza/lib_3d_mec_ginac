@@ -601,7 +601,7 @@ void OPT_atom_expression_list( lst & list , lst & expression_list, exhashmap < i
 
 
 /*
-This function unatomizes an expression keeping the repited according to a hash table.
+This function unatomizes an expression keeping the repeated according to a hash table.
 */
 ex OPT_unatomize_ex( ex expression, exhashmap < int > &hashmap ) {
     if ( atomization == NO )
@@ -896,4 +896,45 @@ int recursive_ops_counter (ex expression){
         counter =  counter + recursive_ops_counter(*i);
     }    
     return counter;
+}
+
+ex unatomize ( ex m ){
+    if  ( atomization == NO )
+        return m;
+     m = unatomize_ex ( m  );
+    return m;
+}
+
+Matrix unatomize ( Matrix m ){
+    if  ( atomization == NO )
+        return m;
+    for  ( int i = 0 ; i < m.rows () ; i++ )
+        for  ( int j = 0; j < m.cols () ; j++ )
+            m ( i , j ) = unatomize_ex ( m ( i , j ) );
+    return m;
+}
+
+Vector3D unatomize ( Vector3D m ){
+    if  ( atomization == NO )
+        return m;
+    for  ( int i = 0 ; i < m.rows () ; i++ )
+        for  ( int j = 0; j < m.cols () ; j++ )
+            m ( i , j ) = unatomize_ex ( m ( i , j ) );
+    return m;
+}
+
+Tensor3D unatomize ( Tensor3D m ){
+    if  ( atomization == NO )
+        return m;
+    for  ( int i = 0 ; i < m.rows () ; i++ )
+        for  ( int j = 0; j < m.cols () ; j++ )
+            m ( i , j ) = unatomize_ex ( m ( i , j ) );
+    return m;
+}
+
+Wrench3D unatomize ( Wrench3D m ){
+    if  ( atomization == NO )
+        return m;
+    
+    return m.unatomize();
 }

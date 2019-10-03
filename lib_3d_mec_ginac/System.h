@@ -275,8 +275,9 @@ class System{
         Vector3D Acceleration_Vector (Frame * FrameF , Point * PointB, Solid * SolS );
         Vector3D Acceleration_Vector (string Frame_name , string PointA_name, string Solid_name );
 
-
-
+        Wrench3D Twist (Solid * Solid_obj);
+        Wrench3D Twist (string Solid_name);
+        
         void remove_Matrix ( string matrix_name );
         void remove_Vector3D ( string vector3D_name );
         void remove_Point ( string point_name );
@@ -298,10 +299,14 @@ class System{
         Matrix diff ( Matrix MatrixA , symbol symbolA );
         Vector3D diff ( Vector3D Vector3DA , symbol symbolA );
         Tensor3D diff ( Tensor3D Tensor3DA , symbol symbolA );
+        Wrench3D diff ( Wrench3D Wrench3DA , symbol symbolA );
+        Wrench3D diff(Wrench3D WrenchA,ex symbolA);
+			
         ex diff ( ex expression , string symbol_name );
         Matrix diff ( Matrix MatrixA , string symbol_name );
         Vector3D diff ( Vector3D Vector3DA , string symbol_name );
         Tensor3D diff ( Tensor3D Tensor3DA , string symbol_name );
+        Wrench3D diff ( Wrench3D Wrench3DA , string symbol_name );
         ex numeric_evaluate ( ex expression );
         Matrix evaluate_Matrix ( Matrix MatrixA );
 

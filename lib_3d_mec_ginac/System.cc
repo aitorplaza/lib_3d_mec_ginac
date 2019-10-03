@@ -886,9 +886,6 @@ Wrench3D * System::new_Wrench3D(string s_name, ex f1, ex f2, ex f3, string s_bas
     return new_Wrench3D ( s_name , Faux, Maux , get_Point ( s_P ) , get_Solid ( s_Sol ), type );
 }
 
-
-
-
 /*
 Method for build a new wrench in the System with 2 solids
 */
@@ -2683,6 +2680,22 @@ Vector3D System::Acceleration_Vector (string Frame_name , string PointA_name, st
 
 
 
+Wrench3D  System::Twist (Solid * Solid_obj){
+
+gravity = UP;
+gravity = UP;
+Vector3D VelBUP  = Velocity_Vector("abs",Solid_obj->get_Point() -> get_name());
+Vector3D OmSolUP = Angular_Velocity("xyz",Solid_obj->get_Base() -> get_name());
+gravity = DOWN;
+
+return  Wrench3D("",OmSolUP,VelBUP,Solid_obj->get_Point(),Solid_obj,"");
+}
+
+Wrench3D  System::Twist (string Solid_name){
+Solid * Solid_obj=get_Solid( Solid_name );
+
+return Twist (Solid_obj);
+}
 
 /*
 Return the ex derivate
@@ -3051,6 +3064,16 @@ Tensor3D System::diff(Tensor3D TensorA,symbol symbolA){
     return ::diff(TensorA,symbolA);
 }
 
+/*
+Return the derivate of one Wrench3D respect one symbol
+*/
+Wrench3D System::diff(Wrench3D WrenchA,symbol symbolA){
+    return Wrench3D("",::diff(WrenchA.get_Force(),symbolA),::diff(WrenchA.get_Moment(),symbolA),WrenchA.get_Point(),WrenchA.get_Solid(),"Twist");
+}
+
+Wrench3D System::diff(Wrench3D WrenchA,ex symbolA){
+    return Wrench3D("",::diff(WrenchA.get_Force(),ex_to<symbol>(symbolA)),::diff(WrenchA.get_Moment(),ex_to<symbol>(symbolA)),WrenchA.get_Point(),WrenchA.get_Solid(),"Twist");
+}
 
 /*
 Return the derivate of one Matrix respect one symbol
@@ -3142,6 +3165,35 @@ try {
 
 
 /*
+Return the derivate of one Wrench3D respect one symbol
+*/
+Wrench3D System::diff(Wrench3D WrenchA,string symbol_name){
+	try {
+    symbol_numeric * symbol_symbol=Search_Object ( coordinates , symbol_name );
+    if (symbol_symbol==NULL)
+     symbol_symbol=Search_Object ( velocities , symbol_name );
+    else if (symbol_symbol==NULL)
+     symbol_symbol=Search_Object ( accelerations , symbol_name );
+    else if (symbol_symbol==NULL)
+     symbol_symbol=Search_Object ( parameters , symbol_name );
+    //added by Aitor
+    if (symbol_symbol==NULL)
+     symbol_symbol=Search_Object ( aux_coordinates , symbol_name );
+    else if (symbol_symbol==NULL)
+     symbol_symbol=Search_Object ( aux_velocities , symbol_name );
+    else if (symbol_symbol==NULL)
+     symbol_symbol=Search_Object ( aux_accelerations , symbol_name );
+
+    if (symbol_symbol==NULL) throw 1;
+
+    return System::diff(WrenchA,*symbol_symbol);
+
+    } catch (int e) {
+		outError ( (string("ERR - The string") + symbol_name + string("is not a symbol (Coordinate velocity acceleration or parameter)")).c_str());
+    }
+}
+
+/*
 Return one Matrix with all the symbols of one vector
 */
 Matrix Matrix_Of_Symbols ( vector < symbol_numeric * > vect ) {
@@ -3151,7 +3203,6 @@ Matrix Matrix_Of_Symbols ( vector < symbol_numeric * > vect ) {
     }
     return aux;
 }
-
 
 /*
 Returns a Matrix with all the coordinates
@@ -3322,9 +3373,9 @@ Matrix System::GenForce(Wrench3D * wrench){
 
 
             GenForce (i,0) = (wrench->get_Force()).change_Base(Base_xyz)* diff(Vel,dq_i)
-                           + (wrench->get_Momentum() ).change_Base(Base_xyz)* diff(Omega,dq_i);
+                           + (wrench->get_Moment() ).change_Base(Base_xyz)* diff(Omega,dq_i);
             //GenForce (i,0) = ( wrench->get_Force() + Vector3D( Matrix ( 3 , 1, lst(0,0,0) ) ,Base_xyz, this) ) * diff(Vel,dq_i)
-            //           + ( wrench->get_Momentum()  + Vector3D( Matrix ( 3 , 1, lst(0,0,0) ) ,Base_xyz, this) )* diff(Omega,dq_i);
+            //           + ( wrench->get_Moment()  + Vector3D( Matrix ( 3 , 1, lst(0,0,0) ) ,Base_xyz, this) )* diff(Omega,dq_i);
 
         }
 
@@ -3332,7 +3383,7 @@ Matrix System::GenForce(Wrench3D * wrench){
         //~ Matrix Omega_dq  = jacobian(Omega.transpose(),dq);
         //~
         //~ GenForce = Vel_dq.transpose() * (wrench->get_Force()).change_Base(Vel.get_Base())
-                 //~ + Omega_dq.transpose() *(wrench->get_Momentum() ).change_Base(Omega.get_Base()) ;
+                 //~ + Omega_dq.transpose() *(wrench->get_Moment() ).change_Base(Omega.get_Base()) ;
 
 
 
@@ -3343,16 +3394,16 @@ Matrix System::GenForce(Wrench3D * wrench){
         Matrix RVel_F = Rotation_Matrix (VelUP.get_Base(),   (wrench->get_Force()).get_Base());
 
         Vector3D OmegaUP = Angular_Velocity("xyz",wrench->get_Solid()->get_Base()->get_name());
-        Matrix ROM_M  = Rotation_Matrix (OmegaUP.get_Base(), (wrench->get_Momentum()).get_Base());
+        Matrix ROM_M  = Rotation_Matrix (OmegaUP.get_Base(), (wrench->get_Moment()).get_Base());
 
 
         Matrix VelUP_dq    = jacobian(VelUP.transpose(),dq);
         Matrix OmegaUP_dq  = jacobian(OmegaUP.transpose(),dq);
 
         // GenForce = VelUP_dq.transpose() * RVel_F * (wrench->get_Force())
-                // + OmegaUP_dq.transpose() * ROM_M * (wrench->get_Momentum()) ;
+                // + OmegaUP_dq.transpose() * ROM_M * (wrench->get_Moment()) ;
         GenForce = VelUP_dq.transpose() * (wrench->get_Force()).change_Base(VelUP.get_Base())
-                 + OmegaUP_dq.transpose() * (wrench->get_Momentum()).change_Base(OmegaUP.get_Base());
+                 + OmegaUP_dq.transpose() * (wrench->get_Moment()).change_Base(OmegaUP.get_Base());
 
     }
 
@@ -3444,7 +3495,7 @@ Wrench3D * System::Inertia_Wrench(Solid * Sol){
     //Vector3D Fi = -(mass)*AabsG;
     Vector3D Fi = - mass*AabsB - (Dt(Omega,"xyz")^mBG) - (Omega^(Omega^mBG));
     Vector3D Mi_B = -Dt(H_B,"xyz") - (mBG^AabsB);
-
+    
     Wrench3D* new_InTor= new_Wrench3D (s2, Fi, Mi_B , B, Sol, "Inertia" );
     return new_InTor;
 }
@@ -8935,9 +8986,6 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
     Matrix Dynamic_Equations(0,1);
     Matrix_Calculation(Phi,coord_indep_init ,vel_indep_init , Dynamic_Equations, sys, method, dPhiNH);
 }
-
-
-
 
 void System::export_Dynamic_Simulation (System &sys, int order, int maple){
 

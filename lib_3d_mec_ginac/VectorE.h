@@ -25,8 +25,6 @@ using std::string;
         string name;
         list <Vector3D> VectorsList; 
 
-                
-
         private:
         void init ( string name );
         //vector <T> Velems;

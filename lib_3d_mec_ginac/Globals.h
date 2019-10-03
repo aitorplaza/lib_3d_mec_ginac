@@ -1,7 +1,7 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-
+#include "Wrench3D.h"
 #include "Matrix.h"
 #include "atom.h"
 
@@ -83,15 +83,26 @@ int recursive_ops_counter (ex expression);
 /*
 This function unatomizes a Matrix
  */
-template < class T >
-T unatomize ( T m ){
-    if  ( atomization == NO )
-        return m;
-    for  ( int i = 0 ; i < m.rows () ; i++ )
-        for  ( int j = 0; j < m.cols () ; j++ )
-            m ( i , j ) = unatomize_ex ( m ( i , j ) );
-    return m;
-}
+//template < class T >
+//T unatomize ( T m ){
+    //if  ( atomization == NO )
+        //return m;
+    //for  ( int i = 0 ; i < m.rows () ; i++ )
+        //for  ( int j = 0; j < m.cols () ; j++ )
+            //m ( i , j ) = unatomize_ex ( m ( i , j ) );
+    //return m;
+//}
+
+ex unatomize ( ex m );
+
+Matrix unatomize ( Matrix m );
+
+Vector3D unatomize ( Vector3D m );
+
+Tensor3D unatomize ( Tensor3D m );
+
+Wrench3D unatomize ( Wrench3D m );
+
 
 
 /*
