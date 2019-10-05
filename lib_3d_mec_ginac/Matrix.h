@@ -30,7 +30,6 @@ using std::ostream;
 
 		//Protected methods
 
-		void set_matrix ( matrix new_mat );
 
 		//Protected constructor
 
@@ -66,6 +65,8 @@ using std::ostream;
 		string get_name ( void );
 		//System * get_System ( void );
 		matrix get_matrix ( void );
+		void set_matrix ( matrix new_mat );
+
 		void set_name ( string new_name );
 		//void set_System ( System * new_system );
 
