@@ -669,6 +669,13 @@ Tensor3D * System::new_Tensor3D ( string name , ex exp1 , ex exp2 , ex exp3 , ex
 	}
 }
 
+/*
+Method to add an already created 3D tensor to the system
+*/
+void System::new_Tensor3D(Tensor3D* tensor) {
+    Tensors.push_back(tensor);
+}
+
 
 /*
 Method for build a new Point in the System
@@ -3501,7 +3508,7 @@ Wrench3D * System::Inertia_Wrench(Solid * Sol){
     //Vector3D Fi = -(mass)*AabsG;
     Vector3D Fi = - mass*AabsB - (Dt(Omega,"xyz")^mBG) - (Omega^(Omega^mBG));
     Vector3D Mi_B = -Dt(H_B,"xyz") - (mBG^AabsB);
-    
+
     Wrench3D* new_InTor= new_Wrench3D (s2, Fi, Mi_B , B, Sol, "Inertia" );
     return new_InTor;
 }

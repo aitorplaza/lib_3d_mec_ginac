@@ -137,6 +137,7 @@ class System{
         void new_Base ( Base * BaseA );
         Matrix * new_Matrix ( Matrix * MatrixA );
         void new_Vector3D ( Vector3D * Vector3DA );
+        void new_Tensor3D ( Tensor3D* Tensor3DA );
         void set_Time_Symbol ( symbol_numeric timesymbol );
 
         Base * new_Base ( string name , Base * previous_base , Matrix rotation_tupla , ex rotation_angle );
@@ -279,7 +280,7 @@ class System{
 
         Wrench3D Twist (Solid * Solid_obj);
         Wrench3D Twist (string Solid_name);
-        
+
         void remove_Matrix ( string matrix_name );
         void remove_Vector3D ( string vector3D_name );
         void remove_Point ( string point_name );
@@ -303,7 +304,7 @@ class System{
         Tensor3D diff ( Tensor3D Tensor3DA , symbol symbolA );
         Wrench3D diff ( Wrench3D Wrench3DA , symbol symbolA );
         Wrench3D diff(Wrench3D WrenchA,ex symbolA);
-			
+
         ex diff ( ex expression , string symbol_name );
         Matrix diff ( Matrix MatrixA , string symbol_name );
         Vector3D diff ( Vector3D Vector3DA , string symbol_name );
