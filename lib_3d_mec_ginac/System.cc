@@ -3385,8 +3385,8 @@ Matrix System::GenForce(Wrench3D * wrench){
             dq_i=ex_to<symbol_numeric>(dq(i,0));
 
 
-            GenForce (i,0) = (wrench->get_Force()).change_Base(Base_xyz)* diff(Vel,dq_i)
-                           + (wrench->get_Moment() ).change_Base(Base_xyz)* diff(Omega,dq_i);
+            GenForce (i,0) = (wrench->get_Force()).in_Base(Base_xyz)* diff(Vel,dq_i)
+                           + (wrench->get_Moment() ).in_Base(Base_xyz)* diff(Omega,dq_i);
             //GenForce (i,0) = ( wrench->get_Force() + Vector3D( Matrix ( 3 , 1, lst(0,0,0) ) ,Base_xyz, this) ) * diff(Vel,dq_i)
             //           + ( wrench->get_Moment()  + Vector3D( Matrix ( 3 , 1, lst(0,0,0) ) ,Base_xyz, this) )* diff(Omega,dq_i);
 
@@ -3395,8 +3395,8 @@ Matrix System::GenForce(Wrench3D * wrench){
         //~ Matrix Vel_dq    = jacobian(Vel.transpose(),dq);
         //~ Matrix Omega_dq  = jacobian(Omega.transpose(),dq);
         //~
-        //~ GenForce = Vel_dq.transpose() * (wrench->get_Force()).change_Base(Vel.get_Base())
-                 //~ + Omega_dq.transpose() *(wrench->get_Moment() ).change_Base(Omega.get_Base()) ;
+        //~ GenForce = Vel_dq.transpose() * (wrench->get_Force()).in_Base(Vel.get_Base())
+                 //~ + Omega_dq.transpose() *(wrench->get_Moment() ).in_Base(Omega.get_Base()) ;
 
 
 
@@ -3415,8 +3415,8 @@ Matrix System::GenForce(Wrench3D * wrench){
 
         // GenForce = VelUP_dq.transpose() * RVel_F * (wrench->get_Force())
                 // + OmegaUP_dq.transpose() * ROM_M * (wrench->get_Moment()) ;
-        GenForce = VelUP_dq.transpose() * (wrench->get_Force()).change_Base(VelUP.get_Base())
-                 + OmegaUP_dq.transpose() * (wrench->get_Moment()).change_Base(OmegaUP.get_Base());
+        GenForce = VelUP_dq.transpose() * (wrench->get_Force()).in_Base(VelUP.get_Base())
+                 + OmegaUP_dq.transpose() * (wrench->get_Moment()).in_Base(OmegaUP.get_Base());
 
     }
 
@@ -7851,14 +7851,14 @@ void System::export_solids_homogeneous_matrix_cpp ( void ) {
         if ( gravity == UP ) {
             gravity = DOWN;
             Vector3D O_P = Position_Vector("O", Drawings[i]->get_Point()->get_name());
-            Mtrans=(Matrix)(O_P.change_Base(Base_xyz)).transpose();
+            Mtrans=(Matrix)(O_P.in_Base(Base_xyz)).transpose();
             //Mtrans=(Matrix)(Position_Vector("O", Drawings[i]->get_Point()->get_name())+ Oxyz).transpose();
             gravity = UP;
         }
         else{
             //Mtrans=(Matrix)(Position_Vector("O", Drawings[i]->get_Point()->get_name())+ Oxyz).transpose();
             Vector3D O_P = Position_Vector("O", Drawings[i]->get_Point()->get_name());
-            Mtrans=(Matrix)(O_P.change_Base(Base_xyz)).transpose();
+            Mtrans=(Matrix)(O_P.in_Base(Base_xyz)).transpose();
         }
 
         Matrix Mhom(2,2,&Mrot,&Zeros,&Mtrans,&Ones);
@@ -8759,11 +8759,11 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
             //Matrix R_IT_SOL = sys.Rotation_Matrix (Solids[k]->get_Base(),Solids[k]->get_IT()->get_Base() );
             //Matrix IT = R_IT_SOL*(*Solids[k]->get_IT())*R_IT_SOL.transpose();
 
-            //Tensor3D IT = (*Solids[k]->get_IT()).change_Base(Solids[k]->get_Base());
-            Vector3D BG = (*Solids[k]->get_CM()).change_Base(Solids[k]->get_Base());
+            //Tensor3D IT = (*Solids[k]->get_IT()).in_Base(Solids[k]->get_Base());
+            Vector3D BG = (*Solids[k]->get_CM()).in_Base(Solids[k]->get_Base());
 
             Vector3D mBG = atomize( mass * unatomize ( BG) );
-            //Vector3D mBG = atomize( mass * unatomize ( BG.change_Base(Solids[k]->get_Base()) ) );
+            //Vector3D mBG = atomize( mass * unatomize ( BG.in_Base(Solids[k]->get_Base()) ) );
 
             /* -----------------------------------------------------------------------------------------------------------------*/
             //  UP
@@ -8773,7 +8773,7 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
             Vector3D OmSolUP = Angular_Velocity("xyz",Solids[k]->get_Base() -> get_name());
             gravity = DOWN;
 
-            Tensor3D IT = (*Solids[k]->get_IT()).change_Base(OmSolUP.get_Base());
+            Tensor3D IT = (*Solids[k]->get_IT()).in_Base(OmSolUP.get_Base());
 
 
             Matrix VelBUP_dq   = jacobian(VelBUP.transpose(),dq);
@@ -8819,9 +8819,9 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
             Matrix OmSolUP_t  = jacobian(OmSolUP.transpose(),get_Time_Symbol ());
 
 
-            Vector3D mBG_O = mBG.change_Base(Base_xyz);
-            Vector3D OmSol = (Angular_Velocity(Base_xyz,Solids[k]->get_Base())).change_Base(Base_xyz);
-            Vector3D VelB  = (Velocity_Vector("abs",Solids[k]->get_Point() -> get_name(), Solids[k]-> get_name() )).change_Base(Base_xyz);
+            Vector3D mBG_O = mBG.in_Base(Base_xyz);
+            Vector3D OmSol = (Angular_Velocity(Base_xyz,Solids[k]->get_Base())).in_Base(Base_xyz);
+            Vector3D VelB  = (Velocity_Vector("abs",Solids[k]->get_Point() -> get_name(), Solids[k]-> get_name() )).in_Base(Base_xyz);
             Matrix VelB_q     = jacobian(VelB.transpose(),q);
             Matrix VelB_t     = jacobian(VelB.transpose(),get_Time_Symbol ());
             Matrix OmSol_q    = jacobian(OmSol.transpose(),q);
@@ -8847,13 +8847,13 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
             /* -----------------------------------------------------------------------------------------------------------------*/
             //  DOWN
             /* -----------------------------------------------------------------------------------------------------------------*/
-            /*Vector3D mBG_O = mBG.change_Base(Base_xyz);
+            /*Vector3D mBG_O = mBG.in_Base(Base_xyz);
             Matrix R_SOL_xyz = sys.Rotation_Matrix (Base_xyz ,Solids[k]->get_Base()  );
             Matrix IT_O = R_SOL_xyz*IT*R_SOL_xyz.transpose();
 
-            Vector3D OmSol = (Angular_Velocity(Base_xyz,Solids[k]->get_Base())).change_Base(Base_xyz);
+            Vector3D OmSol = (Angular_Velocity(Base_xyz,Solids[k]->get_Base())).in_Base(Base_xyz);
 
-            Vector3D VelB  = (Velocity_Vector("abs",Solids[k]->get_Point() -> get_name(), Solids[k]-> get_name() )).change_Base(Base_xyz);
+            Vector3D VelB  = (Velocity_Vector("abs",Solids[k]->get_Point() -> get_name(), Solids[k]-> get_name() )).in_Base(Base_xyz);
 
             Matrix OmSol_dq  = jacobian(OmSol.transpose(),dq);
             Matrix OmSol_dqT = OmSol_dq.transpose();

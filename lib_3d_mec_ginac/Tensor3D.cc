@@ -11,13 +11,13 @@ using std::string;
 using std::exception;
 
 
-/* 
+/*
 Tensor3D's general constructor
 */
 Tensor3D::Tensor3D () {}
 
 
-/* 
+/*
 Method that initialize the Tensor3D atributes
 */
 void Tensor3D::init ( string name , matrix mat , Base * base , System * system ) {
@@ -36,7 +36,7 @@ void Tensor3D::init ( string name , matrix mat , Base * base , System * system )
 }
 
 
-/* 
+/*
 Constructor with name , Matrix and Base
 The matrix should have ones dimensions of 3x3
 */
@@ -44,7 +44,7 @@ Tensor3D::Tensor3D ( string name , Matrix * mat , Base * base ) : Matrix ( name 
 	init ( name , mat-> get_matrix () , base , NULL );
 }
 
-/* 
+/*
 Constructor Matrix and Base
 The matrix should have ones dimensions of 3x3
 */
@@ -53,7 +53,7 @@ Tensor3D::Tensor3D ( Matrix mat , Base * base ) : Matrix ( " ", mat ) {
 }
 
 
-/* 
+/*
 Constructor Matrix, Base and System
 The matrix should have ones dimensions of 3x3
 */
@@ -61,7 +61,7 @@ Tensor3D::Tensor3D ( Matrix mat , Base * base, System * system ) : Matrix ( " ",
 	init ( "" , mat.get_matrix () , base , system );
 }
 
-/* 
+/*
 Constructor with name , nine ex ( for make a matrix with 3x3 dimensions ) and Base
 */
 Tensor3D::Tensor3D ( string name , ex exp1 , ex exp2 , ex exp3 , ex exp4 , ex exp5 , ex exp6 , ex exp7 , ex exp8 , ex exp9 , Base * base ) : Matrix ( name , 3 , 3 , & exp1 , & exp2 , & exp3 , & exp4 , & exp5 , & exp6 , & exp7 , & exp8 , & exp9 ) {
@@ -69,7 +69,7 @@ Tensor3D::Tensor3D ( string name , ex exp1 , ex exp2 , ex exp3 , ex exp4 , ex ex
 }
 
 
-/* 
+/*
 Constructor with name , Matrix , Base and System
 */
 Tensor3D::Tensor3D ( string name , Matrix  mat , Base * base , System * system ) : Matrix ( name , mat ) {
@@ -77,7 +77,7 @@ Tensor3D::Tensor3D ( string name , Matrix  mat , Base * base , System * system )
 }
 
 
-/* 
+/*
 Constructor with name , nine ex ( for make a matrix with 3x3 dimensions ) , Base and System
 */
 Tensor3D::Tensor3D ( string name , ex exp1 , ex exp2 , ex exp3 , ex exp4 , ex exp5 , ex exp6 , ex exp7 , ex exp8 , ex exp9 , Base * base , System * system ) : Matrix ( name , 3 , 3 , & exp1 , & exp2 , & exp3 , & exp4 , & exp5 , & exp6 , & exp7 , & exp8 , & exp9 ) {
@@ -86,7 +86,7 @@ Tensor3D::Tensor3D ( string name , ex exp1 , ex exp2 , ex exp3 , ex exp4 , ex ex
 }
 
 
-/* 
+/*
 Put the Base of this Tensor3D
 */
 void Tensor3D::set_Base ( Base * new_base ) {
@@ -94,14 +94,14 @@ void Tensor3D::set_Base ( Base * new_base ) {
 }
 
 
-/* 
+/*
 Return the Base of this Tensor3D
 */
 Base * Tensor3D::get_Base () {
 	return base;
 }
 
-/* 
+/*
 Put one System in this Tensor3D
 */
 void Tensor3D::set_System ( System * new_system ) {
@@ -109,13 +109,13 @@ void Tensor3D::set_System ( System * new_system ) {
 }
 
 
-/* 
+/*
 Return the System of this Tensor3D
 */
 System * Tensor3D::get_System ( void ) {
 	return system;
 }
-/* 
+/*
 Put one Name in this Tensor3D
 */
 
@@ -124,13 +124,13 @@ void Tensor3D::set_Name ( string new_name ) {
 }
 
 
-/* 
+/*
 Returns the Tensor representated in another base
 */
-Tensor3D Tensor3D::change_Base (Base * new_base){
+Tensor3D Tensor3D::in_Base (Base * new_base){
     Tensor3D Taux = * this;
     System * sys = Taux.system;
-    Matrix a = sys-> Rotation_Matrix ( new_base , Taux.base ) * ( Matrix )Taux * sys-> Rotation_Matrix ( Taux.base , new_base ); 
+    Matrix a = sys-> Rotation_Matrix ( new_base , Taux.base ) * ( Matrix )Taux * sys-> Rotation_Matrix ( Taux.base , new_base );
     Tensor3D TensorSol ( a , new_base );
     TensorSol.set_System ( sys );
 	return TensorSol;
@@ -138,7 +138,7 @@ Tensor3D Tensor3D::change_Base (Base * new_base){
 }
 
 
-/* 
+/*
 Method that substitute the expressions indicates in the relational form.
 */
 Tensor3D Tensor3D::subs ( relational relation ) {
@@ -155,7 +155,7 @@ Tensor3D Tensor3D::subs ( relational relation ) {
 }
 
 
-/* 
+/*
 Method that make the Tensor3D operations calculums
 */
 Tensor3D Tensor3D::Operations ( const Tensor3D & Tensor3DA , const Tensor3D & Tensor3DB , const int flag ) {
@@ -177,7 +177,7 @@ Tensor3D Tensor3D::Operations ( const Tensor3D & Tensor3DA , const Tensor3D & Te
 			a = ( Matrix )Tensor3DAux1 + ( Matrix )Tensor3DAux2;
 		else if ( flag == 2 )//-
 			a = ( Matrix )Tensor3DAux1 - ( Matrix )Tensor3DAux2;
-		else if ( flag == 2 )//* 
+		else if ( flag == 2 )//*
 			a = ( Matrix )Tensor3DAux1 * ( Matrix )Tensor3DAux2;
 
 		Tensor3D tensorSol ( a  , reducebase );
@@ -196,31 +196,31 @@ Tensor3D Tensor3D::Operations ( const Tensor3D & Tensor3DA , const Tensor3D & Te
 }
 
 
-/* 
+/*
 Method that make the  operations calculates between Tensor3D and expressions
 */
 Tensor3D Tensor3D::Operations ( const Tensor3D & Tensor3DA , const ex & expression , int flag ) {
 	try{
 		Tensor3D sol;
 		if ( flag == 1 ) {//expression * Matrix
-			matrix aux ( Tensor3DA.mat.rows () , Tensor3DA.mat.cols () ); 
-			for ( int i = 0; i < aux.rows () ;  i++ ) 
-    				for ( int j = 0; j < aux.cols () ;  j++ ) 
-          				aux ( i , j ) = expression * Tensor3DA.mat ( i , j ); 
-			Tensor3D result ( Tensor3DA.name , aux , Tensor3DA.base, Tensor3DA.system); 
+			matrix aux ( Tensor3DA.mat.rows () , Tensor3DA.mat.cols () );
+			for ( int i = 0; i < aux.rows () ;  i++ )
+    				for ( int j = 0; j < aux.cols () ;  j++ )
+          				aux ( i , j ) = expression * Tensor3DA.mat ( i , j );
+			Tensor3D result ( Tensor3DA.name , aux , Tensor3DA.base, Tensor3DA.system);
 			sol = result;
 		}
 		else if ( flag == 2 ) {//Matrix * expression
-			matrix aux ( Tensor3DA.mat.rows () , Tensor3DA.mat.cols () ); 
-			for ( int i = 0; i < aux.rows () ;  i++ ) 
-    				for ( int j = 0; j < aux.cols () ;  j++ ) 
+			matrix aux ( Tensor3DA.mat.rows () , Tensor3DA.mat.cols () );
+			for ( int i = 0; i < aux.rows () ;  i++ )
+    				for ( int j = 0; j < aux.cols () ;  j++ )
           				aux ( i , j ) = Tensor3DA.mat ( i , j ) * expression;
-			Tensor3D result ( Tensor3DA.name , aux , Tensor3DA.base, Tensor3DA.system); 
+			Tensor3D result ( Tensor3DA.name , aux , Tensor3DA.base, Tensor3DA.system);
 			sol = result;
 		}
 		return sol;
 	}catch ( exception & p ) {
-		outError ( "ERR - Failure in Matrix operation" ); 
+		outError ( "ERR - Failure in Matrix operation" );
 		Tensor3D empty;
 		return empty;
 	}
@@ -228,7 +228,7 @@ Tensor3D Tensor3D::Operations ( const Tensor3D & Tensor3DA , const ex & expressi
 
 
 
-/* 
+/*
 Sum betweewn two Tensor3D
 */
 Tensor3D operator + ( const Tensor3D & Tensor3DA , const Tensor3D & Tensor3DB ) {
@@ -236,7 +236,7 @@ Tensor3D operator + ( const Tensor3D & Tensor3DA , const Tensor3D & Tensor3DB ) 
 }
 
 
-/* 
+/*
 Diference between two Tensor3D
 */
 Tensor3D operator - ( const Tensor3D & Tensor3DA , const Tensor3D & Tensor3DB ) {
@@ -244,7 +244,7 @@ Tensor3D operator - ( const Tensor3D & Tensor3DA , const Tensor3D & Tensor3DB ) 
 }
 
 
-/* 
+/*
 Multiplication betweewn two Tensor3D
 */
 Tensor3D operator * ( const Tensor3D & Tensor3DA , const Tensor3D & Tensor3DB ) {
@@ -252,7 +252,7 @@ Tensor3D operator * ( const Tensor3D & Tensor3DA , const Tensor3D & Tensor3DB ) 
 }
 
 
-/* 
+/*
 Multiplication betweewn one Tensor3D and one Vector3D
 */
 Vector3D operator * ( const Tensor3D & Tensor3DA , Vector3D & VectorB ) {
@@ -265,7 +265,7 @@ Vector3D operator * ( const Tensor3D & Tensor3DA , Vector3D & VectorB ) {
 		/* Do the next for transform the Tensors3D to a common Basis */
 		Matrix a = sys-> Rotation_Matrix ( reducebase , Tensor3DA.base ) * ( Matrix )Tensor3DA * sys-> Rotation_Matrix ( Tensor3DA.base , reducebase );
 		Tensor3D Tensor3DAux1 ( a , reducebase );
-		
+
 		a = sys-> Rotation_Matrix ( reducebase , VectorB.get_Base () ) * ( Matrix )VectorB;
 		Vector3D VectorAux2 ( a , reducebase );
 
@@ -286,23 +286,23 @@ Vector3D operator * ( const Tensor3D & Tensor3DA , Vector3D & VectorB ) {
 }
 
 
-/* 
+/*
 Multiplication between one ex and one Matrix
 */
 Tensor3D operator * ( const ex & expression , const Tensor3D & Tensor3DA ) {
-	return Tensor3D::Operations ( Tensor3DA , expression , 1 ); 
+	return Tensor3D::Operations ( Tensor3DA , expression , 1 );
 }
 
 
-/* 
+/*
 Multiplication between one Matrix and one ex
 */
 Tensor3D operator * ( const Tensor3D & Tensor3DA , const ex & expression ) {
-	return Tensor3D::Operations ( Tensor3DA , expression , 2 ); 
+	return Tensor3D::Operations ( Tensor3DA , expression , 2 );
 }
 
 
-/* 
+/*
 Tensor3D output
 */
 ostream & operator << ( ostream & os , const Tensor3D & Tensor3DA ) {
@@ -314,7 +314,7 @@ ostream & operator << ( ostream & os , const Tensor3D & Tensor3DA ) {
  			for ( int j = 0; j < Tensor3DA.mat.cols ( ) ; j++ ) {
  			os << Tensor3DA.mat ( i , j );
 				if ( j < Tensor3DA.mat.cols ()-1 )os << " , ";
-				else 
+				else
 					if ( ( j == Tensor3DA.mat.cols ()-1 ) && ( ( i == Tensor3DA.mat.rows ()-1 ) ) ) os << "";
 					else os << ";\n";
 			}
@@ -336,4 +336,3 @@ ostream & operator << ( ostream & os , const Tensor3D & Tensor3DA ) {
 Destructor
 */
 Tensor3D::~Tensor3D ( void ) {}
-

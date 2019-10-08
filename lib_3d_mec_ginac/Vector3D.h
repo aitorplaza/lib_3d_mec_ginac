@@ -60,15 +60,15 @@ using std::string;
             string get_Name ( void );
             void  set_Name ( string s_name );
             Matrix skew (void);
-            Vector3D change_Base (Base * new_base);
-             
+            Vector3D in_Base (Base * new_base);
+
 			//Methods
 
 			//Vector3D Dt ( Frame * frame );
 			//Vector3D Dt ( Base * base );
 			Vector3D subs ( relational relation );
-            
-            
+
+
 
 			//Operations
 

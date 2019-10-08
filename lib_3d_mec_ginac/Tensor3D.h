@@ -34,7 +34,7 @@ using std::string;
 
         Tensor3D () ;
         Tensor3D ( Matrix , Base * );
-        Tensor3D ( Matrix mat, Base * base, System * system);  
+        Tensor3D ( Matrix mat, Base * base, System * system);
         Tensor3D ( string name , Matrix * mat , Base * base );
         Tensor3D ( string name , ex exp1 , ex exp2 , ex exp3 , ex exp4 , ex exp5 , ex exp6 , ex exp7 , ex exp8 , ex exp9 , Base * base );
         Tensor3D ( string name , Matrix mat , Base * base , System * system );
@@ -51,8 +51,8 @@ using std::string;
         //Public methods
 
         Tensor3D subs  ( relational relation );
-        Tensor3D change_Base (Base * new_base);
-        
+        Tensor3D in_Base (Base * new_base);
+
         //Operations
 
         friend Tensor3D operator + ( const Tensor3D & Tensor3DA , const Tensor3D & Tensor3DB );
