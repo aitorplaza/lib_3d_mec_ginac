@@ -33,8 +33,6 @@ using std::ostream;
 
 		//Protected constructor
 
-
-
 	private:
 
 		//Private methods

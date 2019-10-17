@@ -225,21 +225,21 @@ int recursive_list_simplify (ex atom_ex , lst & list, exhashmap < ex > &hashmap)
 /*
 This function subtitutes a symbol with a value in an expression recursively
 */
-ex recursive_expression_substitution (ex expression, symbol_numeric symbol, float value){
+ex recursive_expression_substitution (ex expression, ex a_symbol, float value){
     ex new_exp;
     ex a_exp;
     
     #if OLD_SUBS == 1
     //OLD no recursive
     new_exp = unatomize_ex(expression);
-    new_exp = new_exp.subs((symbol)==value);
+    new_exp = new_exp.subs((ex_to<symbol>(a_symbol))==value);
     return atomize_ex(new_exp);
     #endif
     
     if ( is_a < atom > ( expression ) == 1){
         atom a = ex_to<atom>(expression);
         a_exp = a.get_expression ();
-        new_exp = recursive_expression_substitution (a_exp,  symbol, value);
+        new_exp = recursive_expression_substitution (a_exp,  ex_to<symbol>(a_symbol), value);
         if (a_exp == new_exp){
             new_exp = a ;	
         }
@@ -248,13 +248,13 @@ ex recursive_expression_substitution (ex expression, symbol_numeric symbol, floa
         if (expression.nops() > 0){
             a_exp = expression;
             for (const_iterator i = expression.begin(); i != expression.end(); ++i){
-                new_exp =  recursive_expression_substitution (*i,  symbol, value);
+                new_exp =  recursive_expression_substitution (*i,  ex_to<symbol>(a_symbol), value);
                 a_exp = a_exp.subs( *i == new_exp , subs_options::algebraic );
             }
             new_exp = a_exp;
         }
         else{
-            new_exp =  expression.subs((symbol)==value, subs_options::algebraic );
+            new_exp =  expression.subs((ex_to<symbol>(a_symbol))==value, subs_options::algebraic );
         }
     }  
     if (expression != new_exp && new_exp != 0 && is_a < atom > ( new_exp )  == 0 && is_a < atom > ( - new_exp )  == 0){
@@ -293,7 +293,7 @@ ex recursive_substitution (ex expression, vector <symbol_numeric*> & SymbolVec, 
         if (expression.nops() > 0){
             ex a_exp = expression;
             for (const_iterator i = expression.begin(); i != expression.end(); ++i){
-                new_exp =  recursive_substitution (*i,  SymbolVec, value);
+                new_exp = recursive_substitution (*i,  SymbolVec, value);
                 a_exp = a_exp.subs( *i == new_exp , subs_options::algebraic );
             }
             new_exp = a_exp;
@@ -315,6 +315,69 @@ ex recursive_substitution (ex expression, vector <symbol_numeric*> & SymbolVec, 
     
     return new_exp;
 }
+
+
+
+/*
+This function subtitutes a vector of symbols with a value in an expression recursively
+*/
+ex recursive_substitution (ex expression, Matrix SymbolVec, float value){
+    ex new_exp;
+    
+    if ( is_a < atom > ( expression ) == 1){
+        atom a = ex_to<atom>(expression);
+        ex a_exp = a.get_expression ();
+        new_exp = recursive_substitution (a_exp, SymbolVec, value);
+        if (a_exp == new_exp){
+            new_exp = a ;	
+        }
+    }
+    else if ( is_a < atom > ( expression )  == 0){
+        if (expression.nops() > 0){
+            ex a_exp = expression;
+            for (const_iterator i = expression.begin(); i != expression.end(); ++i){
+                new_exp = recursive_substitution (*i,  SymbolVec, value);
+                a_exp = a_exp.subs( *i == new_exp , subs_options::algebraic );
+            }
+            new_exp = a_exp;
+        }
+        else{
+            new_exp = expression;
+            //symbol_numeric *sym_j;
+            for (int j=0; (j < SymbolVec.rows()); ++j) {
+                
+                if ( is_a < numeric > ( new_exp ) == 0 ){
+                    new_exp = new_exp.subs(ex_to<symbol>(SymbolVec(j,0))==value, subs_options::algebraic );
+				}
+            }
+        }
+    }  
+    
+    if (expression != new_exp && new_exp != 0 && is_a < atom > ( new_exp )  == 0 && is_a < atom > ( - new_exp )  == 0){
+        new_exp = atomize_ex (new_exp);
+    }
+    
+    return new_exp;
+}
+
+/*
+This function subtitutes a vector of symbols with a value in an expression recursively
+*/
+Matrix subs (Matrix ExMatrix, Matrix SymbolVec, float value){
+	
+	int n_rows=ExMatrix.rows();
+	int n_cols=ExMatrix.cols();
+	
+	Matrix ExMatrixOut(n_rows,n_cols);
+	for (int i=0;i<n_rows;i++){
+		for (int j=0;j<n_cols;j++){	
+           ExMatrixOut(i,j)=recursive_substitution(ExMatrix(i,j),SymbolVec, value);
+}
+}
+    return ExMatrixOut;
+}
+
+
 
 ex recursive_differentiation (ex expression, symbol_numeric symbol){
     

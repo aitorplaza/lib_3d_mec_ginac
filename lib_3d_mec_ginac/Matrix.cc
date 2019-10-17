@@ -220,7 +220,6 @@ Matrix::Matrix ( string name, long rows , long cols , Matrix * first , ... ) {
 	}
 }
 
-
 /*
 Constructor with number of Matrix in rows and cols for compose a new Matrix with this Matrix
 */
@@ -322,6 +321,7 @@ Matrix::Matrix ( long rows , long cols , Matrix * first , ... ) {
 		else if (i==3){outError ( "ERR - Matrixes in a column must have the same number of columns" );};
 	}
 }
+
 
 
 /*

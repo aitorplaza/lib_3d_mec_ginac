@@ -1,11 +1,13 @@
 /*
-//cp ../common_code/* .
-touch atom_def.c
-export LD_LIBRARY_PATH=`pwd`/../../../lib/
-export PKG_CONFIG_PATH=`pwd`/../../../lib/pkgconfig
-g++ -o main_Block_Pendulum main_Block_Pendulum.cc `pkg-config --cflags --libs lib_3d_mec_ginac-1.1 ginac cln gsl`
+ 
+//cp -r ../common_MAIN/ .
 
-./main_Block_Pendulum DOWN NO
+export PKG_CONFIG_PATH=`pwd`/../../../lib/pkgconfig
+export LD_LIBRARY_PATH=`pwd`/../../../lib
+g++ -std=c++11 -o main_symbolic main_symbolic.cc `pkg-config --cflags --libs lib_3d_mec_ginac ginac`
+
+main_symbolic DOWN YES
+
 */
 
 #include <fstream>
@@ -29,11 +31,11 @@ g++ -o main_Block_Pendulum main_Block_Pendulum.cc `pkg-config --cflags --libs li
 
 //	Define METHOD
 #ifdef LAG	
-	# define METHOD LAGRANGE
+	#define METHOD LAGRANGE
 #endif
 
 #ifdef V_P
-	# define METHOD VIRTUAL_POWER
+	#define METHOD VIRTUAL_POWER
 #endif
 
 //*****************************************************************************************************************
@@ -150,11 +152,11 @@ else{
      
 	symbol_numeric *dtheta1=sys.get_Velocity("dtheta1");
 	symbol_numeric *dtheta2=sys.get_Velocity("dtheta2");
- 	symbol_numeric *dtheta3=sys.get_Velocity("dtheta3");   
+ 	symbol_numeric *dtheta3=sys.get_Velocity("dtheta3");
 
-	//symbol_numeric *ddtheta1=sys.get_Acceleration("ddtheta1");
-	//symbol_numeric *ddtheta2=sys.get_Acceleration("ddtheta2");
-  	//symbol_numeric *ddtheta3=sys.get_Acceleration("ddtheta3");
+	symbol_numeric *ddtheta1=sys.get_Acceleration("ddtheta1");
+	symbol_numeric *ddtheta2=sys.get_Acceleration("ddtheta2");
+  	symbol_numeric *ddtheta3=sys.get_Acceleration("ddtheta3");
 
 // ************************************************************************************************
 //	Kinematical parameter definition
@@ -380,154 +382,263 @@ else{
 	cout << "Vectors needed to take diferent Jacobians" << endl;
 
 	Matrix q = sys.Coordinates();
+	Matrix q_aux = sys.Aux_Coordinates();
 	Matrix dq = sys.Velocities();
+	Matrix dq_aux = sys.Aux_Velocities();
 	Matrix ddq = sys.Accelerations();
+	Matrix ddq_aux = sys.Aux_Accelerations();
 	Matrix epsilon = sys.Joint_Unknowns();
 	Matrix param = sys.Parameters();
 	Matrix input = sys.Inputs();
 
 // ************************************************************************************************
-// 	 Kinematic Equations 
+// 	 Kinematic Equations Phi Phi_init dPhi_init
 // ************************************************************************************************
-	cout << "Kinematic Equations" << endl;	
+	cout << "%Kinematic Equations" << endl;	
 	
-    Vector3D O2C = sys.Position_Vector ( O2 , C ) ;
+    Vector3D O2C = sys.Position_Vector ( O2 , C );
     Vector3D e_x = *sys.new_Vector3D("e_x",1,0,0,"xyz");
     Vector3D e_z = *sys.new_Vector3D("e_z",0,0,1,"xyz");
 
 	Matrix Phi(2,1);
 	Phi(0,0) = O2C * e_x;
 	Phi(1,0) = O2C * e_z;
+	cout << "Phi2 =" << unatomize(Phi) << endl;
+	
+	cout<<" %dPhi Calculating"<<endl;
+    Matrix dPhi_aux = sys.Dt(Phi);
+    Matrix dPhiNH(0,1);
+    Matrix dPhi = Matrix (2,1,&dPhi_aux,&dPhiNH);
+    cout<<  "dPhi2=" << unatomize(dPhi) <<endl;
+    
+    cout<<" %ddPhi Calculating"<<endl;
+    Matrix ddPhi  = sys.Dt(dPhi);
+    cout<<  "ddPhi2=" << unatomize(ddPhi) <<endl;
+    
+    cout<<" %beta Calculating"<<endl;
+    Matrix beta  = -dPhi;
+    beta = subs(beta,dq , 0);
+    beta = subs(beta,dq_aux , 0);
+    cout<<  "beta2=" << unatomize(beta) <<endl;
+    
+    cout<<" %Phi_q Calculating"<<endl;
+    Matrix Phi_q  = sys.jacobian(Phi.transpose() ,Matrix (2,1,&q,&q_aux));
+    cout<<  "Phi_q2=" << unatomize(Phi_q) <<endl;
 
-	cout << unatomize(Phi) << endl;
+    cout<<" %dPhi_dq Calculating"<<endl;
+    Matrix dPhi_dq =  sys.jacobian(dPhi.transpose() ,Matrix (2,1,&dq,&dq_aux));//if dqaux == 0 then  Matrix (2,1,&dq,&dqaux)) = dq
+    cout<<  "dPhi_dq2=" << unatomize(dPhi_dq) <<endl;
+    
+    cout<<" %gamma Calculating"<<endl;
+    Matrix gamma  = -ddPhi;
+    gamma = subs (gamma,ddq , 0);
+    gamma = subs (gamma,ddq_aux , 0);
+    cout << "gamma2 =" << unatomize(gamma) <<endl;
+	
+	#define INITIAL_THETA1 3.1416/2.0
+    #define INITIAL_DTHETA1 0.0
+	
+    Matrix Phi_init(1,1);
+    Phi_init(0,0)=theta1+INITIAL_THETA1;
+ 
+    Matrix dPhi_init(1,1);
+    dPhi_init(0,0)=*dtheta1+INITIAL_DTHETA1;
 
 // ************************************************************************************************
 // 	Dynamic Equations 
 // ************************************************************************************************
 
-	cout << "Dynamic Equations Virtual Power or Lagrange" << endl;
+	cout << "%Dynamic Equations Virtual Power or Lagrange" << endl;
 
-	Matrix Dynamic_Equations(3,1);
+	Matrix Dyn_eq_VP(3,1);
 	 
-	Dynamic_Equations(0,0) = Sum_Wrenches_Arm1*sys.diff(Twist_Arm1,dq(0,0))+Sum_Wrenches_Arm2*sys.diff(Twist_Arm2,dq(0,0))+Sum_Wrenches_Arm3*sys.diff(Twist_Arm3,dq(0,0));
-	Dynamic_Equations(1,0) = Sum_Wrenches_Arm1*sys.diff(Twist_Arm1,dq(1,0))+Sum_Wrenches_Arm2*sys.diff(Twist_Arm2,dq(1,0))+Sum_Wrenches_Arm3*sys.diff(Twist_Arm3,dq(1,0));
-	Dynamic_Equations(2,0) = Sum_Wrenches_Arm1*sys.diff(Twist_Arm1,dq(2,0))+Sum_Wrenches_Arm2*sys.diff(Twist_Arm2,dq(2,0))+Sum_Wrenches_Arm3*sys.diff(Twist_Arm3,dq(2,0));
-	 
-	cout << unatomize(Dynamic_Equations) << endl;
+	Dyn_eq_VP(0,0) = Sum_Wrenches_Arm1*sys.diff(Twist_Arm1,dq(0,0))+Sum_Wrenches_Arm2*sys.diff(Twist_Arm2,dq(0,0))+Sum_Wrenches_Arm3*sys.diff(Twist_Arm3,dq(0,0));
+	Dyn_eq_VP(1,0) = Sum_Wrenches_Arm1*sys.diff(Twist_Arm1,dq(1,0))+Sum_Wrenches_Arm2*sys.diff(Twist_Arm2,dq(1,0))+Sum_Wrenches_Arm3*sys.diff(Twist_Arm3,dq(1,0));
+	Dyn_eq_VP(2,0) = Sum_Wrenches_Arm1*sys.diff(Twist_Arm1,dq(2,0))+Sum_Wrenches_Arm2*sys.diff(Twist_Arm2,dq(2,0))+Sum_Wrenches_Arm3*sys.diff(Twist_Arm3,dq(2,0));
+	
+	Dyn_eq_VP=-Dyn_eq_VP;
+	
+	cout << "Dyn_eq_VP =" << unatomize(Dyn_eq_VP) << endl;
 	
 
 // ************************************************************************************************
 // 	Output Vector
 // ************************************************************************************************
 
-	cout << "Output Vector" << endl;
+	cout << "%Output Vector" << endl;
 
 	Matrix Output(0,1);
 	//Output(0,0)=0;
 	sys.new_Matrix("Output",Output);
 
-    cout << unatomize(Output) << endl;
+    cout << "Output =" << unatomize(Output) << endl;
 
 // ************************************************************************************************
 // 	Energy Equations
 // ************************************************************************************************
 
-	cout << "Energy Equations" << endl;
+	cout << "%Energy Equations" << endl;
 
 	Matrix Energy(0,1);
 	//Energy(0,0)=0;
 	sys.new_Matrix("Energy",Energy);
 
-    cout << unatomize(Output) << endl;
+    cout << "Energy =" << unatomize(Output) << endl;
+    
+    Matrix Dyn_eq_VP_open = Dyn_eq_VP;
 
-// ************************************************************************************************
-// 	Matrix Calculation 	
-// ************************************************************************************************
+	//method == VIRTUAL_POWER
+    Dyn_eq_VP_open = subs (Dyn_eq_VP_open, epsilon , 0);        
+    
+    cout << "Dyn_eq_VP_open2=" << unatomize(Dyn_eq_VP_open) << endl;
+    
+    Matrix Dyn_eq_L=Dyn_eq_VP;
+    
+    //method == LAGRANGE
+	//Dyn_eq_VP_open = Dyn_eq_VP;
 
-	cout << "Matrix Calculation" << endl;
+    cout<<" %M_qq and delta_q Calculating by differentation"<<endl;
+    Matrix M_qq = sys.jacobian(Dyn_eq_VP_open.transpose() ,ddq,1); //M is symmetric
+    //Matrix M_qq = sys.jacobian(Dyn_eq_VP_open.transpose() ,ddq);
 
-    #define INITIAL_THETA1 3.1416/2.0
-	lst coord_indep_init = lst{theta1+INITIAL_THETA1};
-	lst vel_indep_init;
+    Matrix delta_q = - Dyn_eq_VP_open;
+    delta_q = subs (delta_q, ddq , 0);
+    delta_q = subs (delta_q, ddq_aux , 0);
+       
+    cout<<  "M_qq2=" << unatomize(M_qq) <<endl;
+    cout<<  "delta_q2=" <<unatomize(delta_q) <<endl;
+    
+    cout<<" %Phi_init Calculating"<<endl;
+    Phi_init = Matrix (2,1,&Phi,&Phi_init);
+    cout<<  "Phi_init2=" << unatomize(Phi_init) <<endl;
+    
+    cout<<" %dPhi_init Calculating"<<endl;
+    dPhi_init       = Matrix (2,1,&dPhi,&dPhi_init);
+    cout<< "dPhi_init2=" << unatomize(dPhi_init) <<endl;
 
-     sys.Matrix_Calculation(Phi,coord_indep_init , vel_indep_init , Dynamic_Equations, sys, METHOD);
-    //sys.Matrix_Calculation(Phi,coord_indep_init , vel_indep_init , sys, METHOD);
+    cout<<" %Phi_init_q Calculating"<<endl;
+    //Matrix Phi_init_q       = jacobian(PhiInit.transpose(), q);
+    Matrix Phi_init_q       = sys.jacobian(Phi_init.transpose(), Matrix (2,1,&q,&q_aux));//if qaux == 0 then  Matrix (2,1,&q,&qaux)) = q
+    cout<< "Phi_init_q2=" << unatomize(Phi_init_q) <<endl;
 
-// ************************************************************************************************
-// 	Export C code for Direct Simulation 
-// ************************************************************************************************
+    cout<<" %dPhi_init_dq Calculating"<<endl;
+    //Matrix dPhi_init_dq     = jacobian(dPhiInit.transpose() ,dq);
+    Matrix dPhi_init_dq     = sys.jacobian(dPhi_init.transpose() ,Matrix (2,1,&dq,&dq_aux));//if dqaux == 0 then  Matrix (2,1,&dq,&dqaux)) = dq
+    cout<<  "dPhi_init_dq2=" << unatomize(dPhi_init_dq) <<endl;
 
-	cout << "Export C code for Direct Simulation " << endl;
+    cout<<" %beta_init Calculating"<<endl;
+    Matrix beta_init  = -dPhi_init;
+    
+    beta_init = subs (beta_init,dq , 0);
+    beta_init = subs (beta_init,ddq_aux , 0);
+    cout<<  "beta_init2=" << unatomize(beta_init) <<endl;
 
-    sys.export_Dynamic_Simulation(sys, ORDER , MAPLE);
+//%% Dynamic Equilibrium Equations
+//%----Begin Edit----
+//Extra_Dyn_Eq_eq=[dtheta1;
+    //ddtheta1];
+//%----End Edit----
 
-// ************************************************************************************************
-// 	Export Point, Base and Frame Diagrams 
-// ************************************************************************************************
-#ifdef GRAPHVIZ
-	cout << "Export Point, Base and Frame Diagrams" << endl;
-
-	sys.export_Graphviz_dot (  );
-
-	//Generate eps figure
-    	system("dot -Tps   base_diagram.dot -o plain_base_diagram.eps");
-    	system("latex base_diagram.tex");
-    	system("dvips base_diagram.dvi -o base_diagram.eps");
-	//Generate figure eps
-    	system("dot -Tps   point_diagram.dot -o plain_point_diagram.eps");
-     	system("latex point_diagram.tex");
-    	system("dvips point_diagram.dvi -o point_diagram.eps");
-	//Generate eps figure
-    	system("dot -Tps   frame_diagram.dot -o plain_frame_diagram.eps");
-    	system("latex frame_diagram.tex");
-    	system("dvips base_diagram.dvi -o base_diagram.eps");
-#endif
-
-
-// ************************************************************************************************
-//	Export MATLAB environment vector 
-// ************************************************************************************************
-
-	cout << "Export ENVIRONMENT file " << endl;
-
-	sys.export_environment_m (  );
-
-
-// ************************************************************************************************
-//	Export config.ini file
-// ************************************************************************************************
-
-	cout << "Export config.ini file " << endl;
-
-	sys.export_config_ini (  );
-
-// ************************************************************************************************
-//	Export C++ code for Openscenegraph
-// ************************************************************************************************
-
-	cout << "Export C++ code for Openscenegraph." << endl;
-	sys.export_open_scene_graph ( );
-
-// ************************************************************************************************
-//	Export State File
-// ************************************************************************************************
-
-	cout << "Export State File" << endl;
-
-    	lst state;
-
-    	state = {theta1, theta2, theta3};
-
-        sys.export_write_data_file_C(state);
-        sys.export_read_data_file_C(state);
+//%% Virtual Power or Lagrange
+    //%%  Equilibrium problem "a la" Virtual Power or Lagrange
+    //Dyn_Eq_eq_VP=[Dyn_eq_L;
+        //ddPhi;
+        //dPhi;
+        //Phi;
+        //Extra_Dyn_Eq_eq];
 
 
-// ************************************************************************************************
-//	Export grphics.gnuplot
-// ************************************************************************************************
+    ex ex_dtheta1=*dtheta1;
+    ex ex_ddtheta1=*ddtheta1;
+    Matrix Extra_Dyn_Eq_eq= Matrix(2,1,&ex_dtheta1,&ddtheta1);
+    Matrix Dyn_Eq_eq_VP=Matrix(5,1,&Dyn_eq_L,&ddPhi,&dPhi,&Phi,&Extra_Dyn_Eq_eq);
+    cout<<  "Dyn_Eq_eq_VP2=" << unatomize(Dyn_Eq_eq_VP) <<endl;
+    
+    
+    sys.export_function_MATLAB("Phi_", "Phi_out", Phi,"q,t,param");
+    sys.export_function_MATLAB("Phi_q_", "Phi_q_out", Phi_q, "q,t,param");
+    sys.export_function_MATLAB("dPhi_dq_", "dPhi_dq_out", dPhi_dq, "time,param");
+    sys.export_function_MATLAB("beta_", "beta_out", beta, "q,t,param");
+    sys.export_function_MATLAB("gamma_", "gamma_out", gamma,  "q,dq,t,param");
+    sys.export_function_MATLAB("Phi_init_" ,"Phi_init_out" ,Phi_init, "q,t,param");
+    sys.export_function_MATLAB("Phi_init_q_","Phi_init_q_out",Phi_init_q, "q,t,param");
+    sys.export_function_MATLAB("dPhi_init_dq_" ,"dPhi_init_dq_out" ,dPhi_init_dq, "q,t,param");
+    sys.export_function_MATLAB("beta_init_" ,"beta_init_out" ,beta_init, "q,t,param");
+    sys.export_function_MATLAB("M_qq_", "M_qq_out", M_qq, "q,t,param");
+    sys.export_function_MATLAB("delta_q_", "delta_q_out", delta_q, "q,dq,t,param");
+    //sys.export_function_MATLAB("Mdelta", "Mdelta_", Mdelta,  "time,param,inputs");
+    //sys.export_function_MATLAB("output", "output_", output, "unknowns,time,param,inputs");
+    //sys.export_function_MATLAB("energy", "energy_", energy, "time,param");
 
-	cout << "Export GNUPLOT file" << endl;
-    sys.export_gnuplot ( state );
+    //sys.export_Dynamic_Simulation(sys, ORDER , MAPLE);
+
+//// ************************************************************************************************
+//// 	Export Point, Base and Frame Diagrams 
+//// ************************************************************************************************
+//#ifdef GRAPHVIZ
+	//cout << "Export Point, Base and Frame Diagrams" << endl;
+
+	//sys.export_Graphviz_dot (  );
+
+	////Generate eps figure
+    	//system("dot -Tps   base_diagram.dot -o plain_base_diagram.eps");
+    	//system("latex base_diagram.tex");
+    	//system("dvips base_diagram.dvi -o base_diagram.eps");
+	////Generate figure eps
+    	//system("dot -Tps   point_diagram.dot -o plain_point_diagram.eps");
+     	//system("latex point_diagram.tex");
+    	//system("dvips point_diagram.dvi -o point_diagram.eps");
+	////Generate eps figure
+    	//system("dot -Tps   frame_diagram.dot -o plain_frame_diagram.eps");
+    	//system("latex frame_diagram.tex");
+    	//system("dvips base_diagram.dvi -o base_diagram.eps");
+//#endif
+
+
+//// ************************************************************************************************
+////	Export MATLAB environment vector 
+//// ************************************************************************************************
+
+	//cout << "Export ENVIRONMENT file " << endl;
+
+	//sys.export_environment_m (  );
+
+
+//// ************************************************************************************************
+////	Export config.ini file
+//// ************************************************************************************************
+
+	//cout << "Export config.ini file " << endl;
+
+	//sys.export_config_ini (  );
+
+//// ************************************************************************************************
+////	Export C++ code for Openscenegraph
+//// ************************************************************************************************
+
+	//cout << "Export C++ code for Openscenegraph." << endl;
+	//sys.export_open_scene_graph ( );
+
+//// ************************************************************************************************
+////	Export State File
+//// ************************************************************************************************
+
+	//cout << "Export State File" << endl;
+
+    	//lst state;
+
+    	//state = {theta1, theta2, theta3};
+
+        //sys.export_write_data_file_C(state);
+        //sys.export_read_data_file_C(state);
+
+
+//// ************************************************************************************************
+////	Export grphics.gnuplot
+//// ************************************************************************************************
+
+	//cout << "Export GNUPLOT file" << endl;
+    //sys.export_gnuplot ( state );
        
    
 
@@ -546,8 +657,6 @@ else 	if ( ORDER == RMO)            {	cout << "** Matrix Order      ===> Row_MO 
 if ( MAPLE == MAPLE_OFF)            {	cout << "** Maple             ===> OFF                **" << endl;	}
 else 	if ( MAPLE == MAPLE_ON)       {	cout << "** Maple             ===> ON                 **" << endl;	}
                                      	cout << "***********************************************" << endl;
-
-
 
 // ************************************************************************************************
 //	END program

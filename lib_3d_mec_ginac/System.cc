@@ -2949,7 +2949,7 @@ Matrix System::jacobian ( Matrix MatrixA , Matrix MatrixB , ex symmetric ) {
         else
           throw 1;
     }catch ( int e ) {
-        outError ( "ERR - Imcompatible dimension of Matrixes or second matrix is not a matrix of symbols (first is a row second is a column)" );
+        outError ( "ERR - Imcompatible dimension of Matrixes or second matrix is not a matrix of symbols (first arg is a row Matrix and second arg is a column Matrix)" );
     }
     out = atomize ( out );
     return out;
@@ -2992,9 +2992,6 @@ ex System::diff ( ex expression , symbol symbolA ) {
         return expression.diff ( symbolA );
     }
     else{
-        // OLD
-        //expression = unatomize_ex ( expression );
-        //return expression.diff ( symbolA );
         return recursive_differentiation (expression,symbolA);
     }
 
@@ -3036,8 +3033,6 @@ try {
     else if (symbol_symbol==NULL)
      symbol_symbol=Search_Object ( aux_accelerations , symbol_name );
 
-
-
     if (symbol_symbol==NULL) throw 1;
 
     out = diff ( expression , *symbol_symbol);
@@ -3050,8 +3045,6 @@ try {
     }
 
 }
-
-
 
 /*
 Return the derivate of one Matrix respect one symbol
@@ -3069,7 +3062,6 @@ Vector3D System::diff(Vector3D VectorA,symbol symbolA){
     return ::diff(VectorA,symbolA);
 }
 
-
 /*
 Return the derivate of one Tensor3D respect one symbol
 */
@@ -3080,13 +3072,13 @@ Tensor3D System::diff(Tensor3D TensorA,symbol symbolA){
 /*
 Return the derivate of one Wrench3D respect one symbol
 */
-Wrench3D System::diff(Wrench3D WrenchA,symbol symbolA){
-    return Wrench3D("",::diff(WrenchA.get_Force(),symbolA),::diff(WrenchA.get_Moment(),symbolA),WrenchA.get_Point(),WrenchA.get_Solid(),"Twist");
-}
-
 Wrench3D System::diff(Wrench3D WrenchA,ex symbolA){
     return Wrench3D("",::diff(WrenchA.get_Force(),ex_to<symbol>(symbolA)),::diff(WrenchA.get_Moment(),ex_to<symbol>(symbolA)),WrenchA.get_Point(),WrenchA.get_Solid(),"Twist");
 }
+
+//Wrench3D System::diff(Wrench3D WrenchA,ex symbolA){
+//    return Wrench3D("",::diff(WrenchA.get_Force(),ex_to<symbol>(symbolA)),::diff(WrenchA.get_Moment(),ex_to<symbol>(symbolA)),WrenchA.get_Point(),WrenchA.get_Solid(),"Twist");
+//}
 
 /*
 Return the derivate of one Matrix respect one symbol
@@ -6267,7 +6259,7 @@ void System::export_function_MATLAB(string function_name, string function_out, M
   ofstream matlab_file;
 
   matlab_file.open( ( function_name+".m" ).c_str () );
-
+std::cout << "hey--------------------------------------------------------" << function_name + ".m"<< std::endl;
   string s="(";
 
   for(int i = 0; i < s_internal.size(); ++i){
@@ -9126,20 +9118,20 @@ void System::export_Dynamic_Simulation (System &sys, int order, int maple){
         // MATLAB exportation
         export_init_function_MATLAB();
         export_function_MATLAB("Phi", "Phi_", Phi);
-        export_function_MATLAB("Beta", "Beta_", Beta);
-        export_function_MATLAB("Gamma", "Gamma_", Gamma);
-        export_function_MATLAB("PhiInit" ,"PhiInit_" ,PhiInit);
-        export_function_MATLAB("PhiInit_q","PhiInit_q_",PhiInit_q);
-        export_function_MATLAB("dPhiInit_dq" ,"dPhiInit_dq_" ,dPhiInit_dq);
-        export_function_MATLAB("BetaInit" ,"BetaInit_" ,BetaInit );
+        export_function_MATLAB("Beta", "beta_", Beta);
+        export_function_MATLAB("Gamma", "gamma_", Gamma);
+        export_function_MATLAB("PhiInit" ,"Phi_init_" ,PhiInit);
+        export_function_MATLAB("PhiInit_q","Phi_init_q_",PhiInit_q);
+        export_function_MATLAB("dPhiInit_dq" ,"dPhi_init_dq_" ,dPhiInit_dq);
+        export_function_MATLAB("BetaInit" ,"beta_init_" ,BetaInit );
         export_function_MATLAB("Phi_q", "Phi_q_", Phi_q);
         export_function_MATLAB("dPhi_dq", "dPhi_dq_", dPhi_dq);
         export_function_MATLAB("M", "M_", M);
-        export_function_MATLAB("Q", "Q_", Q);
+        export_function_MATLAB("Q", "delta_", Q);
         //export_function_MATLAB("MXdPhi_dqZero", "MXdPhi_dqZero_", MXdPhi_dqZero);
         //export_function_MATLAB("Qgamma", "Qgamma_", Qgamma);
-        export_function_MATLAB("Output", "Output_", Output);
-        export_function_MATLAB("Energy", "Energy_", Energy);
+        export_function_MATLAB("Output", "output_", Output);
+        export_function_MATLAB("Energy", "energy_", Energy);
 
     }
 
@@ -9263,21 +9255,21 @@ void System::export_Dynamic_Simulation (System &sys, int order, int maple){
         }
 
         export_function_MATLAB("Phi", "Phi_", Phi, new_atom_list_Phi, new_exp_list_Phi,s_q +"time,param");
-        export_function_MATLAB("Beta", "Beta_", Beta, new_atom_list_Beta, new_exp_list_Beta,s_q +"time,param");
-        export_function_MATLAB("Gamma", "Gamma_", Gamma, new_atom_list_Gamma, new_exp_list_Gamma,s_q + s_dq + "time,param");
-        export_function_MATLAB("PhiInit" ,"PhiInit_" ,PhiInit, new_atom_list_PhiInit, new_exp_list_PhiInit,s_q +"time,param");
-        export_function_MATLAB("PhiInit_q","PhiInit_q_",PhiInit_q, new_atom_list_PhiInit_q, new_exp_list_PhiInit_q,s_q +"time,param");
-        export_function_MATLAB("dPhiInit_dq" ,"dPhiInit_dq_" ,dPhiInit_dq, new_atom_list_dPhiInit_dq, new_exp_list_dPhiInit_dq,s_q +"time,param");
-        export_function_MATLAB("BetaInit" ,"BetaInit_" ,BetaInit, new_atom_list_BetaInit, new_exp_list_BetaInit,s_q +"time,param");
+        export_function_MATLAB("Beta", "beta_", Beta, new_atom_list_Beta, new_exp_list_Beta,s_q +"time,param");
+        export_function_MATLAB("Gamma", "gamma_", Gamma, new_atom_list_Gamma, new_exp_list_Gamma,s_q + s_dq + "time,param");
+        export_function_MATLAB("PhiInit" ,"Phi_init_" ,PhiInit, new_atom_list_PhiInit, new_exp_list_PhiInit,s_q +"time,param");
+        export_function_MATLAB("PhiInit_q","Phi_init_q_",PhiInit_q, new_atom_list_PhiInit_q, new_exp_list_PhiInit_q,s_q +"time,param");
+        export_function_MATLAB("dPhiInit_dq" ,"dPhi_init_dq_" ,dPhiInit_dq, new_atom_list_dPhiInit_dq, new_exp_list_dPhiInit_dq,s_q +"time,param");
+        export_function_MATLAB("BetaInit" ,"beta_init_" ,BetaInit, new_atom_list_BetaInit, new_exp_list_BetaInit,s_q +"time,param");
         export_function_MATLAB("Phi_q", "Phi_q_", Phi_q, new_atom_list_Phi_q, new_exp_list_Phi_q,s_q +"time,param");
         export_function_MATLAB("dPhi_dq", "dPhi_dq_", dPhi_dq, new_atom_list_dPhi_dq, new_exp_list_dPhi_dq,s_q +"time,param");
         export_function_MATLAB("M", "M_", M, new_atom_list_M, new_exp_list_M,"q,time,param");
-        export_function_MATLAB("Q", "Q_", Q, new_atom_list_Q, new_exp_list_Q, s_q + s_dq +"time,param,inputs");
-        export_function_MATLAB("MQ", "MQ_", MQ, new_atom_list_MQ, new_exp_list_MQ, s_q + s_dq + "time,param,inputs");
+        export_function_MATLAB("Q", "delta_", Q, new_atom_list_Q, new_exp_list_Q, s_q + s_dq +"time,param,inputs");
+        export_function_MATLAB("MQ", "Mdelta_", MQ, new_atom_list_MQ, new_exp_list_MQ, s_q + s_dq + "time,param,inputs");
         //export_function_MATLAB2("MXdPhi_dqZero", "MXdPhi_dqZero_", MXdPhi_dqZero, new_atom_list_MXdPhi_dqZero, new_exp_list_MXdPhi_dqZero"q,time,param");
         //export_function_MATLAB2("Qgamma", "Qgamma_", Qgamma, new_atom_list_Qgamma, new_exp_list_Qgamma,"q,dq,time,param,inputs");
-        export_function_MATLAB("Output", "Output_", Output, new_atom_list_Output, new_exp_list_Output,s_q + s_dq + s_ddq +"unknowns,time,param,inputs");
-        export_function_MATLAB("Energy", "Energy_", Energy, new_atom_list_Energy, new_exp_list_Energy,s_q + s_dq + s_ddq +"time,param");
+        export_function_MATLAB("Output", "output_", Output, new_atom_list_Output, new_exp_list_Output,s_q + s_dq + s_ddq +"unknowns,time,param,inputs");
+        export_function_MATLAB("Energy", "energy_", Energy, new_atom_list_Energy, new_exp_list_Energy,s_q + s_dq + s_ddq +"time,param");
 
 
 
@@ -9313,21 +9305,21 @@ void System::export_Dynamic_Simulation (System &sys, int order, int maple){
         // MATLAB exportation
         export_init_function_MATLAB();
         export_function_MATLAB("Phi", "Phi_", Phi);
-        export_function_MATLAB("Beta", "Beta_", Beta);
-        export_function_MATLAB("Gamma", "Gamma_", Gamma);
-        export_function_MATLAB("PhiInit" ,"PhiInit_" ,PhiInit);
-        export_function_MATLAB("PhiInit_q","PhiInit_q_",PhiInit_q);
-        export_function_MATLAB("dPhiInit_dq" ,"dPhiInit_dq_" ,dPhiInit_dq);
-        export_function_MATLAB("BetaInit" ,"BetaInit_" ,BetaInit );
+        export_function_MATLAB("Beta", "beta_", Beta);
+        export_function_MATLAB("Gamma", "gamma_", Gamma);
+        export_function_MATLAB("PhiInit" ,"Phi_init_" ,PhiInit);
+        export_function_MATLAB("PhiInit_q","Phi_init_q_",PhiInit_q);
+        export_function_MATLAB("dPhiInit_dq" ,"dPhi_init_dq_" ,dPhiInit_dq);
+        export_function_MATLAB("BetaInit" ,"beta_init_" ,BetaInit );
         export_function_MATLAB("Phi_q", "Phi_q_", Phi_q);
         export_function_MATLAB("dPhi_dq", "dPhi_dq_", dPhi_dq);
         export_function_MATLAB("M", "M_", M);
-        export_function_MATLAB("Q", "Q_", Q);
-        export_function_MATLAB("MQ", "MQ_", MQ);
+        export_function_MATLAB("Q", "delta_", Q);
+        export_function_MATLAB("MQ", "Mdelta_", MQ);
         //export_function_MATLAB("MXdPhi_dqZero", "MXdPhi_dqZero_", MXdPhi_dqZero);
         //export_function_MATLAB("Qgamma", "Qgamma_", Qgamma);
-        export_function_MATLAB("Output", "Output_", Output);
-        export_function_MATLAB("Energy", "Energy_", Energy);
+        export_function_MATLAB("Output", "output_", Output);
+        export_function_MATLAB("Energy", "energy_", Energy);
 
     }
 
