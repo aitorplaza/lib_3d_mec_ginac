@@ -65,8 +65,10 @@ void get_atom_list( ex expression, lst & atom_list);
 
 int recursive_list_simplify (int i, lst & list);
 
-ex recursive_expression_substitution (ex expression, symbol_numeric symbol, float value);
+ex recursive_expression_substitution (ex expression, ex a_symbol, float value);
 ex recursive_substitution (ex expression, vector<symbol_numeric*> & SymbolVec, float value);
+ex recursive_substitution (ex expression, Matrix SymbolVec, float value);
+Matrix subs(Matrix ExMatrix, Matrix SymbolVec, float value);
 
 ex recursive_differentiation (ex expression, symbol_numeric symbol);
 
@@ -77,7 +79,6 @@ void exclude_Coordinates_atoms ( System * system );
 void exclude_Velocities_atoms ( System * system );
 void exclude_Accelerations_atoms ( System * system );
 void exclude_Joint_Unknowns_atoms ( System * system );
-
 
 int recursive_ops_counter (ex expression);
 /*

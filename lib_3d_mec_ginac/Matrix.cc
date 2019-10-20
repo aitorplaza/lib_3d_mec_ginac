@@ -219,9 +219,6 @@ Matrix::Matrix ( string name, long rows , long cols , Matrix * first , ... ) {
 		else if (i==3){outError ( "ERR - Matrixes in a column must have the same number of columns" );};
 	}
 }
-
-
-
 /*
 Constructor with number of Matrix in rows and cols for compose a new matrix with the
 given matrices passed on a std::vector.
@@ -308,7 +305,6 @@ Matrix::Matrix ( long rows, long cols, const vector<Matrix*>& auxMatrixs) {
 		else if (i==3){outError ( "ERR - Matrixes in a column must have the same number of columns" );};
 	}
 }
-
 
 
 /*
@@ -412,6 +408,7 @@ Matrix::Matrix ( long rows , long cols , Matrix * first , ... ) {
 		else if (i==3){outError ( "ERR - Matrixes in a column must have the same number of columns" );};
 	}
 }
+
 
 
 /*

@@ -302,8 +302,8 @@ class System{
         Matrix diff ( Matrix MatrixA , symbol symbolA );
         Vector3D diff ( Vector3D Vector3DA , symbol symbolA );
         Tensor3D diff ( Tensor3D Tensor3DA , symbol symbolA );
-        Wrench3D diff ( Wrench3D Wrench3DA , symbol symbolA );
-        Wrench3D diff(Wrench3D WrenchA,ex symbolA);
+        //Wrench3D diff ( Wrench3D Wrench3DA , symbol symbolA );
+        Wrench3D diff (Wrench3D WrenchA,ex symbolA);
 
         ex diff ( ex expression , string symbol_name );
         Matrix diff ( Matrix MatrixA , string symbol_name );

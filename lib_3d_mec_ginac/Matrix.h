@@ -34,8 +34,6 @@ using std::vector;
 
 		//Protected constructor
 
-
-
 	private:
 
 		//Private methods
