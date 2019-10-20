@@ -15,6 +15,7 @@ using GiNaC::exvector;
 using GiNaC::relational;
 using std::string;
 using std::ostream;
+using std::vector;
 
 	class Matrix{
 
@@ -56,6 +57,7 @@ using std::ostream;
 		Matrix ( long rows , long cols , ex * first , ... );
 		Matrix ( string name, long rows , long cols , Matrix * first , ... );
 		Matrix ( long rows , long cols , Matrix * first , ... );
+		Matrix ( long rows, long cols, const vector<Matrix*>&);
 		Matrix ( long rows , long cols , lst expressions_list );
 		Matrix ( lst expressions_list );
 		Matrix ( string name , lst expression_list );

@@ -221,6 +221,96 @@ Matrix::Matrix ( string name, long rows , long cols , Matrix * first , ... ) {
 }
 
 
+
+/*
+Constructor with number of Matrix in rows and cols for compose a new matrix with the
+given matrices passed on a std::vector.
+*/
+Matrix::Matrix ( long rows, long cols, const vector<Matrix*>& auxMatrixs) {
+	try{
+
+		name = "";
+
+		//Checks on data and determination of numbre of numRows and numCols of the final Matrix
+
+		if ( rows*cols!=auxMatrixs.size () ) throw 1;
+
+		long int numCols=0;
+		long int this_row_number_of_rows;
+		for (long int i=0 ; i < rows ; i++)
+		{
+			for (long int j=0 ; j < cols ; j++)
+			{
+				if (j==0)
+				{
+					this_row_number_of_rows=auxMatrixs[i*cols+j]->rows();
+					numCols=auxMatrixs[i*cols+j]->cols();
+				}
+				else
+				{
+					numCols=numCols+auxMatrixs[i*cols+j]->cols();
+					if ( auxMatrixs[i*cols+j]->rows() != this_row_number_of_rows ) throw 2;
+				};
+			};
+		};
+
+		long int numRows = 0;
+		long int this_column_number_of_columns;
+		for (long int j=0 ; j < cols ; j++)
+		{
+			for (long int i=0 ; i < rows ; i++)
+			{
+				if (i==0)
+				{
+					this_column_number_of_columns=auxMatrixs[i*cols+j]->cols();
+					numRows=auxMatrixs[i*cols+j]->rows();
+				}
+				else
+				{
+					numRows=numRows+auxMatrixs[i*cols+j]->rows();
+					if ( auxMatrixs[i*cols+j]->cols() != this_column_number_of_columns ) throw 3;
+				};
+			};
+		};
+
+		//Create the final matrix with the adecuate number of rows and cols
+		matrix aux ( numRows , numCols );
+
+		long int start_block_n=0;
+		long int start_block_m=0;
+		long int n = 0;
+		long int m = 0;
+
+		for ( n = 0 ; n < rows ; n++ ) {
+		for ( m = 0 ; m < cols ; m++ ) {
+			for ( long int i = 0 ; i < auxMatrixs[n*cols+m]-> rows () ; i++ ) {
+			for ( long int j = 0 ; j < auxMatrixs[n*cols+m]-> cols () ; j++ ) {
+					//Write the values
+					aux ( start_block_n + i , start_block_m + j ) = auxMatrixs[n*cols+m]-> get_matrix () ( i , j );
+			}
+			}
+		start_block_m = start_block_m + auxMatrixs[n*cols+m] -> cols ();
+		}
+		start_block_m = 0;
+		m=m-1;//m gets increased on exit of the for block
+		start_block_n = start_block_n + auxMatrixs[n*cols+m] -> rows ();
+		}
+		start_block_n = 0;
+
+		mat = aux;
+//		system = NULL;
+		* this = atomize ( * this );
+	}catch ( exception &  p ) {
+  		outError ( "ERR - Unspected error building Matrix" );
+	}catch ( int i ) {
+		     if (i==1){outError ( "ERR - number rows*cols different of number of Matrixes" );}
+		else if (i==2){outError ( "ERR - Matrixes in a row must have the same number of rows" );}
+		else if (i==3){outError ( "ERR - Matrixes in a column must have the same number of columns" );};
+	}
+}
+
+
+
 /*
 Constructor with number of Matrix in rows and cols for compose a new Matrix with this Matrix
 */
