@@ -39,3 +39,6 @@ libtool
 # Ignoring include/ and lib/ directories
 include/
 lib/
+
+# Ignoring .log files
+*.log

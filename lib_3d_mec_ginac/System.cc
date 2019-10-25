@@ -8964,6 +8964,14 @@ void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep
     //~ * new_Matrix( "MXdPhi_dqZero",MXdPhi_dqZero );
 }
 
+/*
+Matrix calculation without the parameter System sys (which refer to the instance this)
+*/
+void System::Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep_init , Matrix &Dynamic_Equations, int method, Matrix &dPhiNH) {
+    Matrix_Calculation(Phi, coord_indep_init, vel_indep_init, Dynamic_Equations, *this, method, dPhiNH);
+}
+
+
 
 void System::Matrix_Calculation(lst coord_indep_init ,lst vel_indep_init , Matrix &Dynamic_Equations, System &sys, int method){
     Matrix Phi(0,1);

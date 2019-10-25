@@ -498,7 +498,7 @@ class System{
         void Matrix_Calculation(lst coord_indep_init ,lst vel_indep_init ,System &sys, int method);
         void Matrix_Calculation(Matrix &Phi,lst coord_indep_init ,lst vel_indep_init,  System &sys, int method);
         void Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep_init ,System &sys, int method, Matrix &dPhiNH);
-
+        void Matrix_Calculation(Matrix &Phi, lst coord_indep_init ,lst vel_indep_init , Matrix &Dynamic_Equations, int method, Matrix &dPhiNH);
 
 
 
