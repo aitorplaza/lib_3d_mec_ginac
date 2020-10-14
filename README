@@ -1,71 +1,14 @@
-SIMPLE INSTALLATION AND USAGE EXAMPLE
--------------------------------------
+# INSTALLATION INSTRUCTIONS
 
-$ tar -xzvf lib3d-mec_ginac-v1.1_and_example.tar.gz
-$ cd lib_3d_mec_ginac-1.1.0
-$ ./configure --prefix=`pwd`/..
-//if problems with libtool use ./autogen.sh --prefix=`pwd`/.. instead (youll have to instal libtool and probably autotools)
-$ make
-$ make install
-$ . ./local_environment.bash
-//The previous file contains
-#!/bin/bash
-export LD_LIBRARY_PATH=`pwd`/../lib
-export PKG_CONFIG_PATH=`pwd`/../lib/pkgconfig
-$ cd examples/galera/
-$ g++ -o main_eccomas2007  main_eccomas2007.cc -I../../../include  -L../../../lib -l_3d_mec_ginac-1.1 -lginac -lcln -lgmp
-//or in a more elegant way
-$ g++ -o main_eccomas2007  main_eccomas2007.cc `pkg-config --cflags --libs lib_3d_mec_ginac-1.1 ginac cln gsl`
+```
+sudo apt-get -y install build-essential pkg-config libgsl-dev libblas3gf libblas-dev liblapack3gf liblapack-dev graphviz openscenegraph libopenscenegraph-dev gnuplot libgts-bin autoconf libtool libcln6 libcln-dev ginac-tools libginac-dev
+```
 
-$ cp ../common_code/qr_nm.c .
-$ cp ../common_code/qr_nm.h .
-$ cp ../common_code/newton_raphson_qr.c .
-$ cp ../common_code/newton_raphson_qr.h .
-$ cp ../common_code/printing.c .
-$ cp ../common_code/printing.h .
+```
+cd lib_3d_mec_ginac
+make clean
 
-$ ./main_eccomas2007 DOWN YES
-Alternatively
-$ ./main_eccomas2007 UP YES
-$ touch atom_def.c
-$ touch atom_def.h
-$ ./main_eccomas2007 DOWN NO
-$ ./main_eccomas2007 UP NO
-
-$ evince *.eps &
-
-$ ./clean.bash
-
-You will need GiNaC (http://www.ginac.de) and GSL(GNU Scientific Library http://www.gnu.org/software/gsl/), to compile the library (maybe libtool).
-
-The example needs and gnuplot (http://www.gnuplot.info/).
-
-(The versions I'm using are
-My actual Ubuntu 8.10
-libginac1.4-1.4.3-1 libginac1.4-dev-1.4.3-1
-libgsl0ldbl-1.11-2, libgsl0-dev-1.11-2
-gnuplot-4.2.3-1
-
-My old fedora
-$ rpm -q gsl
- gsl-1.8-1.1
-$ rpm -q ginac
- ginac-1.3.6-1.fc6
-$ rpm -q cln
- cln-1.1.13-2.fc6
-$ rpm -q gnuplot
- gnuplot-4.0.0-12
-)
-
-The program is the one presented in Eccomas2007 (1), with some additions that allows it to export C code and to perform a simplistic dynamic simulation.
-
-(1) Javier Ros, Luis Arrondo, Javier Gil, and Xabier Iriarte.
-    LIB3D_MEC–GINAC, A LIBRARY FOR SYMBOLIC MULTIBODY DYNAMICS.
-    MULTIBODY DYNAMICS 2007, ECCOMAS Thematic Conference, Milano 2007.
-    A copy is available at:
-    http://www.imac.unavarra.es/3d_mec/download/lib3d-mec-ginac/eccomas2007_paper.pdf
-
-Pamplona-Iruña 2009-08-16
-
-J. Ros
-
+./autogen.sh --prefix=`pwd`/..
+make
+make install
+```
