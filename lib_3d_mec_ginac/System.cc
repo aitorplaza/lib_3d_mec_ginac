@@ -6259,7 +6259,7 @@ void System::export_function_MATLAB(string function_name, string function_out, M
   ofstream matlab_file;
 
   matlab_file.open( ( function_name+".m" ).c_str () );
-std::cout << "hey--------------------------------------------------------" << function_name + ".m"<< std::endl;
+
   string s="(";
 
   for(int i = 0; i < s_internal.size(); ++i){
