@@ -104,7 +104,7 @@ Tensor3D unatomize ( Tensor3D m );
 
 Wrench3D unatomize ( Wrench3D m );
 
-
+ex atomize ( ex m );
 
 /*
 This function atomizes a Matrix
