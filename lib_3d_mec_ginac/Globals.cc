@@ -968,13 +968,6 @@ ex unatomize ( ex m ){
     return m;
 }
 
-ex unatomize ( ex m ){
-    if  ( atomization == NO )
-        return m;
-     m = atomize_ex ( m  );
-    return m;
-}
-
 Matrix unatomize ( Matrix m ){
     if  ( atomization == NO )
         return m;
