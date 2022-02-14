@@ -1,5 +1,5 @@
 from sys import argv
-import matplotlib.pyplot as plt 
+#import matplotlib.pyplot as plt 
 import scipy.io as sio
 import numpy as np
 

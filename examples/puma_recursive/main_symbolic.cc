@@ -721,12 +721,14 @@ else{
 
 	lst inertial_parameters;
 
-	inertial_parameters =	m1, mx1, my1, mz1, Ixx1, Ixy1, Iyy1, Ixz1, Iyz1, Izz1,
+	inertial_parameters =	{
+                            m1, mx1, my1, mz1, Ixx1, Ixy1, Iyy1, Ixz1, Iyz1, Izz1,
                             m2, mx2, my2, mz2, Ixx2, Ixy2, Iyy2, Ixz2, Iyz2, Izz2,
                             m3, mx3, my3, mz3, Ixx3, Ixy3, Iyy3, Ixz3, Iyz3, Izz3,
                             m4, mx4, my4, mz4, Ixx4, Ixy4, Iyy4, Ixz4, Iyz4, Izz4,
                             m5, mx5, my5, mz5, Ixx5, Ixy5, Iyy5, Ixz5, Iyz5, Izz5,
-                            m6, mx6, my6, mz6, Ixx6, Ixy6, Iyy6, Ixz6, Iyz6, Izz6;
+                            m6, mx6, my6, mz6, Ixx6, Ixy6, Iyy6, Ixz6, Iyz6, Izz6
+                            };
 
 // 	syms 	m1 mx1 my1 mz1 Ixx1 Ixy1 Ixz1 Iyy1 Iyz1 Izz1 m2 mx2 my2 mz2 Ixx2 Ixy2 Ixz2 Iyy2 Iyz2 Izz2 m3 mx3 my3 mz3 Ixx3 Ixy3 Ixz3 Iyy3 Iyz3 Izz3 m4 mx4 my4 mz4 Ixx4 Ixy4 Ixz4 Iyy4 Iyz4 Izz4 m5 mx5 my5 mz5 Ixx5 Ixy5 Ixz5 Iyy5 Iyz5 Izz5 m6 mx6 my6 mz6 Ixx6 Ixy6 Ixz6 Iyy6 Iyz6 Izz6 real;
 
@@ -798,16 +800,16 @@ Vector3D dV0 = *sys.new_Vector3D("dV0",0,0,-g,"xyz") ;
 
 
 // SOLID 1
-Vector3D OMEGA0__1  = OMEGA0.change_Base(BAR1->get_Base());
+Vector3D OMEGA0__1  = OMEGA0.in_Base(BAR1->get_Base());
 Vector3D OMEGA01 = sys.Angular_Velocity(Base_xyz,BAR1->get_Base());
 Vector3D OMEGA1 = OMEGA0__1 + OMEGA01;
-Vector3D dOMEGA1 =  dOMEGA0.change_Base(BAR1->get_Base()) + sys.dt(OMEGA01) + (OMEGA1^OMEGA01);
+Vector3D dOMEGA1 =  dOMEGA0.in_Base(BAR1->get_Base()) + sys.dt(OMEGA01) + (OMEGA1^OMEGA01);
 Matrix U1 =  dOMEGA1.skew() + OMEGA1.skew()*OMEGA1.skew();
 gravity=DOWN;Vector3D r01 = sys.Position_Vector(Point_O,P1);gravity =  UP;
 Vector3D U0r01(U0*r01, r01.get_Base() );
 U0r01.set_System ( &sys );
  
-Vector3D dV1 = (dV0 + U0r01).change_Base(BAR1->get_Base());// + 0;
+Vector3D dV1 = (dV0 + U0r01).in_Base(BAR1->get_Base());// + 0;
 //Vector3D m1U1r1G1(m1*U0*P1_G1, P1_G1.get_Base() );
 //m1U1r1G1.set_System ( &sys ); 
 Vector3D D1= *sys.new_Vector3D("D1",mx1,my1,mz1,"B1");
@@ -821,15 +823,15 @@ Vector3D ini1 = I1*dOMEGA1 + (OMEGA1 ^ (I1* OMEGA1))+ (D1^ dV1);
 
 
 // SOLID 2
-Vector3D OMEGA1__2  = OMEGA1.change_Base(BAR2->get_Base());
+Vector3D OMEGA1__2  = OMEGA1.in_Base(BAR2->get_Base());
 Vector3D OMEGA21 = sys.Angular_Velocity(BAR1->get_Base(),BAR2->get_Base());  
 Vector3D OMEGA2 = OMEGA1__2 + OMEGA21;
-Vector3D dOMEGA2 =  dOMEGA1.change_Base(BAR2->get_Base()) + sys.dt(OMEGA21) + (OMEGA2^OMEGA21);
+Vector3D dOMEGA2 =  dOMEGA1.in_Base(BAR2->get_Base()) + sys.dt(OMEGA21) + (OMEGA2^OMEGA21);
 Matrix U2 =  dOMEGA2.skew() + OMEGA2.skew()*OMEGA2.skew();
 gravity=DOWN;Vector3D r12 = sys.Position_Vector(P1,P2);gravity =  UP;
 Vector3D U1r12(U1*r12, r12.get_Base() );
 U1r12.set_System ( &sys ); 
-Vector3D dV2 = (dV1 + U1r12).change_Base(BAR2->get_Base());
+Vector3D dV2 = (dV1 + U1r12).in_Base(BAR2->get_Base());
 //Vector3D m2U2r2G2(U2*P2_G2, P2_G2.get_Base() );
 //m2U2r2G2.set_System ( &sys );
 Vector3D D2= *sys.new_Vector3D("D2",mx2,my2,mz2,"B2");
@@ -841,15 +843,15 @@ Vector3D ifi2 = m2*dV2 +U2d2;
 Vector3D ini2 = I2*dOMEGA2 + (OMEGA2 ^ (I2* OMEGA2)) + (D2^ dV2);
 
 // SOLID 3
-Vector3D OMEGA2__3  = OMEGA2.change_Base(BAR3->get_Base());
-Vector3D OMEGA32 = (sys.Angular_Velocity(BAR2->get_Base(),BAR3->get_Base())).change_Base(BAR3->get_Base()); 
+Vector3D OMEGA2__3  = OMEGA2.in_Base(BAR3->get_Base());
+Vector3D OMEGA32 = (sys.Angular_Velocity(BAR2->get_Base(),BAR3->get_Base())).in_Base(BAR3->get_Base()); 
 Vector3D OMEGA3 = OMEGA2__3 + OMEGA32;
-Vector3D dOMEGA3 =  dOMEGA2.change_Base(BAR3->get_Base()) + sys.dt(OMEGA32) + (OMEGA3^OMEGA32);
+Vector3D dOMEGA3 =  dOMEGA2.in_Base(BAR3->get_Base()) + sys.dt(OMEGA32) + (OMEGA3^OMEGA32);
 Matrix U3 =  dOMEGA3.skew() + OMEGA3.skew()*OMEGA3.skew();
 gravity=DOWN;Vector3D r23 = sys.Position_Vector(P2,P3);gravity =  UP;
 Vector3D U2r23(U2*r23, r23.get_Base() );
 U2r23.set_System ( &sys ); 
-Vector3D dV3 = (dV2 + U2r23).change_Base(BAR3->get_Base());
+Vector3D dV3 = (dV2 + U2r23).in_Base(BAR3->get_Base());
 //Vector3D m3U3r3G3(m3*U3*P3_G3, P3_G3.get_Base() );
 //m3U3r3G3.set_System ( &sys ); 
 //Vector3D ifi3 = m3*dV3 +m3U3r3G3;
@@ -862,15 +864,15 @@ Vector3D ini3 = sys.dt(I3*OMEGA3) + (OMEGA3 ^ (I3* OMEGA3)) + (D3^ dV3);
 
 
 // SOLID 4
-Vector3D OMEGA3__4  = OMEGA3.change_Base(BAR4->get_Base());
-Vector3D OMEGA43 = (sys.Angular_Velocity(BAR3->get_Base(),BAR4->get_Base())).change_Base(BAR4->get_Base()); 
+Vector3D OMEGA3__4  = OMEGA3.in_Base(BAR4->get_Base());
+Vector3D OMEGA43 = (sys.Angular_Velocity(BAR3->get_Base(),BAR4->get_Base())).in_Base(BAR4->get_Base()); 
 Vector3D OMEGA4 = OMEGA3__4 + OMEGA43;
-Vector3D dOMEGA4 =  dOMEGA3.change_Base(BAR4->get_Base()) + sys.dt(OMEGA43) + (OMEGA4^OMEGA43);
+Vector3D dOMEGA4 =  dOMEGA3.in_Base(BAR4->get_Base()) + sys.dt(OMEGA43) + (OMEGA4^OMEGA43);
 Matrix U4 =  dOMEGA4.skew() + OMEGA4.skew()*OMEGA4.skew();
 gravity=DOWN;Vector3D r34 = sys.Position_Vector(P3,P4);gravity =  UP;
 Vector3D U3r34(U3*r34, r34.get_Base() );
 U3r34.set_System ( &sys ); 
-Vector3D dV4 = (dV3 + U3r34).change_Base(BAR4->get_Base());
+Vector3D dV4 = (dV3 + U3r34).in_Base(BAR4->get_Base());
 //Vector3D m4U4r4G4(m4*U4*P4_G4, P4_G4.get_Base() );
 //m4U4r4G4.set_System ( &sys ); 
 //Vector3D ifi4 = m4*dV4 +m4U4r4G4;
@@ -884,15 +886,15 @@ Vector3D ini4 = I4*dOMEGA4 + (OMEGA4 ^ (I4* OMEGA4))+ (D4^ dV4);
 
 
 // SOLID 5
-Vector3D OMEGA4__5  = OMEGA4.change_Base(BAR5->get_Base());
+Vector3D OMEGA4__5  = OMEGA4.in_Base(BAR5->get_Base());
 Vector3D OMEGA54 =  sys.Angular_Velocity(BAR4->get_Base(),BAR5->get_Base()); 
 Vector3D OMEGA5 = OMEGA4__5 + OMEGA54;
-Vector3D dOMEGA5 =  dOMEGA4.change_Base(BAR5->get_Base()) + sys.dt(OMEGA54) + (OMEGA5^OMEGA54);
+Vector3D dOMEGA5 =  dOMEGA4.in_Base(BAR5->get_Base()) + sys.dt(OMEGA54) + (OMEGA5^OMEGA54);
 Matrix U5 =  dOMEGA5.skew() + OMEGA5.skew()*OMEGA5.skew();
 gravity=DOWN;Vector3D r45 = sys.Position_Vector(P4,P5);gravity =  UP;
 Vector3D U4r45(U4*r45, r45.get_Base() );
 U4r45.set_System ( &sys ); 
-Vector3D dV5 = (dV4 + U4r45).change_Base(BAR5->get_Base());
+Vector3D dV5 = (dV4 + U4r45).in_Base(BAR5->get_Base());
 //Vector3D m5U5r5G5(m5*U5*P5_G5, P5_G5.get_Base() );
 //m5U5r5G5.set_System ( &sys ); 
 //Vector3D ifi5 = m5*dV5 +m5U5r5G5;
@@ -906,15 +908,15 @@ Vector3D ini5 = I5*dOMEGA5 + (OMEGA5 ^ (I5* OMEGA5))+ (D5^ dV5);
 
 
 // SOLID 6
-Vector3D OMEGA5__6  = OMEGA5.change_Base(BAR6->get_Base());
+Vector3D OMEGA5__6  = OMEGA5.in_Base(BAR6->get_Base());
 Vector3D OMEGA65 =  sys.Angular_Velocity(BAR5->get_Base(),BAR6->get_Base());
 Vector3D OMEGA6 = OMEGA5__6 + OMEGA65;
-Vector3D dOMEGA6 =  dOMEGA5.change_Base(BAR6->get_Base()) + sys.dt(OMEGA65) + (OMEGA6^OMEGA65);
+Vector3D dOMEGA6 =  dOMEGA5.in_Base(BAR6->get_Base()) + sys.dt(OMEGA65) + (OMEGA6^OMEGA65);
 Matrix U6 =  dOMEGA6.skew() + OMEGA6.skew()*OMEGA6.skew();
 gravity=DOWN;Vector3D r56 = sys.Position_Vector(P5,P6);gravity =  UP;
 Vector3D U5r56(U5*r56, r56.get_Base() );
 U5r56.set_System ( &sys ); 
-Vector3D dV6 = (dV5 + U5r56).change_Base(BAR6->get_Base());
+Vector3D dV6 = (dV5 + U5r56).in_Base(BAR6->get_Base());
 //Vector3D m6U6r6G6(m6*U6*P6_G6, P6_G6.get_Base() );
 //m6U6r6G6.set_System ( &sys ); 
 //Vector3D ifi6 = m6*dV6 + m6U6r6G6;
@@ -937,30 +939,30 @@ Vector3D fi7 =*sys.new_Vector3D("fi7",0,0,0,BAR6->get_Base()->get_name()) ;
 Vector3D ni7 =*sys.new_Vector3D("ni7",0,0,0,BAR6->get_Base()->get_name()) ;
 
 // SOLID 6
-Vector3D fi6 = fi7.change_Base(BAR6->get_Base()) + ifi6;
-Vector3D ni6 = ni7.change_Base(BAR6->get_Base()) + ini6 ; // + P5P7 ^fi7
+Vector3D fi6 = fi7.in_Base(BAR6->get_Base()) + ifi6;
+Vector3D ni6 = ni7.in_Base(BAR6->get_Base()) + ini6 ; // + P5P7 ^fi7
 
 // SOLID 5
-Vector3D fi5 = fi6.change_Base(BAR5->get_Base()) + ifi5;
-Vector3D ni5 = ni6.change_Base(BAR5->get_Base()) + ini5  + (P5P6 ^fi6.change_Base(BAR5->get_Base()) ); 
+Vector3D fi5 = fi6.in_Base(BAR5->get_Base()) + ifi5;
+Vector3D ni5 = ni6.in_Base(BAR5->get_Base()) + ini5  + (P5P6 ^fi6.in_Base(BAR5->get_Base()) ); 
 
 // SOLID 4
-Vector3D fi4 = fi5.change_Base(BAR4->get_Base()) + ifi4;
-Vector3D ni4 = ni5.change_Base(BAR4->get_Base()) + ini4  + (P4P5 ^fi5.change_Base(BAR4->get_Base()) ); 
+Vector3D fi4 = fi5.in_Base(BAR4->get_Base()) + ifi4;
+Vector3D ni4 = ni5.in_Base(BAR4->get_Base()) + ini4  + (P4P5 ^fi5.in_Base(BAR4->get_Base()) ); 
 
 // SOLID 3
-Vector3D fi3 = fi4.change_Base(BAR3->get_Base()) + ifi3;
-Vector3D ni3 = ni4.change_Base(BAR3->get_Base()) + ini3  + (P3P4 ^fi4.change_Base(BAR3->get_Base()) ); 
+Vector3D fi3 = fi4.in_Base(BAR3->get_Base()) + ifi3;
+Vector3D ni3 = ni4.in_Base(BAR3->get_Base()) + ini3  + (P3P4 ^fi4.in_Base(BAR3->get_Base()) ); 
 
 
 // SOLID 2
-Vector3D fi2 = fi3.change_Base(BAR2->get_Base()) + ifi2;
-Vector3D ni2 = ni3.change_Base(BAR2->get_Base()) + ini2  + (P2P3 ^fi3.change_Base(BAR2->get_Base()) ); 
+Vector3D fi2 = fi3.in_Base(BAR2->get_Base()) + ifi2;
+Vector3D ni2 = ni3.in_Base(BAR2->get_Base()) + ini2  + (P2P3 ^fi3.in_Base(BAR2->get_Base()) ); 
 
 
 // SOLID 1
-Vector3D fi1 = fi2.change_Base(BAR1->get_Base()) + ifi1;
-Vector3D ni1 = ni2.change_Base(BAR1->get_Base()) + ini1  + (P1P2 ^fi2.change_Base(BAR1->get_Base()) ); 
+Vector3D fi1 = fi2.in_Base(BAR1->get_Base()) + ifi1;
+Vector3D ni1 = ni2.in_Base(BAR1->get_Base()) + ini1  + (P1P2 ^fi2.in_Base(BAR1->get_Base()) ); 
 
 
 
@@ -1440,9 +1442,7 @@ cout<<endl;
 
     	lst state;
 
-    	state = 	a1,*da1,*dda1,
-		a2,*da2,*dda2,
-		a3,*da3,*dda3;
+    	state = 	{a1,*da1,*dda1, a2,*da2,*dda2, a3,*da3,*dda3};
 // 		a4,*da4,*dda4,
 // 		a5,*da5,*dda5,
 // 		a6,*da6,*dda6;

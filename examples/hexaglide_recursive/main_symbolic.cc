@@ -1056,13 +1056,13 @@ double	kons=1.0;
 
 	lst inertial_parameters;
 
-	inertial_parameters =	mP, mxP, myP, mzP, IxxP, IxyP, IyyP, IxzP, IyzP, IzzP,
+	inertial_parameters =	{mP, mxP, myP, mzP, IxxP, IxyP, IyyP, IxzP, IyzP, IzzP,
 				m1, mx1, my1, mz1, Ixx1, Ixy1, Iyy1, Ixz1, Iyz1, Izz1,
 				m2, mx2, my2, mz2, Ixx2, Ixy2, Iyy2, Ixz2, Iyz2, Izz2,
 				m3, mx3, my3, mz3, Ixx3, Ixy3, Iyy3, Ixz3, Iyz3, Izz3,
 				m4, mx4, my4, mz4, Ixx4, Ixy4, Iyy4, Ixz4, Iyz4, Izz4,
 				m5, mx5, my5, mz5, Ixx5, Ixy5, Iyy5, Ixz5, Iyz5, Izz5,
-				m6, mx6, my6, mz6, Ixx6, Ixy6, Iyy6, Ixz6, Iyz6, Izz6;
+				m6, mx6, my6, mz6, Ixx6, Ixy6, Iyy6, Ixz6, Iyz6, Izz6};
 
 // 	syms 	mP mxP myP mzP IxxP IxyP IyyP IxzP IyzP IzzP m1 mx1 my1 mz1 Ixx1 Ixy1 Iyy1 Ixz1 Iyz1 Izz1 m2 mx2 my2 mz2 Ixx2 Ixy2 Iyy2 Ixz2 Iyz2 Izz2 m3 mx3 my3 mz3 Ixx3 Ixy3 Iyy3 Ixz3 Iyz3 Izz3 m4 mx4 my4 mz4 Ixx4 Ixy4 Iyy4 Ixz4 Iyz4 Izz4 m5 mx5 my5 mz5 Ixx5 Ixy5 Iyy5 Ixz5 Iyz5 Izz5 m6 mx6 my6 mz6 Ixx6 Ixy6 Iyy6 Ixz6 Iyz6 Izz6 real;
 		
@@ -1144,10 +1144,10 @@ double	kons=1.0;
     lst ind;
     lst dep;
 	//~ ind = s1,s2,s3,s4,s5,s6;
-    dep = x,y,z,a,b,c,a1,a2,a3,a4,a5,a6,b1,b2,b3,b4,b5,b6;
+    dep = {x,y,z,a,b,c,a1,a2,a3,a4,a5,a6,b1,b2,b3,b4,b5,b6};
 
-    ind= *ds1,*ds2,*ds3,*ds4,*ds5,*ds6;
-    dep = *dx,*dy,*dz,*da,*dB,*dc,*da1,*da2,*da3,*da4,*da5,*da6,*dB1,*dB2,*dB3,*dB4,*dB5,*dB6;
+    ind= {*ds1,*ds2,*ds3,*ds4,*ds5,*ds6};
+    dep = {*dx,*dy,*dz,*da,*dB,*dc,*da1,*da2,*da3,*da4,*da5,*da6,*dB1,*dB2,*dB3,*dB4,*dB5,*dB6};
     
     Matrix dPhi = sys.Dt(Phi);
     
@@ -1189,26 +1189,26 @@ Vector3D dV0 = *sys.new_Vector3D("dV0",0,0,gra,"xyz") ;
 
 // SOLID PLATFORM
 // *****************************************************************************************************
-Vector3D OMEGA0__1  = OMEGA0.change_Base(sys.get_Base ("B0P"));
+Vector3D OMEGA0__1  = OMEGA0.in_Base(sys.get_Base ("B0P"));
 Vector3D OMEGA01 = sys.Angular_Velocity(Base_xyz,sys.get_Base ("B0P"));
 Vector3D OMEGA1 = OMEGA0__1 + OMEGA01;
-Vector3D dOMEGA1 =  dOMEGA0.change_Base(sys.get_Base ("B0P")) + sys.dt(OMEGA01) + (OMEGA1^OMEGA01);
+Vector3D dOMEGA1 =  dOMEGA0.in_Base(sys.get_Base ("B0P")) + sys.dt(OMEGA01) + (OMEGA1^OMEGA01);
 
-Vector3D OMEGA1__2  = OMEGA1.change_Base(sys.get_Base ("BAP"));
+Vector3D OMEGA1__2  = OMEGA1.in_Base(sys.get_Base ("BAP"));
 Vector3D OMEGA12 = sys.Angular_Velocity(sys.get_Base ("B0P"),sys.get_Base ("BAP"));
 Vector3D OMEGA2 = OMEGA1__2 + OMEGA12;
-Vector3D dOMEGA2 =  dOMEGA1.change_Base(sys.get_Base ("BAP")) + sys.dt(OMEGA12) + (OMEGA2^OMEGA12);
+Vector3D dOMEGA2 =  dOMEGA1.in_Base(sys.get_Base ("BAP")) + sys.dt(OMEGA12) + (OMEGA2^OMEGA12);
 
-Vector3D OMEGA2__P  = OMEGA2.change_Base(sys.get_Base ("BP"));
+Vector3D OMEGA2__P  = OMEGA2.in_Base(sys.get_Base ("BP"));
 Vector3D OMEGA2P = sys.Angular_Velocity(sys.get_Base ("BAP"),sys.get_Base ("BP"));
 Vector3D OMEGAP = OMEGA2__P + OMEGA2P;
-Vector3D dOMEGAP =  dOMEGA2.change_Base(sys.get_Base ("BP")) + sys.dt(OMEGA2P) + (OMEGAP^OMEGA2P);
+Vector3D dOMEGAP =  dOMEGA2.in_Base(sys.get_Base ("BP")) + sys.dt(OMEGA2P) + (OMEGAP^OMEGA2P);
 
 Matrix UPP =  dOMEGAP.skew() + OMEGAP.skew()*OMEGAP.skew();
 
 Vector3D VP = sys.Velocity_Vector(Frame_abs,P);
 Vector3D dVP = dV0 + sys.Dt(VP,Frame_abs);
-//Vector3D dVP = (sys.Dt(sys.Velocity_Vector(Frame_abs,P),Frame_abs)).change_Base(sys.get_Base ("BP"));
+//Vector3D dVP = (sys.Dt(sys.Velocity_Vector(Frame_abs,P),Frame_abs)).in_Base(sys.get_Base ("BP"));
 
 
 Vector3D DP= *sys.new_Vector3D("DP",mxP,myP,mzP,"BP");
@@ -1218,7 +1218,7 @@ UPdP.set_System ( &sys );
 Vector3D ifiP = mP*dVP + UPdP;
 Vector3D iniP = sys.dt(IP*OMEGAP) + (OMEGAP ^ (IP* OMEGAP)) + (DP ^ dVP);
 
-Vector3D VP__P = VP.change_Base(sys.get_Base ("BP"));
+Vector3D VP__P = VP.in_Base(sys.get_Base ("BP"));
 
 Matrix eqfP = (mP*dVP).transpose() * sys.jacobian(VP.transpose(),dq) + UPdP.transpose()*sys.jacobian(VP__P.transpose(),dq);
 Matrix eqnP = iniP.transpose() *sys.jacobian(OMEGAP.transpose(),dq);
@@ -1226,19 +1226,19 @@ Matrix eqnP = iniP.transpose() *sys.jacobian(OMEGAP.transpose(),dq);
 Matrix eqP =eqfP + eqnP;
 //cout << unatomize(eqP)<<endl;
 //Matrix eqP2 = ifiP .transpose()*sys.jacobian(VP__P.transpose(),dq); cout << unatomize(eqP2)<<endl;
-//Matrix eqP3 =  (mP*dVP + UPdP.change_Base(Base_xyz)).transpose()*sys.jacobian(VP__P.transpose(),dq); cout << unatomize(eqP3)<<endl;
+//Matrix eqP3 =  (mP*dVP + UPdP.in_Base(Base_xyz)).transpose()*sys.jacobian(VP__P.transpose(),dq); cout << unatomize(eqP3)<<endl;
 
 //BAR1
 // *****************************************************************************************************
-Vector3D OMEGA0__BA1  = OMEGA0.change_Base(sys.get_Base ("BA1"));
+Vector3D OMEGA0__BA1  = OMEGA0.in_Base(sys.get_Base ("BA1"));
 Vector3D OMEGA0BA1 = sys.Angular_Velocity(Base_xyz,sys.get_Base ("BA1"));
 Vector3D OMEGABA1 = OMEGA0__BA1 + OMEGA0BA1;
-Vector3D dOMEGABA1 =  dOMEGA0.change_Base(sys.get_Base ("BA1")) + sys.dt(OMEGA0BA1) + (OMEGABA1^OMEGA0BA1);
+Vector3D dOMEGABA1 =  dOMEGA0.in_Base(sys.get_Base ("BA1")) + sys.dt(OMEGA0BA1) + (OMEGABA1^OMEGA0BA1);
 
-Vector3D OMEGABA1__B1  = OMEGABA1.change_Base(sys.get_Base ("B1"));
+Vector3D OMEGABA1__B1  = OMEGABA1.in_Base(sys.get_Base ("B1"));
 Vector3D OMEGABA1B1 = sys.Angular_Velocity(sys.get_Base ("BA1"),sys.get_Base ("B1"));
 Vector3D OMEGAB1 = OMEGABA1__B1  + OMEGABA1B1;
-Vector3D dOMEGAB1 =  dOMEGABA1.change_Base(sys.get_Base ("B1")) + sys.dt(OMEGABA1B1) + (OMEGAB1^OMEGABA1B1);
+Vector3D dOMEGAB1 =  dOMEGABA1.in_Base(sys.get_Base ("B1")) + sys.dt(OMEGABA1B1) + (OMEGAB1^OMEGABA1B1);
 
 Matrix U1 =  dOMEGAB1.skew() + OMEGAB1.skew()*OMEGAB1.skew();
 
@@ -1252,7 +1252,7 @@ U1d1.set_System ( &sys );
 Vector3D ifi1 = m1*dV1 + U1d1;
 Vector3D ini1 = sys.dt(I1*OMEGAB1) + (OMEGAB1 ^ (I1* OMEGAB1)) + (DBar1 ^ dV1);
 
-Vector3D V1__B1 = V1.change_Base(sys.get_Base ("B1"));
+Vector3D V1__B1 = V1.in_Base(sys.get_Base ("B1"));
 Matrix eqf1 = (m1*dV1).transpose() * sys.jacobian(V1.transpose(),dq) + U1d1.transpose()*sys.jacobian(V1__B1.transpose(),dq);
 Matrix eqn1 = ini1.transpose() *sys.jacobian(OMEGAB1.transpose(),dq);
 
@@ -1261,15 +1261,15 @@ Matrix eqB1 =eqf1 + eqn1;
 
 //BAR2
 // *****************************************************************************************************
-Vector3D OMEGA0__BA2  = OMEGA0.change_Base(sys.get_Base ("BA2"));
+Vector3D OMEGA0__BA2  = OMEGA0.in_Base(sys.get_Base ("BA2"));
 Vector3D OMEGA0BA2 = sys.Angular_Velocity(Base_xyz,sys.get_Base ("BA2"));
 Vector3D OMEGABA2 = OMEGA0__BA2 + OMEGA0BA2;
-Vector3D dOMEGABA2 =  dOMEGA0.change_Base(sys.get_Base ("BA2")) + sys.dt(OMEGA0BA2) + (OMEGABA2^OMEGA0BA2);
+Vector3D dOMEGABA2 =  dOMEGA0.in_Base(sys.get_Base ("BA2")) + sys.dt(OMEGA0BA2) + (OMEGABA2^OMEGA0BA2);
 
-Vector3D OMEGABA2__B2  = OMEGABA2.change_Base(sys.get_Base ("B2"));
+Vector3D OMEGABA2__B2  = OMEGABA2.in_Base(sys.get_Base ("B2"));
 Vector3D OMEGABA2B2 = sys.Angular_Velocity(sys.get_Base ("BA2"),sys.get_Base ("B2"));
 Vector3D OMEGAB2 = OMEGABA2__B2  + OMEGABA2B2;
-Vector3D dOMEGAB2 =  dOMEGABA2.change_Base(sys.get_Base ("B2")) + sys.dt(OMEGABA2B2) + (OMEGAB2^OMEGABA2B2);
+Vector3D dOMEGAB2 =  dOMEGABA2.in_Base(sys.get_Base ("B2")) + sys.dt(OMEGABA2B2) + (OMEGAB2^OMEGABA2B2);
 
 Matrix U2 =  dOMEGAB2.skew() + OMEGAB2.skew()*OMEGAB2.skew();
 
@@ -1283,7 +1283,7 @@ U2d2.set_System ( &sys );
 Vector3D ifi2 = m2*dV2 + U2d2;
 Vector3D ini2 = sys.dt(I2*OMEGAB2) + (OMEGAB2 ^ (I2* OMEGAB2)) + (DBar2 ^ dV2);
 
-Vector3D V2__B2 = V2.change_Base(sys.get_Base ("B2"));
+Vector3D V2__B2 = V2.in_Base(sys.get_Base ("B2"));
 Matrix eqf2 = (m2*dV2).transpose() * sys.jacobian(V2.transpose(),dq) + U2d2.transpose()*sys.jacobian(V2__B2.transpose(),dq);
 Matrix eqn2 = ini2.transpose() *sys.jacobian(OMEGAB2.transpose(),dq);
 
@@ -1292,15 +1292,15 @@ Matrix eqB2 =eqf2 + eqn2;
 
 //BAR3
 // *****************************************************************************************************
-Vector3D OMEGA0__BA3  = OMEGA0.change_Base(sys.get_Base ("BA3"));
+Vector3D OMEGA0__BA3  = OMEGA0.in_Base(sys.get_Base ("BA3"));
 Vector3D OMEGA0BA3 = sys.Angular_Velocity(Base_xyz,sys.get_Base ("BA3"));
 Vector3D OMEGABA3 = OMEGA0__BA3 + OMEGA0BA3;
-Vector3D dOMEGABA3 =  dOMEGA0.change_Base(sys.get_Base ("BA3")) + sys.dt(OMEGA0BA3) + (OMEGABA3^OMEGA0BA3);
+Vector3D dOMEGABA3 =  dOMEGA0.in_Base(sys.get_Base ("BA3")) + sys.dt(OMEGA0BA3) + (OMEGABA3^OMEGA0BA3);
 
-Vector3D OMEGABA3__B3  = OMEGABA3.change_Base(sys.get_Base ("B3"));
+Vector3D OMEGABA3__B3  = OMEGABA3.in_Base(sys.get_Base ("B3"));
 Vector3D OMEGABA3B3 = sys.Angular_Velocity(sys.get_Base ("BA3"),sys.get_Base ("B3"));
 Vector3D OMEGAB3 = OMEGABA3__B3  + OMEGABA3B3;
-Vector3D dOMEGAB3 =  dOMEGABA3.change_Base(sys.get_Base ("B3")) + sys.dt(OMEGABA3B3) + (OMEGAB3^OMEGABA3B3);
+Vector3D dOMEGAB3 =  dOMEGABA3.in_Base(sys.get_Base ("B3")) + sys.dt(OMEGABA3B3) + (OMEGAB3^OMEGABA3B3);
 
 Matrix U3 =  dOMEGAB3.skew() + OMEGAB3.skew()*OMEGAB3.skew();
 
@@ -1314,7 +1314,7 @@ U3d3.set_System ( &sys );
 Vector3D ifi3 = m3*dV3 + U3d3;
 Vector3D ini3 = sys.dt(I3*OMEGAB3) + (OMEGAB3 ^ (I3* OMEGAB3)) + (DBar3 ^ dV3);
 
-Vector3D V3__B3 = V3.change_Base(sys.get_Base ("B3"));
+Vector3D V3__B3 = V3.in_Base(sys.get_Base ("B3"));
 Matrix eqf3 = (m3*dV3).transpose() * sys.jacobian(V3.transpose(),dq) + U3d3.transpose()*sys.jacobian(V3__B3.transpose(),dq);
 Matrix eqn3 = ini3.transpose() *sys.jacobian(OMEGAB3.transpose(),dq);
 
@@ -1325,15 +1325,15 @@ Matrix eqB3 =eqf3 + eqn3;
 
 //BAR4
 // *****************************************************************************************************
-Vector3D OMEGA0__BA4  = OMEGA0.change_Base(sys.get_Base ("BA4"));
+Vector3D OMEGA0__BA4  = OMEGA0.in_Base(sys.get_Base ("BA4"));
 Vector3D OMEGA0BA4 = sys.Angular_Velocity(Base_xyz,sys.get_Base ("BA4"));
 Vector3D OMEGABA4 = OMEGA0__BA4 + OMEGA0BA4;
-Vector3D dOMEGABA4 =  dOMEGA0.change_Base(sys.get_Base ("BA4")) + sys.dt(OMEGA0BA4) + (OMEGABA4^OMEGA0BA4);
+Vector3D dOMEGABA4 =  dOMEGA0.in_Base(sys.get_Base ("BA4")) + sys.dt(OMEGA0BA4) + (OMEGABA4^OMEGA0BA4);
 
-Vector3D OMEGABA4__B4  = OMEGABA4.change_Base(sys.get_Base ("B4"));
+Vector3D OMEGABA4__B4  = OMEGABA4.in_Base(sys.get_Base ("B4"));
 Vector3D OMEGABA4B4 = sys.Angular_Velocity(sys.get_Base ("BA4"),sys.get_Base ("B4"));
 Vector3D OMEGAB4 = OMEGABA4__B4  + OMEGABA4B4;
-Vector3D dOMEGAB4 =  dOMEGABA4.change_Base(sys.get_Base ("B4")) + sys.dt(OMEGABA4B4) + (OMEGAB4^OMEGABA4B4);
+Vector3D dOMEGAB4 =  dOMEGABA4.in_Base(sys.get_Base ("B4")) + sys.dt(OMEGABA4B4) + (OMEGAB4^OMEGABA4B4);
 
 Matrix U4 =  dOMEGAB4.skew() + OMEGAB4.skew()*OMEGAB4.skew();
 
@@ -1349,7 +1349,7 @@ Vector3D ifi4 = m4*dV4 + U4d4;
 Vector3D ini4 = sys.dt(I4*OMEGAB4) + (OMEGAB4 ^ (I4* OMEGAB4)) + (DBar4 ^ dV4);
 
 
-Vector3D V4__B4 = V4.change_Base(sys.get_Base ("B4"));
+Vector3D V4__B4 = V4.in_Base(sys.get_Base ("B4"));
 Matrix eqf4 = (m4*dV4).transpose() * sys.jacobian(V4.transpose(),dq) + U4d4.transpose()*sys.jacobian(V4__B4.transpose(),dq);
 Matrix eqn4 = ini4.transpose() *sys.jacobian(OMEGAB4.transpose(),dq);
 
@@ -1361,15 +1361,15 @@ Matrix eqB4 =eqf4 + eqn4;
 
 //BAR5
 // *****************************************************************************************************
-Vector3D OMEGA0__BA5  = OMEGA0.change_Base(sys.get_Base ("BA5"));
+Vector3D OMEGA0__BA5  = OMEGA0.in_Base(sys.get_Base ("BA5"));
 Vector3D OMEGA0BA5 = sys.Angular_Velocity(Base_xyz,sys.get_Base ("BA5"));
 Vector3D OMEGABA5 = OMEGA0__BA5 + OMEGA0BA5;
-Vector3D dOMEGABA5 =  dOMEGA0.change_Base(sys.get_Base ("BA5")) + sys.dt(OMEGA0BA5) + (OMEGABA5^OMEGA0BA5);
+Vector3D dOMEGABA5 =  dOMEGA0.in_Base(sys.get_Base ("BA5")) + sys.dt(OMEGA0BA5) + (OMEGABA5^OMEGA0BA5);
 
-Vector3D OMEGABA5__B5  = OMEGABA5.change_Base(sys.get_Base ("B5"));
+Vector3D OMEGABA5__B5  = OMEGABA5.in_Base(sys.get_Base ("B5"));
 Vector3D OMEGABA5B5 = sys.Angular_Velocity(sys.get_Base ("BA5"),sys.get_Base ("B5"));
 Vector3D OMEGAB5 = OMEGABA5__B5  + OMEGABA5B5;
-Vector3D dOMEGAB5 =  dOMEGABA5.change_Base(sys.get_Base ("B5")) + sys.dt(OMEGABA5B5) + (OMEGAB5^OMEGABA5B5);
+Vector3D dOMEGAB5 =  dOMEGABA5.in_Base(sys.get_Base ("B5")) + sys.dt(OMEGABA5B5) + (OMEGAB5^OMEGABA5B5);
 
 Matrix U5 =  dOMEGAB5.skew() + OMEGAB5.skew()*OMEGAB5.skew();
 
@@ -1385,7 +1385,7 @@ Vector3D ifi5 = m5*dV5 + U5d5;
 Vector3D ini5 = sys.dt(I5*OMEGAB5) + (OMEGAB5 ^ (I5* OMEGAB5)) + (DBar5 ^ dV5);
 
 
-Vector3D V5__B5 = V5.change_Base(sys.get_Base ("B5"));
+Vector3D V5__B5 = V5.in_Base(sys.get_Base ("B5"));
 Matrix eqf5 = (m5*dV5).transpose() * sys.jacobian(V5.transpose(),dq) + U5d5.transpose()*sys.jacobian(V5__B5.transpose(),dq);
 Matrix eqn5 = ini5.transpose() *sys.jacobian(OMEGAB5.transpose(),dq);
 
@@ -1397,15 +1397,15 @@ Matrix eqB5 =eqf5 + eqn5;
 
 //BAR6
 // *****************************************************************************************************
-Vector3D OMEGA0__BA6  = OMEGA0.change_Base(sys.get_Base ("BA6"));
+Vector3D OMEGA0__BA6  = OMEGA0.in_Base(sys.get_Base ("BA6"));
 Vector3D OMEGA0BA6 = sys.Angular_Velocity(Base_xyz,sys.get_Base ("BA6"));
 Vector3D OMEGABA6 = OMEGA0__BA6 + OMEGA0BA6;
-Vector3D dOMEGABA6 =  dOMEGA0.change_Base(sys.get_Base ("BA6")) + sys.dt(OMEGA0BA6) + (OMEGABA6^OMEGA0BA6);
+Vector3D dOMEGABA6 =  dOMEGA0.in_Base(sys.get_Base ("BA6")) + sys.dt(OMEGA0BA6) + (OMEGABA6^OMEGA0BA6);
 
-Vector3D OMEGABA6__B6  = OMEGABA6.change_Base(sys.get_Base ("B6"));
+Vector3D OMEGABA6__B6  = OMEGABA6.in_Base(sys.get_Base ("B6"));
 Vector3D OMEGABA6B6 = sys.Angular_Velocity(sys.get_Base ("BA6"),sys.get_Base ("B6"));
 Vector3D OMEGAB6 = OMEGABA6__B6  + OMEGABA6B6;
-Vector3D dOMEGAB6 =  dOMEGABA6.change_Base(sys.get_Base ("B6")) + sys.dt(OMEGABA6B6) + (OMEGAB6^OMEGABA6B6);
+Vector3D dOMEGAB6 =  dOMEGABA6.in_Base(sys.get_Base ("B6")) + sys.dt(OMEGABA6B6) + (OMEGAB6^OMEGABA6B6);
 
 Matrix U6 =  dOMEGAB6.skew() + OMEGAB6.skew()*OMEGAB6.skew();
 
@@ -1422,7 +1422,7 @@ Vector3D ifi6 = m6*dV6 + U6d6;
 Vector3D ini6 = sys.dt(I6*OMEGAB6) + (OMEGAB6 ^ (I6* OMEGAB6)) + (DBar6 ^ dV6);
 
 
-Vector3D V6__B6 = V6.change_Base(sys.get_Base ("B6"));
+Vector3D V6__B6 = V6.in_Base(sys.get_Base ("B6"));
 Matrix eqf6 = (m6*dV6).transpose() * sys.jacobian(V6.transpose(),dq) + U6d6.transpose()*sys.jacobian(V6__B6.transpose(),dq);
 Matrix eqn6 = ini6.transpose() *sys.jacobian(OMEGAB6.transpose(),dq);
 
@@ -1884,13 +1884,13 @@ cout<<endl;
     	lst state;
 
 //     	state = x,*dx,*ddx,y,*dy,*ddy,z,*dz,*ddz,a,*da,*dda,b,*dB,*ddB,c,*dc,*ddc,r,*dr,*ddr,t1,*dt1,*ddt1,t2,*dt2,*ddt2,t3,*dt3,*ddt3 ;
-    	state = x,*dx,*ddx,y,*dy,*ddy,z,*dz,*ddz,a,*da,*dda,b,*dB,*ddB,c,*dc,*ddc,
+    	state = {x,*dx,*ddx,y,*dy,*ddy,z,*dz,*ddz,a,*da,*dda,b,*dB,*ddB,c,*dc,*ddc,
 		a1,*da1,*dda1,b1,*dB1,*ddB1,s1,*ds1,*dds1,
 		a2,*da2,*dda2,b2,*dB2,*ddB2,s2,*ds2,*dds2,
 		a3,*da3,*dda3,b3,*dB3,*ddB3,s3,*ds3,*dds3,
 		a4,*da4,*dda4,b4,*dB4,*ddB4,s4,*ds4,*dds4,
 		a5,*da5,*dda5,b5,*dB5,*ddB5,s5,*ds5,*dds5,
-		a6,*da6,*dda6,b6,*dB6,*ddB6,s6,*ds6,*dds6;
+		a6,*da6,*dda6,b6,*dB6,*ddB6,s6,*ds6,*dds6};
 
 	sys.export_write_data_file_C(state);
 
