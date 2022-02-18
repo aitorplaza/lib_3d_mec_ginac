@@ -1,0 +1,12 @@
+global lambda1;
+global lambda2;
+global lambda3;
+global lambda4;
+global lambda5;
+global lambda6;
+lambda1 = 0.0;
+lambda2 = 0.0;
+lambda3 = 0.0;
+lambda4 = 0.0;
+lambda5 = 0.0;
+lambda6 = 0.0;

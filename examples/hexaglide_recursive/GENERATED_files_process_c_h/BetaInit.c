@@ -249,24 +249,6 @@ if ( _BetaInit == NULL )
  }
 
 
-_BetaInit[0] = 0.0;
-_BetaInit[1] = 0.0;
-_BetaInit[2] = 0.0;
-_BetaInit[3] = 0.0;
-_BetaInit[4] = 0.0;
-_BetaInit[5] = 0.0;
-_BetaInit[6] = 0.0;
-_BetaInit[7] = 0.0;
-_BetaInit[8] = 0.0;
-_BetaInit[9] = 0.0;
-_BetaInit[10] = 0.0;
-_BetaInit[11] = 0.0;
-_BetaInit[12] = 0.0;
-_BetaInit[13] = 0.0;
-_BetaInit[14] = 0.0;
-_BetaInit[15] = 0.0;
-_BetaInit[16] = 0.0;
-_BetaInit[17] = 0.0;
 
 return _BetaInit;
 }

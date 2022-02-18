@@ -161,7 +161,6 @@
 #define FSb36 param[ 122 ]
 #define FSa46 param[ 123 ]
 #define FSb46 param[ 124 ]
-#define g param[ 125 ]
 #define lambda1 unknowns[ 0 ]
 #define lambda2 unknowns[ 1 ]
 #define lambda3 unknowns[ 2 ]
@@ -199,40 +198,10 @@ if ( _dPhiInit_dq == NULL )
 
 
 _dPhiInit_dq[0] = 1.0000000000000000e+00;
-_dPhiInit_dq[1] = 0.0000000000000000e+00;
-_dPhiInit_dq[2] = 0.0000000000000000e+00;
-_dPhiInit_dq[3] = 0.0000000000000000e+00;
-_dPhiInit_dq[4] = 0.0000000000000000e+00;
-_dPhiInit_dq[5] = 0.0000000000000000e+00;
-_dPhiInit_dq[6] = 0.0000000000000000e+00;
 _dPhiInit_dq[7] = 1.0000000000000000e+00;
-_dPhiInit_dq[8] = 0.0000000000000000e+00;
-_dPhiInit_dq[9] = 0.0000000000000000e+00;
-_dPhiInit_dq[10] = 0.0000000000000000e+00;
-_dPhiInit_dq[11] = 0.0000000000000000e+00;
-_dPhiInit_dq[12] = 0.0000000000000000e+00;
-_dPhiInit_dq[13] = 0.0000000000000000e+00;
 _dPhiInit_dq[14] = 1.0000000000000000e+00;
-_dPhiInit_dq[15] = 0.0000000000000000e+00;
-_dPhiInit_dq[16] = 0.0000000000000000e+00;
-_dPhiInit_dq[17] = 0.0000000000000000e+00;
-_dPhiInit_dq[18] = 0.0000000000000000e+00;
-_dPhiInit_dq[19] = 0.0000000000000000e+00;
-_dPhiInit_dq[20] = 0.0000000000000000e+00;
 _dPhiInit_dq[21] = 1.0000000000000000e+00;
-_dPhiInit_dq[22] = 0.0000000000000000e+00;
-_dPhiInit_dq[23] = 0.0000000000000000e+00;
-_dPhiInit_dq[24] = 0.0000000000000000e+00;
-_dPhiInit_dq[25] = 0.0000000000000000e+00;
-_dPhiInit_dq[26] = 0.0000000000000000e+00;
-_dPhiInit_dq[27] = 0.0000000000000000e+00;
 _dPhiInit_dq[28] = 1.0000000000000000e+00;
-_dPhiInit_dq[29] = 0.0000000000000000e+00;
-_dPhiInit_dq[30] = 0.0000000000000000e+00;
-_dPhiInit_dq[31] = 0.0000000000000000e+00;
-_dPhiInit_dq[32] = 0.0000000000000000e+00;
-_dPhiInit_dq[33] = 0.0000000000000000e+00;
-_dPhiInit_dq[34] = 0.0000000000000000e+00;
 _dPhiInit_dq[35] = 1.0000000000000000e+00;
 
 return _dPhiInit_dq;

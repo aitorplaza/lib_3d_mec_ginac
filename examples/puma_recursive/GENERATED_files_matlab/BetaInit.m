@@ -1,4 +1,4 @@
-function BetaInit_ = BetaInit(q,time,param)
+function beta_init_ = BetaInit(q,time,param)
 
 a1 = q( 1 ); 
 a2 = q( 2 ); 
@@ -134,25 +134,24 @@ FSa36 = param( 122 );
 FSb36 = param( 123 ); 
 FSa46 = param( 124 ); 
 FSb46 = param( 125 ); 
-g = param( 126 ); 
 
-atom2255 = 3*t;
-atom2269 = -3*sin(atom2255);
-atom2259 = 2*t;
-atom2266 = 2*cos(atom2259);
-atom2251 = 4*t;
-atom2253 = 4*cos(atom2251);
-atom2263 = cos(t);
-atom2257 = 3*cos(atom2255);
-atom2272 = -4*sin(atom2251);
-atom2274 = sin(t);
-atom2261 = -2*sin(atom2259);
+atom3318 = 2*t;
+atom3320 = 2*cos(atom3318);
+atom3314 = 4*t;
+atom3327 = 4*cos(atom3314);
+atom3316 = -4*sin(atom3314);
+atom3337 = cos(t);
+atom3322 = 3*t;
+atom3332 = 3*cos(atom3322);
+atom3329 = sin(t);
+atom3324 = -3*sin(atom3322);
+atom3335 = -2*sin(atom3318);
 
-BetaInit_ = [FSa41*atom2253+atom2263*FSa11+atom2266*FSa21+atom2261*FSb21+atom2272*FSb41-atom2274*FSb11+atom2269*FSb31+atom2257*FSa31;
-atom2266*FSa22+atom2272*FSb42+atom2257*FSa32-FSb12*atom2274+atom2269*FSb32+FSa42*atom2253+FSb22*atom2261+FSa12*atom2263;
--FSb13*atom2274+atom2263*FSa13+atom2257*FSa33+FSb43*atom2272+atom2261*FSb23+FSa23*atom2266+atom2253*FSa43+atom2269*FSb33;
-atom2272*FSb44+atom2257*FSa34+atom2261*FSb24+FSa24*atom2266+atom2269*FSb34+atom2263*FSa14-FSb14*atom2274+FSa44*atom2253;
-atom2263*FSa15-atom2274*FSb15+FSa25*atom2266+atom2257*FSa35+FSb35*atom2269+atom2261*FSb25+FSa45*atom2253+atom2272*FSb45;
-FSa46*atom2253+atom2266*FSa26+atom2272*FSb46+FSb26*atom2261+FSa16*atom2263+atom2269*FSb36-atom2274*FSb16+atom2257*FSa36];
+beta_init_ = [FSb21*atom3335+atom3324*FSb31+FSa31*atom3332+FSa11*atom3337-atom3329*FSb11+FSb41*atom3316+FSa41*atom3327+FSa21*atom3320;
+atom3337*FSa12+FSb32*atom3324-atom3329*FSb12+FSb42*atom3316+FSa22*atom3320+atom3335*FSb22+FSa32*atom3332+atom3327*FSa42;
+FSb33*atom3324+atom3335*FSb23+FSa13*atom3337+atom3332*FSa33+FSa43*atom3327+FSa23*atom3320+atom3316*FSb43-FSb13*atom3329;
+FSa34*atom3332+FSa14*atom3337+FSb44*atom3316+FSa24*atom3320-atom3329*FSb14+FSa44*atom3327+FSb34*atom3324+atom3335*FSb24;
+FSa35*atom3332+FSb45*atom3316+FSb35*atom3324+FSa45*atom3327+FSa15*atom3337+FSb25*atom3335-atom3329*FSb15+atom3320*FSa25;
+FSb46*atom3316+FSa36*atom3332+FSa46*atom3327+atom3324*FSb36+FSb26*atom3335+FSa16*atom3337-atom3329*FSb16+atom3320*FSa26];
 
 %endfunction

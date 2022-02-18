@@ -1,0 +1,12 @@
+global dda1;
+global dda2;
+global dda3;
+global dda4;
+global dda5;
+global dda6;
+dda1 = 0.0;
+dda2 = 0.0;
+dda3 = 0.0;
+dda4 = 0.0;
+dda5 = 0.0;
+dda6 = 0.0;

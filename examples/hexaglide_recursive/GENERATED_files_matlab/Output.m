@@ -1,4 +1,4 @@
-function Output_ = Output(q,dq,ddq,unknowns,time,param)
+function output_ = Output(q,dq,ddq,unknowns,time,param,inputs)
 
 x = q( 1 ); 
 y = q( 2 ); 
@@ -210,6 +210,6 @@ FSb26 = param( 111 );
 
 
 
-Output_ = [0];
+output_ = [0];
 
 %endfunction

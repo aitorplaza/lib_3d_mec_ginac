@@ -1,0 +1,772 @@
+ 
+************************************************
+*             Hexaglide Platform               *
+************************************************
+ 
+vie feb 18 09:20:44 CET 2022
+ 
+Gravity DOWN
+Atomize YES
+integration_time 0 delta_t 0
+Define Wrenches
+Vectors needed to take diferent Jacobians
+Non-linear Constraint Inequalities
+Output Vector
+Energy Equations
+Matrix Calculation
+ dPhi Calculating
+ ddPhi Calculating
+ Beta Calculating
+ Gamma Calculating
+ Init Calculating
+ dInit Calculating
+ PhiInit Calculating
+ dPhiInit Calculating
+ PhiInit_q Calculating
+ dPhiInit_dq Calculating
+ BetaInit Calculating
+ Phi_q Calculating
+ dPhi_dq Calculating
+ M and Q Calculating
+Export C code for Direct Simulation 
+ PhiInit Optimizing
+ PhiInit_q Optimizing
+ dPhiInit_dq Optimizing
+ BetaInit Optimizing
+ Phi Optimizing
+ Beta Optimizing
+ Gamma Optimizing
+ Phi_q Optimizing
+ dPhi_dq Optimizing
+ M Optimizing
+ Q Optimizing
+ MQ Optimizing
+ Output  Optimizing
+ Energy  Optimizing
+ Code Exporting 
+symb = FULL
+M atom = 98
+Mnew.m ops = 315
+Q atom = 164
+Qnew.m ops = 748
+MQ atom = 213
+MQnew.m ops = 995
+K atom = 227
+Knew.m ops = 753
+WPhi atom = 198
+WPhinew.m ops = 1024
+
+symb = Iyy4
+M atom = 98
+Mnew.m ops = 315
+Q atom = 164
+Qnew.m ops = 746
+MQ atom = 213
+MQnew.m ops = 993
+WPhi atom = 198
+WPhinew.m ops = 1020
+
+symb = Iyy1
+M atom = 98
+Mnew.m ops = 315
+Q atom = 164
+Qnew.m ops = 744
+MQ atom = 213
+MQnew.m ops = 991
+WPhi atom = 198
+WPhinew.m ops = 1016
+
+symb = Ixx1
+M atom = 98
+Mnew.m ops = 313
+Q atom = 164
+Qnew.m ops = 740
+MQ atom = 213
+MQnew.m ops = 985
+WPhi atom = 198
+WPhinew.m ops = 1010
+
+symb = Ixx4
+M atom = 98
+Mnew.m ops = 311
+Q atom = 164
+Qnew.m ops = 735
+MQ atom = 213
+MQnew.m ops = 978
+WPhi atom = 198
+WPhinew.m ops = 1003
+
+symb = Ixx2
+M atom = 98
+Mnew.m ops = 309
+Q atom = 164
+Qnew.m ops = 730
+MQ atom = 213
+MQnew.m ops = 971
+WPhi atom = 198
+WPhinew.m ops = 997
+
+symb = Iyy2
+M atom = 98
+Mnew.m ops = 309
+Q atom = 164
+Qnew.m ops = 727
+MQ atom = 213
+MQnew.m ops = 968
+WPhi atom = 198
+WPhinew.m ops = 992
+
+symb = Ixx3
+M atom = 98
+Mnew.m ops = 307
+Q atom = 164
+Qnew.m ops = 723
+MQ atom = 213
+MQnew.m ops = 962
+WPhi atom = 198
+WPhinew.m ops = 986
+
+symb = Ixx5
+M atom = 98
+Mnew.m ops = 305
+Q atom = 164
+Qnew.m ops = 719
+MQ atom = 213
+MQnew.m ops = 956
+WPhi atom = 198
+WPhinew.m ops = 980
+
+symb = Iyy3
+M atom = 98
+Mnew.m ops = 305
+Q atom = 164
+Qnew.m ops = 718
+MQ atom = 213
+MQnew.m ops = 955
+WPhi atom = 198
+WPhinew.m ops = 977
+
+symb = Iyy5
+M atom = 98
+Mnew.m ops = 305
+Q atom = 164
+Qnew.m ops = 716
+MQ atom = 213
+MQnew.m ops = 953
+WPhi atom = 198
+WPhinew.m ops = 974
+
+symb = Iyy6
+M atom = 98
+Mnew.m ops = 305
+Q atom = 164
+Qnew.m ops = 715
+MQ atom = 213
+MQnew.m ops = 952
+WPhi atom = 198
+WPhinew.m ops = 969
+
+symb = Ixx6
+M atom = 98
+Mnew.m ops = 303
+Q atom = 164
+Qnew.m ops = 711
+MQ atom = 213
+MQnew.m ops = 946
+WPhi atom = 198
+WPhinew.m ops = 964
+
+symb = Ixy4
+M atom = 97
+Mnew.m ops = 301
+Q atom = 163
+Qnew.m ops = 705
+MQ atom = 211
+MQnew.m ops = 938
+WPhi atom = 197
+WPhinew.m ops = 954
+
+symb = Ixy1
+M atom = 96
+Mnew.m ops = 299
+Q atom = 162
+Qnew.m ops = 699
+MQ atom = 209
+MQnew.m ops = 930
+WPhi atom = 196
+WPhinew.m ops = 944
+
+symb = Ixy6
+M atom = 95
+Mnew.m ops = 297
+Q atom = 161
+Qnew.m ops = 693
+MQ atom = 207
+MQnew.m ops = 922
+WPhi atom = 195
+WPhinew.m ops = 934
+
+symb = IxzP
+M atom = 93
+Mnew.m ops = 289
+Q atom = 161
+Qnew.m ops = 684
+MQ atom = 205
+MQnew.m ops = 905
+WPhi atom = 195
+WPhinew.m ops = 918
+
+symb = IyzP
+M atom = 91
+Mnew.m ops = 284
+Q atom = 161
+Qnew.m ops = 680
+MQ atom = 203
+MQnew.m ops = 896
+WPhi atom = 195
+WPhinew.m ops = 910
+
+symb = Ixy2
+M atom = 90
+Mnew.m ops = 282
+Q atom = 160
+Qnew.m ops = 674
+MQ atom = 201
+MQnew.m ops = 888
+WPhi atom = 194
+WPhinew.m ops = 901
+
+symb = Ixy5
+M atom = 89
+Mnew.m ops = 280
+Q atom = 159
+Qnew.m ops = 668
+MQ atom = 199
+MQnew.m ops = 880
+WPhi atom = 193
+WPhinew.m ops = 890
+
+symb = Ixy3
+M atom = 88
+Mnew.m ops = 278
+Q atom = 158
+Qnew.m ops = 661
+MQ atom = 197
+MQnew.m ops = 871
+WPhi atom = 192
+WPhinew.m ops = 879
+
+symb = IxyP
+M atom = 88
+Mnew.m ops = 270
+Q atom = 155
+Qnew.m ops = 649
+MQ atom = 194
+MQnew.m ops = 851
+WPhi atom = 189
+WPhinew.m ops = 859
+
+symb = Izz3
+M atom = 87
+Mnew.m ops = 266
+Q atom = 154
+Qnew.m ops = 640
+MQ atom = 192
+MQnew.m ops = 838
+WPhi atom = 190
+WPhinew.m ops = 848
+
+symb = Izz6
+M atom = 86
+Mnew.m ops = 262
+Q atom = 153
+Qnew.m ops = 633
+MQ atom = 190
+MQnew.m ops = 827
+WPhi atom = 191
+WPhinew.m ops = 838
+
+symb = Izz4
+M atom = 85
+Mnew.m ops = 258
+Q atom = 152
+Qnew.m ops = 625
+MQ atom = 188
+MQnew.m ops = 815
+WPhi atom = 192
+WPhinew.m ops = 827
+
+symb = Izz5
+M atom = 84
+Mnew.m ops = 254
+Q atom = 151
+Qnew.m ops = 617
+MQ atom = 186
+MQnew.m ops = 803
+WPhi atom = 193
+WPhinew.m ops = 818
+
+symb = Izz1
+M atom = 83
+Mnew.m ops = 250
+Q atom = 150
+Qnew.m ops = 609
+MQ atom = 184
+MQnew.m ops = 791
+WPhi atom = 194
+WPhinew.m ops = 808
+
+symb = Izz2
+M atom = 82
+Mnew.m ops = 246
+Q atom = 149
+Qnew.m ops = 601
+MQ atom = 182
+MQnew.m ops = 779
+WPhi atom = 195
+WPhinew.m ops = 797
+
+symb = Iyz3
+M atom = 82
+Mnew.m ops = 246
+Q atom = 148
+Qnew.m ops = 593
+MQ atom = 181
+MQnew.m ops = 771
+WPhi atom = 194
+WPhinew.m ops = 786
+
+symb = Iyz2
+M atom = 82
+Mnew.m ops = 246
+Q atom = 147
+Qnew.m ops = 585
+MQ atom = 180
+MQnew.m ops = 763
+WPhi atom = 193
+WPhinew.m ops = 775
+
+symb = Iyz5
+M atom = 82
+Mnew.m ops = 246
+Q atom = 146
+Qnew.m ops = 578
+MQ atom = 179
+MQnew.m ops = 756
+WPhi atom = 192
+WPhinew.m ops = 764
+
+symb = Ixz2
+M atom = 82
+Mnew.m ops = 243
+Q atom = 144
+Qnew.m ops = 568
+MQ atom = 177
+MQnew.m ops = 743
+WPhi atom = 188
+WPhinew.m ops = 745
+
+symb = Ixz1
+M atom = 82
+Mnew.m ops = 240
+Q atom = 142
+Qnew.m ops = 556
+MQ atom = 175
+MQnew.m ops = 728
+WPhi atom = 184
+WPhinew.m ops = 725
+
+symb = Iyz4
+M atom = 82
+Mnew.m ops = 240
+Q atom = 141
+Qnew.m ops = 548
+MQ atom = 174
+MQnew.m ops = 720
+WPhi atom = 183
+WPhinew.m ops = 715
+
+symb = Ixz5
+M atom = 82
+Mnew.m ops = 237
+Q atom = 139
+Qnew.m ops = 535
+MQ atom = 172
+MQnew.m ops = 704
+WPhi atom = 179
+WPhinew.m ops = 695
+
+symb = Iyz1
+M atom = 82
+Mnew.m ops = 237
+Q atom = 138
+Qnew.m ops = 528
+MQ atom = 171
+MQnew.m ops = 697
+WPhi atom = 178
+WPhinew.m ops = 685
+
+symb = Ixz4
+M atom = 82
+Mnew.m ops = 234
+Q atom = 136
+Qnew.m ops = 517
+MQ atom = 169
+MQnew.m ops = 683
+WPhi atom = 174
+WPhinew.m ops = 666
+
+symb = Iyz6
+M atom = 82
+Mnew.m ops = 234
+Q atom = 135
+Qnew.m ops = 508
+MQ atom = 168
+MQnew.m ops = 674
+WPhi atom = 173
+WPhinew.m ops = 655
+
+symb = Ixz6
+M atom = 82
+Mnew.m ops = 231
+Q atom = 133
+Qnew.m ops = 496
+MQ atom = 166
+MQnew.m ops = 659
+WPhi atom = 169
+WPhinew.m ops = 634
+
+symb = Ixz3
+M atom = 82
+Mnew.m ops = 228
+Q atom = 131
+Qnew.m ops = 484
+MQ atom = 164
+MQnew.m ops = 644
+WPhi atom = 165
+WPhinew.m ops = 615
+
+symb = mx6
+M atom = 80
+Mnew.m ops = 225
+Q atom = 126
+Qnew.m ops = 471
+MQ atom = 159
+MQnew.m ops = 627
+WPhi atom = 159
+WPhinew.m ops = 600
+
+symb = mx2
+M atom = 78
+Mnew.m ops = 220
+Q atom = 121
+Qnew.m ops = 457
+MQ atom = 154
+MQnew.m ops = 608
+WPhi atom = 153
+WPhinew.m ops = 584
+
+symb = mx1
+M atom = 76
+Mnew.m ops = 216
+Q atom = 116
+Qnew.m ops = 442
+MQ atom = 149
+MQnew.m ops = 589
+WPhi atom = 147
+WPhinew.m ops = 569
+
+symb = mx4
+M atom = 74
+Mnew.m ops = 212
+Q atom = 111
+Qnew.m ops = 426
+MQ atom = 144
+MQnew.m ops = 568
+WPhi atom = 141
+WPhinew.m ops = 553
+
+symb = my2
+M atom = 70
+Mnew.m ops = 207
+Q atom = 108
+Qnew.m ops = 416
+MQ atom = 141
+MQnew.m ops = 554
+WPhi atom = 136
+WPhinew.m ops = 535
+
+symb = my5
+M atom = 68
+Mnew.m ops = 201
+Q atom = 104
+Qnew.m ops = 409
+MQ atom = 137
+MQnew.m ops = 542
+WPhi atom = 130
+WPhinew.m ops = 519
+
+symb = my4
+M atom = 64
+Mnew.m ops = 195
+Q atom = 101
+Qnew.m ops = 400
+MQ atom = 134
+MQnew.m ops = 529
+WPhi atom = 125
+WPhinew.m ops = 501
+
+symb = my6
+M atom = 60
+Mnew.m ops = 189
+Q atom = 98
+Qnew.m ops = 390
+MQ atom = 131
+MQnew.m ops = 515
+WPhi atom = 120
+WPhinew.m ops = 484
+
+symb = my3
+M atom = 58
+Mnew.m ops = 184
+Q atom = 94
+Qnew.m ops = 383
+MQ atom = 127
+MQnew.m ops = 504
+WPhi atom = 114
+WPhinew.m ops = 471
+
+symb = my1
+M atom = 54
+Mnew.m ops = 178
+Q atom = 91
+Qnew.m ops = 374
+MQ atom = 124
+MQnew.m ops = 490
+WPhi atom = 109
+WPhinew.m ops = 452
+
+symb = mx5
+M atom = 50
+Mnew.m ops = 173
+Q atom = 87
+Qnew.m ops = 359
+MQ atom = 120
+MQnew.m ops = 470
+WPhi atom = 104
+WPhinew.m ops = 435
+
+symb = mx3
+M atom = 46
+Mnew.m ops = 167
+Q atom = 83
+Qnew.m ops = 344
+MQ atom = 116
+MQnew.m ops = 449
+WPhi atom = 99
+WPhinew.m ops = 417
+
+symb = IyyP
+M atom = 45
+Mnew.m ops = 159
+Q atom = 81
+Qnew.m ops = 334
+MQ atom = 113
+MQnew.m ops = 431
+WPhi atom = 97
+WPhinew.m ops = 400
+
+symb = IxxP
+M atom = 44
+Mnew.m ops = 152
+Q atom = 80
+Qnew.m ops = 322
+MQ atom = 111
+MQnew.m ops = 412
+WPhi atom = 96
+WPhinew.m ops = 382
+
+symb = myP
+M atom = 44
+Mnew.m ops = 141
+Q atom = 72
+Qnew.m ops = 308
+MQ atom = 103
+MQnew.m ops = 386
+WPhi atom = 88
+WPhinew.m ops = 370
+
+symb = mxP
+M atom = 38
+Mnew.m ops = 118
+Q atom = 67
+Qnew.m ops = 290
+MQ atom = 93
+MQnew.m ops = 347
+WPhi atom = 82
+WPhinew.m ops = 345
+
+symb = IzzP
+M atom = 36
+Mnew.m ops = 112
+Q atom = 65
+Qnew.m ops = 271
+MQ atom = 89
+MQnew.m ops = 322
+WPhi atom = 80
+WPhinew.m ops = 316
+
+symb = mzP
+M atom = 12
+Mnew.m ops = 60
+Q atom = 42
+Qnew.m ops = 188
+MQ atom = 54
+MQnew.m ops = 212
+WPhi atom = 54
+WPhinew.m ops = 216
+
+symb = mz5
+M atom = 10
+Mnew.m ops = 50
+Q atom = 35
+Qnew.m ops = 157
+MQ atom = 45
+MQnew.m ops = 177
+WPhi atom = 45
+WPhinew.m ops = 182
+
+symb = mz6
+M atom = 8
+Mnew.m ops = 40
+Q atom = 28
+Qnew.m ops = 127
+MQ atom = 36
+MQnew.m ops = 143
+WPhi atom = 36
+WPhinew.m ops = 149
+
+symb = mz3
+M atom = 6
+Mnew.m ops = 30
+Q atom = 21
+Qnew.m ops = 97
+MQ atom = 27
+MQnew.m ops = 109
+WPhi atom = 27
+WPhinew.m ops = 115
+
+symb = mz2
+M atom = 4
+Mnew.m ops = 20
+Q atom = 14
+Qnew.m ops = 67
+MQ atom = 18
+MQnew.m ops = 75
+WPhi atom = 18
+WPhinew.m ops = 82
+
+symb = mz4
+M atom = 2
+Mnew.m ops = 10
+Q atom = 7
+Qnew.m ops = 37
+MQ atom = 9
+MQnew.m ops = 41
+WPhi atom = 9
+WPhinew.m ops = 49
+
+symb = mz1
+M atom = 0
+Mnew.m ops = 0
+Q atom = 0
+Qnew.m ops = 7
+MQ atom = 0
+MQnew.m ops = 7
+WPhi atom = 0
+WPhinew.m ops = 16
+
+symb = m5
+M atom = 0
+Mnew.m ops = 0
+Q atom = 0
+Qnew.m ops = 6
+MQ atom = 0
+MQnew.m ops = 6
+WPhi atom = 0
+WPhinew.m ops = 14
+
+symb = m3
+M atom = 0
+Mnew.m ops = 0
+Q atom = 0
+Qnew.m ops = 5
+MQ atom = 0
+MQnew.m ops = 5
+WPhi atom = 0
+WPhinew.m ops = 12
+
+symb = m6
+M atom = 0
+Mnew.m ops = 0
+Q atom = 0
+Qnew.m ops = 4
+MQ atom = 0
+MQnew.m ops = 4
+WPhi atom = 0
+WPhinew.m ops = 10
+
+symb = m2
+M atom = 0
+Mnew.m ops = 0
+Q atom = 0
+Qnew.m ops = 3
+MQ atom = 0
+MQnew.m ops = 3
+WPhi atom = 0
+WPhinew.m ops = 8
+
+symb = m4
+M atom = 0
+Mnew.m ops = 0
+Q atom = 0
+Qnew.m ops = 2
+MQ atom = 0
+MQnew.m ops = 2
+WPhi atom = 0
+WPhinew.m ops = 6
+
+symb = m1
+M atom = 0
+Mnew.m ops = 0
+Q atom = 0
+Qnew.m ops = 1
+MQ atom = 0
+MQnew.m ops = 1
+WPhi atom = 0
+WPhinew.m ops = 4
+
+symb = mP
+M atom = 0
+Mnew.m ops = 0
+Q atom = 0
+Qnew.m ops = 0
+MQ atom = 0
+MQnew.m ops = 0
+WPhi atom = 0
+WPhinew.m ops = 0
+
+Export config.ini file 
+Export C++ code for Openscenegraph.
+ERR - Incompatible dimensions in input Matrixes
+Export State File
+Export GNUPLOT file
+
+***********************************************
+** COMPILED WITH OPTIONS                     **
+***********************************************
+** Dynamic equations ===> LAGRANGE           **
+** Matrix Order      ===> Col_MO             **
+** Maple             ===> OFF                **
+***********************************************
+main_symbolic execution time: 25 secs.

@@ -249,7 +249,6 @@ if ( _Output == NULL )
  }
 
 
-_Output[0] = 0.0;
 
 return _Output;
 }

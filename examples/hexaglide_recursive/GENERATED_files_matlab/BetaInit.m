@@ -1,4 +1,4 @@
-function BetaInit_ = BetaInit(q,time,param)
+function beta_init_ = BetaInit(q,time,param)
 
 x = q( 1 ); 
 y = q( 2 ); 
@@ -140,7 +140,7 @@ FSa26 = param( 110 );
 FSb26 = param( 111 ); 
 
 
-BetaInit_ = [0;
+beta_init_ = [0;
 0;
 0;
 0;

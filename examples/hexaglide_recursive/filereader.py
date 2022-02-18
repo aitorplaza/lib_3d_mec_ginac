@@ -4,7 +4,7 @@ import scipy.io as sio
 import numpy as np
 
 script, filename = argv
-
+print(filename)
 txt = open(filename)
 
 syms=[]
@@ -48,11 +48,12 @@ symbs=range(len(opsM))
 #plt.show()
 
 vect = np.array([opsM,opsQ,opsMQ,opsKPhi])
-print('kuku')
+print('Finished')
 #print(np.transpose(vect).shape)
-#~ sio.savemat('hexa_ele.mat', mdict={'hexa_ele':np.transpose(vect)})
-#~ sio.savemat('hexa_add.mat', mdict={'hexa_add':np.transpose(vect)})
-sio.savemat('hexa_qr.mat', mdict={'hexa_qr':np.transpose(vect)})
+sio.savemat('hexa_ele.mat', mdict={'hexa_ele':np.transpose(vect)})
+# ~ sio.savemat('hexa_add.mat', mdict={'hexa_add':np.transpose(vect)})
+# ~ sio.savemat('hexa_qr.mat', mdict={'hexa_qr':np.transpose(vect)})
+# ~ sio.savemat('hexa_L1.mat', mdict={'hexa_L1':np.transpose(vect)})
 
 
 

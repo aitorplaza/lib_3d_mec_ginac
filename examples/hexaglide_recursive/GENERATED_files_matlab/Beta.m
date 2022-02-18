@@ -1,4 +1,4 @@
-function Beta_ = Beta(q,time,param)
+function beta_ = Beta(q,time,param)
 
 x = q( 1 ); 
 y = q( 2 ); 
@@ -140,7 +140,7 @@ FSa26 = param( 110 );
 FSb26 = param( 111 ); 
 
 
-Beta_ = [0;
+beta_ = [0;
 0;
 0;
 0;

@@ -161,7 +161,6 @@
 #define FSb36 param[ 122 ]
 #define FSa46 param[ 123 ]
 #define FSb46 param[ 124 ]
-#define g param[ 125 ]
 #define lambda1 unknowns[ 0 ]
 #define lambda2 unknowns[ 1 ]
 #define lambda3 unknowns[ 2 ]
@@ -169,17 +168,17 @@
 #define lambda5 unknowns[ 4 ]
 #define lambda6 unknowns[ 5 ]
 
-double atom2274;
-double atom2259;
-double atom2260;
-double atom2263;
-double atom2265;
-double atom2251;
-double atom2271;
-double atom2255;
-double atom2268;
-double atom2252;
-double atom2256;
+double atom3329;
+double atom3322;
+double atom3323;
+double atom3318;
+double atom3319;
+double atom3337;
+double atom3314;
+double atom3315;
+double atom3331;
+double atom3334;
+double atom3326;
 
 double * _PhiInit = NULL;
 void Init_PhiInit ( ) 
@@ -208,24 +207,24 @@ if ( _PhiInit == NULL )
   }
  }
 
-atom2274 = sin(t);
-atom2259 = 2.0*t;
-atom2260 = sin(atom2259);
-atom2263 = cos(t);
-atom2265 = cos(atom2259);
-atom2251 = 4.0*t;
-atom2271 = sin(atom2251);
-atom2255 = 3.0*t;
-atom2268 = sin(atom2255);
-atom2252 = cos(atom2251);
-atom2256 = cos(atom2255);
+atom3329 = sin(t);
+atom3322 = 3.0*t;
+atom3323 = sin(atom3322);
+atom3318 = 2.0*t;
+atom3319 = cos(atom3318);
+atom3337 = cos(t);
+atom3314 = 4.0*t;
+atom3315 = sin(atom3314);
+atom3331 = cos(atom3322);
+atom3334 = sin(atom3318);
+atom3326 = cos(atom3314);
 
-_PhiInit[0] = -FS001-FSb21*atom2265+a1-atom2252*FSb41-atom2256*FSb31-FSa11*atom2274-atom2263*FSb11-FSa41*atom2271-atom2268*FSa31-atom2260*FSa21;
-_PhiInit[1] = -FSb42*atom2252-FSa22*atom2260+a2-atom2263*FSb12-atom2268*FSa32-FSa42*atom2271-FSa12*atom2274-FSb22*atom2265-atom2256*FSb32-FS002;
-_PhiInit[2] =  a3-atom2274*FSa13-FSa23*atom2260-FSb33*atom2256-FSb43*atom2252-FSa43*atom2271-FSb13*atom2263-FS003-atom2268*FSa33-atom2265*FSb23;
-_PhiInit[3] = -FSa44*atom2271-atom2268*FSa34-atom2265*FSb24-FSa24*atom2260-FS004-FSb14*atom2263-atom2274*FSa14-atom2252*FSb44-FSb34*atom2256+a4;
-_PhiInit[4] = -FSa15*atom2274-atom2252*FSb45-FSa45*atom2271-FS005-atom2263*FSb15-FSa25*atom2260-atom2268*FSa35-atom2265*FSb25+a5-FSb35*atom2256;
-_PhiInit[5] = -atom2256*FSb36-FSa26*atom2260-atom2252*FSb46-FSa46*atom2271+a6-FSa16*atom2274-FS006-atom2268*FSa36-atom2263*FSb16-FSb26*atom2265;
+_PhiInit[0] = -FSb21*atom3319-FS001-atom3331*FSb31-atom3329*FSa11+a1-atom3323*FSa31-atom3326*FSb41-FSa41*atom3315-FSb11*atom3337-FSa21*atom3334;
+_PhiInit[1] = -FSb12*atom3337-atom3329*FSa12-FSa32*atom3323+a2-atom3334*FSa22-atom3319*FSb22-FSb32*atom3331-atom3315*FSa42-FS002-FSb42*atom3326;
+_PhiInit[2] =  a3-atom3319*FSb23-atom3315*FSa43-FSb13*atom3337-FS003-atom3329*FSa13-FSb33*atom3331-atom3326*FSb43-atom3334*FSa23-atom3323*FSa33;
+_PhiInit[3] =  a4-atom3326*FSb44-FS004-atom3337*FSb14-FSa24*atom3334-atom3323*FSa34-atom3319*FSb24-FSa44*atom3315-atom3329*FSa14-FSb34*atom3331;
+_PhiInit[4] = -FS005-atom3326*FSb45-atom3329*FSa15-atom3334*FSa25-FSb25*atom3319-FSb15*atom3337+a5-FSa45*atom3315-FSa35*atom3323-FSb35*atom3331;
+_PhiInit[5] = -FS006-atom3329*FSa16-FSb26*atom3319-atom3331*FSb36-FSb46*atom3326-FSb16*atom3337-atom3334*FSa26-FSa46*atom3315+a6-FSa36*atom3323;
 
 return _PhiInit;
 }

@@ -264,269 +264,269 @@ void solids_homogeneous_matrix ( )
 {
  
 MSol_PLATFORM_3D.set
-(cos(b)*cos(c), sin(c)*cos(a)+sin(a)*sin(b)*cos(c), sin(a)*sin(c)-sin(b)*cos(c)*cos(a),0.0,
--sin(c)*cos(b),-sin(a)*sin(b)*sin(c)+cos(c)*cos(a), sin(b)*sin(c)*cos(a)+sin(a)*cos(c),0.0,
-sin(b),-sin(a)*cos(b),cos(b)*cos(a),0.0,
-x,y,z,1.0);
+(cos(c)*cos(b), sin(b)*cos(c)*sin(a)+sin(c)*cos(a), sin(c)*sin(a)-sin(b)*cos(c)*cos(a),0.0,
+-sin(c)*cos(b),-sin(b)*sin(c)*sin(a)+cos(c)*cos(a), cos(c)*sin(a)+sin(b)*sin(c)*cos(a),0.0,
+sin(b),-cos(b)*sin(a),cos(b)*cos(a),0.0,
+x,y,z,0.0);
 MTrans_Sol_PLATFORM_3D->setMatrix(MSol_PLATFORM_3D);
  
 MSol_BAR1_3D.set
-(cos(b1),sin(b1)*sin(a1),-sin(b1)*cos(a1),0.0,
+(cos(b1),sin(a1)*sin(b1),-cos(a1)*sin(b1),0.0,
 0.0,cos(a1),sin(a1),0.0,
-sin(b1),-cos(b1)*sin(a1),cos(b1)*cos(a1),0.0,
-R,e,s1,1.0);
+sin(b1),-sin(a1)*cos(b1),cos(a1)*cos(b1),0.0,
+R,e,s1,0.0);
 MTrans_Sol_BAR1_3D->setMatrix(MSol_BAR1_3D);
  
 MSol_BAR2_3D.set
-(cos(b2),sin(b2)*sin(a2),-sin(b2)*cos(a2),0.0,
+(cos(b2),sin(a2)*sin(b2),-cos(a2)*sin(b2),0.0,
 0.0,cos(a2),sin(a2),0.0,
-sin(b2),-cos(b2)*sin(a2),cos(b2)*cos(a2),0.0,
-R,-e,s2,1.0);
+sin(b2),-sin(a2)*cos(b2),cos(a2)*cos(b2),0.0,
+R,-e,s2,0.0);
 MTrans_Sol_BAR2_3D->setMatrix(MSol_BAR2_3D);
  
 MSol_BAR3_3D.set
-(-pow(3.0,(1.0/2.0))*sin(b3)*sin(a3)/2.0-cos(b3)/2.0,-sin(b3)*sin(a3)/2.0+cos(b3)*pow(3.0,(1.0/2.0))/2.0,-sin(b3)*cos(a3),0.0,
+(-cos(b3)/2.0-pow(3.0,(1.0/2.0))*sin(b3)*sin(a3)/2.0,-sin(b3)*sin(a3)/2.0+pow(3.0,(1.0/2.0))*cos(b3)/2.0,-sin(b3)*cos(a3),0.0,
 -(1.0/2.0)*pow(3.0,(1.0/2.0))*cos(a3),-(1.0/2.0)*cos(a3),sin(a3),0.0,
- cos(b3)*pow(3.0,(1.0/2.0))*sin(a3)/2.0-sin(b3)/2.0, pow(3.0,(1.0/2.0))*sin(b3)/2.0+cos(b3)*sin(a3)/2.0,cos(b3)*cos(a3),0.0,
--pow(3.0,(1.0/2.0))*e/2.0-R/2.0, pow(3.0,(1.0/2.0))*R/2.0-e/2.0,s3,1.0);
+ pow(3.0,(1.0/2.0))*cos(b3)*sin(a3)/2.0-sin(b3)/2.0, pow(3.0,(1.0/2.0))*sin(b3)/2.0+cos(b3)*sin(a3)/2.0,cos(b3)*cos(a3),0.0,
+-pow(3.0,(1.0/2.0))*e/2.0-R/2.0,-e/2.0+pow(3.0,(1.0/2.0))*R/2.0,s3,0.0);
 MTrans_Sol_BAR3_3D->setMatrix(MSol_BAR3_3D);
  
 MSol_BAR4_3D.set
-(-cos(b4)/2.0-pow(3.0,(1.0/2.0))*sin(b4)*sin(a4)/2.0,-sin(b4)*sin(a4)/2.0+cos(b4)*pow(3.0,(1.0/2.0))/2.0,-sin(b4)*cos(a4),0.0,
--(1.0/2.0)*pow(3.0,(1.0/2.0))*cos(a4),-(1.0/2.0)*cos(a4),sin(a4),0.0,
--sin(b4)/2.0+cos(b4)*pow(3.0,(1.0/2.0))*sin(a4)/2.0, pow(3.0,(1.0/2.0))*sin(b4)/2.0+cos(b4)*sin(a4)/2.0,cos(b4)*cos(a4),0.0,
- pow(3.0,(1.0/2.0))*e/2.0-R/2.0, pow(3.0,(1.0/2.0))*R/2.0+e/2.0,s4,1.0);
+(-cos(b4)/2.0-sin(a4)*pow(3.0,(1.0/2.0))*sin(b4)/2.0,-sin(a4)*sin(b4)/2.0+pow(3.0,(1.0/2.0))*cos(b4)/2.0,-cos(a4)*sin(b4),0.0,
+-(1.0/2.0)*cos(a4)*pow(3.0,(1.0/2.0)),-(1.0/2.0)*cos(a4),sin(a4),0.0,
+-sin(b4)/2.0+sin(a4)*pow(3.0,(1.0/2.0))*cos(b4)/2.0, pow(3.0,(1.0/2.0))*sin(b4)/2.0+sin(a4)*cos(b4)/2.0,cos(a4)*cos(b4),0.0,
+ pow(3.0,(1.0/2.0))*e/2.0-R/2.0, e/2.0+pow(3.0,(1.0/2.0))*R/2.0,s4,0.0);
 MTrans_Sol_BAR4_3D->setMatrix(MSol_BAR4_3D);
  
 MSol_BAR5_3D.set
-( sin(a5)*pow(3.0,(1.0/2.0))*sin(b5)/2.0-cos(b5)/2.0,-sin(a5)*sin(b5)/2.0-pow(3.0,(1.0/2.0))*cos(b5)/2.0,-cos(a5)*sin(b5),0.0,
-(1.0/2.0)*pow(3.0,(1.0/2.0))*cos(a5),-(1.0/2.0)*cos(a5),sin(a5),0.0,
+( sin(a5)*pow(3.0,(1.0/2.0))*sin(b5)/2.0-cos(b5)/2.0,-pow(3.0,(1.0/2.0))*cos(b5)/2.0-sin(a5)*sin(b5)/2.0,-cos(a5)*sin(b5),0.0,
+(1.0/2.0)*cos(a5)*pow(3.0,(1.0/2.0)),-(1.0/2.0)*cos(a5),sin(a5),0.0,
 -sin(a5)*pow(3.0,(1.0/2.0))*cos(b5)/2.0-sin(b5)/2.0, sin(a5)*cos(b5)/2.0-pow(3.0,(1.0/2.0))*sin(b5)/2.0,cos(a5)*cos(b5),0.0,
- pow(3.0,(1.0/2.0))*e/2.0-R/2.0,-pow(3.0,(1.0/2.0))*R/2.0-e/2.0,s5,1.0);
+ pow(3.0,(1.0/2.0))*e/2.0-R/2.0,-e/2.0-pow(3.0,(1.0/2.0))*R/2.0,s5,0.0);
 MTrans_Sol_BAR5_3D->setMatrix(MSol_BAR5_3D);
  
 MSol_BAR6_3D.set
-( sin(a6)*pow(3.0,(1.0/2.0))*sin(b6)/2.0-cos(b6)/2.0,-pow(3.0,(1.0/2.0))*cos(b6)/2.0-sin(a6)*sin(b6)/2.0,-cos(a6)*sin(b6),0.0,
-(1.0/2.0)*cos(a6)*pow(3.0,(1.0/2.0)),-(1.0/2.0)*cos(a6),sin(a6),0.0,
--sin(b6)/2.0-sin(a6)*pow(3.0,(1.0/2.0))*cos(b6)/2.0, sin(a6)*cos(b6)/2.0-pow(3.0,(1.0/2.0))*sin(b6)/2.0,cos(a6)*cos(b6),0.0,
--pow(3.0,(1.0/2.0))*e/2.0-R/2.0,-pow(3.0,(1.0/2.0))*R/2.0+e/2.0,s6,1.0);
+( pow(3.0,(1.0/2.0))*sin(b6)*sin(a6)/2.0-cos(b6)/2.0,-pow(3.0,(1.0/2.0))*cos(b6)/2.0-sin(b6)*sin(a6)/2.0,-sin(b6)*cos(a6),0.0,
+(1.0/2.0)*pow(3.0,(1.0/2.0))*cos(a6),-(1.0/2.0)*cos(a6),sin(a6),0.0,
+-sin(b6)/2.0-pow(3.0,(1.0/2.0))*cos(b6)*sin(a6)/2.0, cos(b6)*sin(a6)/2.0-pow(3.0,(1.0/2.0))*sin(b6)/2.0,cos(b6)*cos(a6),0.0,
+-pow(3.0,(1.0/2.0))*e/2.0-R/2.0, e/2.0-pow(3.0,(1.0/2.0))*R/2.0,s6,0.0);
 MTrans_Sol_BAR6_3D->setMatrix(MSol_BAR6_3D);
  
 MSol_BAR1V_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
-R,e,s1,1.0);
+R,e,s1,0.0);
 MTrans_Sol_BAR1V_3D->setMatrix(MSol_BAR1V_3D);
  
 MSol_BAR2V_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
-R,-e,s2,1.0);
+R,-e,s2,0.0);
 MTrans_Sol_BAR2V_3D->setMatrix(MSol_BAR2V_3D);
  
 MSol_BAR3V_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
--pow(3.0,(1.0/2.0))*e/2.0-R/2.0, pow(3.0,(1.0/2.0))*R/2.0-e/2.0,s3,1.0);
+-pow(3.0,(1.0/2.0))*e/2.0-R/2.0,-e/2.0+pow(3.0,(1.0/2.0))*R/2.0,s3,0.0);
 MTrans_Sol_BAR3V_3D->setMatrix(MSol_BAR3V_3D);
  
 MSol_BAR4V_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
- pow(3.0,(1.0/2.0))*e/2.0-R/2.0, pow(3.0,(1.0/2.0))*R/2.0+e/2.0,s4,1.0);
+ pow(3.0,(1.0/2.0))*e/2.0-R/2.0, e/2.0+pow(3.0,(1.0/2.0))*R/2.0,s4,0.0);
 MTrans_Sol_BAR4V_3D->setMatrix(MSol_BAR4V_3D);
  
 MSol_BAR5V_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
- pow(3.0,(1.0/2.0))*e/2.0-R/2.0,-pow(3.0,(1.0/2.0))*R/2.0-e/2.0,s5,1.0);
+ pow(3.0,(1.0/2.0))*e/2.0-R/2.0,-e/2.0-pow(3.0,(1.0/2.0))*R/2.0,s5,0.0);
 MTrans_Sol_BAR5V_3D->setMatrix(MSol_BAR5V_3D);
  
 MSol_BAR6V_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
--pow(3.0,(1.0/2.0))*e/2.0-R/2.0,-pow(3.0,(1.0/2.0))*R/2.0+e/2.0,s6,1.0);
+-pow(3.0,(1.0/2.0))*e/2.0-R/2.0, e/2.0-pow(3.0,(1.0/2.0))*R/2.0,s6,0.0);
 MTrans_Sol_BAR6V_3D->setMatrix(MSol_BAR6V_3D);
  
 MSol_BALL1A_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
-R,e,s1,1.0);
+R,e,s1,0.0);
 MTrans_Sol_BALL1A_3D->setMatrix(MSol_BALL1A_3D);
  
 MSol_BALL2A_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
-R,-e,s2,1.0);
+R,-e,s2,0.0);
 MTrans_Sol_BALL2A_3D->setMatrix(MSol_BALL2A_3D);
  
 MSol_BALL3A_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
--pow(3.0,(1.0/2.0))*e/2.0-R/2.0, pow(3.0,(1.0/2.0))*R/2.0-e/2.0,s3,1.0);
+-pow(3.0,(1.0/2.0))*e/2.0-R/2.0,-e/2.0+pow(3.0,(1.0/2.0))*R/2.0,s3,0.0);
 MTrans_Sol_BALL3A_3D->setMatrix(MSol_BALL3A_3D);
  
 MSol_BALL4A_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
- pow(3.0,(1.0/2.0))*e/2.0-R/2.0, pow(3.0,(1.0/2.0))*R/2.0+e/2.0,s4,1.0);
+ pow(3.0,(1.0/2.0))*e/2.0-R/2.0, e/2.0+pow(3.0,(1.0/2.0))*R/2.0,s4,0.0);
 MTrans_Sol_BALL4A_3D->setMatrix(MSol_BALL4A_3D);
  
 MSol_BALL5A_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
- pow(3.0,(1.0/2.0))*e/2.0-R/2.0,-pow(3.0,(1.0/2.0))*R/2.0-e/2.0,s5,1.0);
+ pow(3.0,(1.0/2.0))*e/2.0-R/2.0,-e/2.0-pow(3.0,(1.0/2.0))*R/2.0,s5,0.0);
 MTrans_Sol_BALL5A_3D->setMatrix(MSol_BALL5A_3D);
  
 MSol_BALL6A_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
--pow(3.0,(1.0/2.0))*e/2.0-R/2.0,-pow(3.0,(1.0/2.0))*R/2.0+e/2.0,s6,1.0);
+-pow(3.0,(1.0/2.0))*e/2.0-R/2.0, e/2.0-pow(3.0,(1.0/2.0))*R/2.0,s6,0.0);
 MTrans_Sol_BALL6A_3D->setMatrix(MSol_BALL6A_3D);
  
 MSol_BALL1D_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
- r*cos(b)*cos(c)+x-sin(c)*cos(b)*e, ( sin(c)*cos(a)+sin(a)*sin(b)*cos(c))*r-( sin(a)*sin(b)*sin(c)-cos(c)*cos(a))*e+y, z+( sin(a)*sin(c)-sin(b)*cos(c)*cos(a))*r+e*( sin(b)*sin(c)*cos(a)+sin(a)*cos(c)),1.0);
+-sin(c)*cos(b)*e+r*cos(c)*cos(b)+x,-( sin(b)*sin(c)*sin(a)-cos(c)*cos(a))*e+y+r*( sin(b)*cos(c)*sin(a)+sin(c)*cos(a)), r*( sin(c)*sin(a)-sin(b)*cos(c)*cos(a))+z+e*( cos(c)*sin(a)+sin(b)*sin(c)*cos(a)),0.0);
 MTrans_Sol_BALL1D_3D->setMatrix(MSol_BALL1D_3D);
  
 MSol_BALL2D_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
- r*cos(b)*cos(c)+x+sin(c)*cos(b)*e, ( sin(c)*cos(a)+sin(a)*sin(b)*cos(c))*r+( sin(a)*sin(b)*sin(c)-cos(c)*cos(a))*e+y, z+( sin(a)*sin(c)-sin(b)*cos(c)*cos(a))*r-e*( sin(b)*sin(c)*cos(a)+sin(a)*cos(c)),1.0);
+ sin(c)*cos(b)*e+r*cos(c)*cos(b)+x, ( sin(b)*sin(c)*sin(a)-cos(c)*cos(a))*e+y+r*( sin(b)*cos(c)*sin(a)+sin(c)*cos(a)), r*( sin(c)*sin(a)-sin(b)*cos(c)*cos(a))+z-e*( cos(c)*sin(a)+sin(b)*sin(c)*cos(a)),0.0);
 MTrans_Sol_BALL2D_3D->setMatrix(MSol_BALL2D_3D);
  
 MSol_BALL3D_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
- ( r*pow(3.0,(1.0/2.0))+e)*sin(c)*cos(b)/2.0-( r-pow(3.0,(1.0/2.0))*e)*cos(b)*cos(c)/2.0+x,-( sin(c)*cos(a)+sin(a)*sin(b)*cos(c))*( r-pow(3.0,(1.0/2.0))*e)/2.0+y+( sin(a)*sin(b)*sin(c)-cos(c)*cos(a))*( r*pow(3.0,(1.0/2.0))+e)/2.0, z-( sin(a)*sin(c)-sin(b)*cos(c)*cos(a))*( r-pow(3.0,(1.0/2.0))*e)/2.0-( r*pow(3.0,(1.0/2.0))+e)*( sin(b)*sin(c)*cos(a)+sin(a)*cos(c))/2.0,1.0);
+ x-cos(c)*cos(b)*( r-pow(3.0,(1.0/2.0))*e)/2.0+sin(c)*cos(b)*( r*pow(3.0,(1.0/2.0))+e)/2.0, y-( sin(b)*cos(c)*sin(a)+sin(c)*cos(a))*( r-pow(3.0,(1.0/2.0))*e)/2.0+( sin(b)*sin(c)*sin(a)-cos(c)*cos(a))*( r*pow(3.0,(1.0/2.0))+e)/2.0,-( cos(c)*sin(a)+sin(b)*sin(c)*cos(a))*( r*pow(3.0,(1.0/2.0))+e)/2.0+z-( sin(c)*sin(a)-sin(b)*cos(c)*cos(a))*( r-pow(3.0,(1.0/2.0))*e)/2.0,0.0);
 MTrans_Sol_BALL3D_3D->setMatrix(MSol_BALL3D_3D);
  
 MSol_BALL4D_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
--cos(b)*cos(c)*( r+pow(3.0,(1.0/2.0))*e)/2.0+( r*pow(3.0,(1.0/2.0))-e)*sin(c)*cos(b)/2.0+x, ( sin(a)*sin(b)*sin(c)-cos(c)*cos(a))*( r*pow(3.0,(1.0/2.0))-e)/2.0+y-( sin(c)*cos(a)+sin(a)*sin(b)*cos(c))*( r+pow(3.0,(1.0/2.0))*e)/2.0,-( sin(a)*sin(c)-sin(b)*cos(c)*cos(a))*( r+pow(3.0,(1.0/2.0))*e)/2.0+z-( r*pow(3.0,(1.0/2.0))-e)*( sin(b)*sin(c)*cos(a)+sin(a)*cos(c))/2.0,1.0);
+-cos(c)*cos(b)*( r+pow(3.0,(1.0/2.0))*e)/2.0+( r*pow(3.0,(1.0/2.0))-e)*sin(c)*cos(b)/2.0+x,-( r+pow(3.0,(1.0/2.0))*e)*( sin(b)*cos(c)*sin(a)+sin(c)*cos(a))/2.0+y+( r*pow(3.0,(1.0/2.0))-e)*( sin(b)*sin(c)*sin(a)-cos(c)*cos(a))/2.0,-( r*pow(3.0,(1.0/2.0))-e)*( cos(c)*sin(a)+sin(b)*sin(c)*cos(a))/2.0+z-( sin(c)*sin(a)-sin(b)*cos(c)*cos(a))*( r+pow(3.0,(1.0/2.0))*e)/2.0,0.0);
 MTrans_Sol_BALL4D_3D->setMatrix(MSol_BALL4D_3D);
  
 MSol_BALL5D_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
--cos(b)*cos(c)*( r+pow(3.0,(1.0/2.0))*e)/2.0-( r*pow(3.0,(1.0/2.0))-e)*sin(c)*cos(b)/2.0+x,-( sin(a)*sin(b)*sin(c)-cos(c)*cos(a))*( r*pow(3.0,(1.0/2.0))-e)/2.0+y-( sin(c)*cos(a)+sin(a)*sin(b)*cos(c))*( r+pow(3.0,(1.0/2.0))*e)/2.0,-( sin(a)*sin(c)-sin(b)*cos(c)*cos(a))*( r+pow(3.0,(1.0/2.0))*e)/2.0+z+( r*pow(3.0,(1.0/2.0))-e)*( sin(b)*sin(c)*cos(a)+sin(a)*cos(c))/2.0,1.0);
+-cos(c)*cos(b)*( r+pow(3.0,(1.0/2.0))*e)/2.0-( r*pow(3.0,(1.0/2.0))-e)*sin(c)*cos(b)/2.0+x,-( r+pow(3.0,(1.0/2.0))*e)*( sin(b)*cos(c)*sin(a)+sin(c)*cos(a))/2.0+y-( r*pow(3.0,(1.0/2.0))-e)*( sin(b)*sin(c)*sin(a)-cos(c)*cos(a))/2.0, ( r*pow(3.0,(1.0/2.0))-e)*( cos(c)*sin(a)+sin(b)*sin(c)*cos(a))/2.0+z-( sin(c)*sin(a)-sin(b)*cos(c)*cos(a))*( r+pow(3.0,(1.0/2.0))*e)/2.0,0.0);
 MTrans_Sol_BALL5D_3D->setMatrix(MSol_BALL5D_3D);
  
 MSol_BALL6D_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
--( r*pow(3.0,(1.0/2.0))+e)*sin(c)*cos(b)/2.0-( r-pow(3.0,(1.0/2.0))*e)*cos(b)*cos(c)/2.0+x,-( sin(c)*cos(a)+sin(a)*sin(b)*cos(c))*( r-pow(3.0,(1.0/2.0))*e)/2.0+y-( sin(a)*sin(b)*sin(c)-cos(c)*cos(a))*( r*pow(3.0,(1.0/2.0))+e)/2.0, z-( sin(a)*sin(c)-sin(b)*cos(c)*cos(a))*( r-pow(3.0,(1.0/2.0))*e)/2.0+( r*pow(3.0,(1.0/2.0))+e)*( sin(b)*sin(c)*cos(a)+sin(a)*cos(c))/2.0,1.0);
+ x-cos(c)*cos(b)*( r-pow(3.0,(1.0/2.0))*e)/2.0-sin(c)*cos(b)*( r*pow(3.0,(1.0/2.0))+e)/2.0, y-( sin(b)*cos(c)*sin(a)+sin(c)*cos(a))*( r-pow(3.0,(1.0/2.0))*e)/2.0-( sin(b)*sin(c)*sin(a)-cos(c)*cos(a))*( r*pow(3.0,(1.0/2.0))+e)/2.0, ( cos(c)*sin(a)+sin(b)*sin(c)*cos(a))*( r*pow(3.0,(1.0/2.0))+e)/2.0+z-( sin(c)*sin(a)-sin(b)*cos(c)*cos(a))*( r-pow(3.0,(1.0/2.0))*e)/2.0,0.0);
 MTrans_Sol_BALL6D_3D->setMatrix(MSol_BALL6D_3D);
  
 MSol_BALL1C_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
--sin(b1)*L+R, cos(b1)*L*sin(a1)+e,-cos(b1)*L*cos(a1)+s1,1.0);
+-L*sin(b1)+R, sin(a1)*L*cos(b1)+e, s1-cos(a1)*L*cos(b1),0.0);
 MTrans_Sol_BALL1C_3D->setMatrix(MSol_BALL1C_3D);
  
 MSol_BALL2C_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
--sin(b2)*L+R, cos(b2)*L*sin(a2)-e, s2-cos(b2)*L*cos(a2),1.0);
+-L*sin(b2)+R,-e+sin(a2)*L*cos(b2),-cos(a2)*L*cos(b2)+s2,0.0);
 MTrans_Sol_BALL2C_3D->setMatrix(MSol_BALL2C_3D);
  
 MSol_BALL3C_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
- sin(b3)*L/2.0-( cos(b3)*L*sin(a3)+e)*pow(3.0,(1.0/2.0))/2.0-R/2.0,-cos(b3)*L*sin(a3)/2.0-e/2.0-( sin(b3)*L-R)*pow(3.0,(1.0/2.0))/2.0, s3-cos(b3)*L*cos(a3),1.0);
+ L*sin(b3)/2.0-pow(3.0,(1.0/2.0))*( L*cos(b3)*sin(a3)+e)/2.0-R/2.0,-L*cos(b3)*sin(a3)/2.0-pow(3.0,(1.0/2.0))*( L*sin(b3)-R)/2.0-e/2.0, s3-L*cos(b3)*cos(a3),0.0);
 MTrans_Sol_BALL3C_3D->setMatrix(MSol_BALL3C_3D);
  
 MSol_BALL4C_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
--( cos(b4)*L*sin(a4)-e)*pow(3.0,(1.0/2.0))/2.0-R/2.0+sin(b4)*L/2.0,-cos(b4)*L*sin(a4)/2.0+pow(3.0,(1.0/2.0))*( R-sin(b4)*L)/2.0+e/2.0, s4-cos(b4)*L*cos(a4),1.0);
+ L*sin(b4)/2.0-R/2.0+( e-sin(a4)*L*cos(b4))*pow(3.0,(1.0/2.0))/2.0, e/2.0-sin(a4)*L*cos(b4)/2.0-pow(3.0,(1.0/2.0))*( L*sin(b4)-R)/2.0, s4-cos(a4)*L*cos(b4),0.0);
 MTrans_Sol_BALL4C_3D->setMatrix(MSol_BALL4C_3D);
  
 MSol_BALL5C_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
- ( e+sin(a5)*L*cos(b5))*pow(3.0,(1.0/2.0))/2.0+sin(b5)*L/2.0-R/2.0, pow(3.0,(1.0/2.0))*( sin(b5)*L-R)/2.0-e/2.0-sin(a5)*L*cos(b5)/2.0, s5-cos(a5)*L*cos(b5),1.0);
+ pow(3.0,(1.0/2.0))*( sin(a5)*L*cos(b5)+e)/2.0+L*sin(b5)/2.0-R/2.0,-sin(a5)*L*cos(b5)/2.0-e/2.0+( L*sin(b5)-R)*pow(3.0,(1.0/2.0))/2.0,-cos(a5)*L*cos(b5)+s5,0.0);
 MTrans_Sol_BALL5C_3D->setMatrix(MSol_BALL5C_3D);
  
 MSol_BALL6C_3D.set
 (1.0,0.0,0.0,0.0,
 0.0,1.0,0.0,0.0,
 0.0,0.0,1.0,0.0,
- pow(3.0,(1.0/2.0))*( sin(a6)*L*cos(b6)-e)/2.0+L*sin(b6)/2.0-R/2.0, pow(3.0,(1.0/2.0))*( L*sin(b6)-R)/2.0-sin(a6)*L*cos(b6)/2.0+e/2.0,-cos(a6)*L*cos(b6)+s6,1.0);
+ L*sin(b6)/2.0-pow(3.0,(1.0/2.0))*( e-L*cos(b6)*sin(a6))/2.0-R/2.0, pow(3.0,(1.0/2.0))*( L*sin(b6)-R)/2.0+e/2.0-L*cos(b6)*sin(a6)/2.0,-L*cos(b6)*cos(a6)+s6,0.0);
 MTrans_Sol_BALL6C_3D->setMatrix(MSol_BALL6C_3D);
  
 MFra_Fra_PLATFORM_3D_draw.set
-(cos(b)*cos(c), sin(c)*cos(a)+sin(a)*sin(b)*cos(c), sin(a)*sin(c)-sin(b)*cos(c)*cos(a),0.0,
--sin(c)*cos(b),-sin(a)*sin(b)*sin(c)+cos(c)*cos(a), sin(b)*sin(c)*cos(a)+sin(a)*cos(c),0.0,
-sin(b),-sin(a)*cos(b),cos(b)*cos(a),0.0,
-x,y,z,1.0);
+(cos(c)*cos(b), sin(b)*cos(c)*sin(a)+sin(c)*cos(a), sin(c)*sin(a)-sin(b)*cos(c)*cos(a),0.0,
+-sin(c)*cos(b),-sin(b)*sin(c)*sin(a)+cos(c)*cos(a), cos(c)*sin(a)+sin(b)*sin(c)*cos(a),0.0,
+sin(b),-cos(b)*sin(a),cos(b)*cos(a),0.0,
+x,y,z,0.0);
 MTrans_Fra_Fra_PLATFORM_3D_draw->setMatrix(MFra_Fra_PLATFORM_3D_draw);
  
 MFra_Fra_BAR1_3D_draw.set
-(cos(b1),sin(b1)*sin(a1),-sin(b1)*cos(a1),0.0,
+(cos(b1),sin(a1)*sin(b1),-cos(a1)*sin(b1),0.0,
 0.0,cos(a1),sin(a1),0.0,
-sin(b1),-cos(b1)*sin(a1),cos(b1)*cos(a1),0.0,
-R,e,s1,1.0);
+sin(b1),-sin(a1)*cos(b1),cos(a1)*cos(b1),0.0,
+R,e,s1,0.0);
 MTrans_Fra_Fra_BAR1_3D_draw->setMatrix(MFra_Fra_BAR1_3D_draw);
  
 MFra_Fra_BAR2_3D_draw.set
-(cos(b2),sin(b2)*sin(a2),-sin(b2)*cos(a2),0.0,
+(cos(b2),sin(a2)*sin(b2),-cos(a2)*sin(b2),0.0,
 0.0,cos(a2),sin(a2),0.0,
-sin(b2),-cos(b2)*sin(a2),cos(b2)*cos(a2),0.0,
-R,-e,s2,1.0);
+sin(b2),-sin(a2)*cos(b2),cos(a2)*cos(b2),0.0,
+R,-e,s2,0.0);
 MTrans_Fra_Fra_BAR2_3D_draw->setMatrix(MFra_Fra_BAR2_3D_draw);
  
 MFra_Fra_BAR3_3D_draw.set
-(-pow(3.0,(1.0/2.0))*sin(b3)*sin(a3)/2.0-cos(b3)/2.0,-sin(b3)*sin(a3)/2.0+cos(b3)*pow(3.0,(1.0/2.0))/2.0,-sin(b3)*cos(a3),0.0,
+(-cos(b3)/2.0-pow(3.0,(1.0/2.0))*sin(b3)*sin(a3)/2.0,-sin(b3)*sin(a3)/2.0+pow(3.0,(1.0/2.0))*cos(b3)/2.0,-sin(b3)*cos(a3),0.0,
 -(1.0/2.0)*pow(3.0,(1.0/2.0))*cos(a3),-(1.0/2.0)*cos(a3),sin(a3),0.0,
- cos(b3)*pow(3.0,(1.0/2.0))*sin(a3)/2.0-sin(b3)/2.0, pow(3.0,(1.0/2.0))*sin(b3)/2.0+cos(b3)*sin(a3)/2.0,cos(b3)*cos(a3),0.0,
--pow(3.0,(1.0/2.0))*e/2.0-R/2.0, pow(3.0,(1.0/2.0))*R/2.0-e/2.0,s3,1.0);
+ pow(3.0,(1.0/2.0))*cos(b3)*sin(a3)/2.0-sin(b3)/2.0, pow(3.0,(1.0/2.0))*sin(b3)/2.0+cos(b3)*sin(a3)/2.0,cos(b3)*cos(a3),0.0,
+-pow(3.0,(1.0/2.0))*e/2.0-R/2.0,-e/2.0+pow(3.0,(1.0/2.0))*R/2.0,s3,0.0);
 MTrans_Fra_Fra_BAR3_3D_draw->setMatrix(MFra_Fra_BAR3_3D_draw);
  
 MFra_Fra_BAR4_3D_draw.set
-(-cos(b4)/2.0-pow(3.0,(1.0/2.0))*sin(b4)*sin(a4)/2.0,-sin(b4)*sin(a4)/2.0+cos(b4)*pow(3.0,(1.0/2.0))/2.0,-sin(b4)*cos(a4),0.0,
--(1.0/2.0)*pow(3.0,(1.0/2.0))*cos(a4),-(1.0/2.0)*cos(a4),sin(a4),0.0,
--sin(b4)/2.0+cos(b4)*pow(3.0,(1.0/2.0))*sin(a4)/2.0, pow(3.0,(1.0/2.0))*sin(b4)/2.0+cos(b4)*sin(a4)/2.0,cos(b4)*cos(a4),0.0,
- pow(3.0,(1.0/2.0))*e/2.0-R/2.0, pow(3.0,(1.0/2.0))*R/2.0+e/2.0,s4,1.0);
+(-cos(b4)/2.0-sin(a4)*pow(3.0,(1.0/2.0))*sin(b4)/2.0,-sin(a4)*sin(b4)/2.0+pow(3.0,(1.0/2.0))*cos(b4)/2.0,-cos(a4)*sin(b4),0.0,
+-(1.0/2.0)*cos(a4)*pow(3.0,(1.0/2.0)),-(1.0/2.0)*cos(a4),sin(a4),0.0,
+-sin(b4)/2.0+sin(a4)*pow(3.0,(1.0/2.0))*cos(b4)/2.0, pow(3.0,(1.0/2.0))*sin(b4)/2.0+sin(a4)*cos(b4)/2.0,cos(a4)*cos(b4),0.0,
+ pow(3.0,(1.0/2.0))*e/2.0-R/2.0, e/2.0+pow(3.0,(1.0/2.0))*R/2.0,s4,0.0);
 MTrans_Fra_Fra_BAR4_3D_draw->setMatrix(MFra_Fra_BAR4_3D_draw);
  
 MFra_Fra_BAR5_3D_draw.set
-( sin(a5)*pow(3.0,(1.0/2.0))*sin(b5)/2.0-cos(b5)/2.0,-sin(a5)*sin(b5)/2.0-pow(3.0,(1.0/2.0))*cos(b5)/2.0,-cos(a5)*sin(b5),0.0,
-(1.0/2.0)*pow(3.0,(1.0/2.0))*cos(a5),-(1.0/2.0)*cos(a5),sin(a5),0.0,
+( sin(a5)*pow(3.0,(1.0/2.0))*sin(b5)/2.0-cos(b5)/2.0,-pow(3.0,(1.0/2.0))*cos(b5)/2.0-sin(a5)*sin(b5)/2.0,-cos(a5)*sin(b5),0.0,
+(1.0/2.0)*cos(a5)*pow(3.0,(1.0/2.0)),-(1.0/2.0)*cos(a5),sin(a5),0.0,
 -sin(a5)*pow(3.0,(1.0/2.0))*cos(b5)/2.0-sin(b5)/2.0, sin(a5)*cos(b5)/2.0-pow(3.0,(1.0/2.0))*sin(b5)/2.0,cos(a5)*cos(b5),0.0,
- pow(3.0,(1.0/2.0))*e/2.0-R/2.0,-pow(3.0,(1.0/2.0))*R/2.0-e/2.0,s5,1.0);
+ pow(3.0,(1.0/2.0))*e/2.0-R/2.0,-e/2.0-pow(3.0,(1.0/2.0))*R/2.0,s5,0.0);
 MTrans_Fra_Fra_BAR5_3D_draw->setMatrix(MFra_Fra_BAR5_3D_draw);
  
 MFra_Fra_BAR6_3D_draw.set
-( sin(a6)*pow(3.0,(1.0/2.0))*sin(b6)/2.0-cos(b6)/2.0,-pow(3.0,(1.0/2.0))*cos(b6)/2.0-sin(a6)*sin(b6)/2.0,-cos(a6)*sin(b6),0.0,
-(1.0/2.0)*cos(a6)*pow(3.0,(1.0/2.0)),-(1.0/2.0)*cos(a6),sin(a6),0.0,
--sin(b6)/2.0-sin(a6)*pow(3.0,(1.0/2.0))*cos(b6)/2.0, sin(a6)*cos(b6)/2.0-pow(3.0,(1.0/2.0))*sin(b6)/2.0,cos(a6)*cos(b6),0.0,
--pow(3.0,(1.0/2.0))*e/2.0-R/2.0,-pow(3.0,(1.0/2.0))*R/2.0+e/2.0,s6,1.0);
+( pow(3.0,(1.0/2.0))*sin(b6)*sin(a6)/2.0-cos(b6)/2.0,-pow(3.0,(1.0/2.0))*cos(b6)/2.0-sin(b6)*sin(a6)/2.0,-sin(b6)*cos(a6),0.0,
+(1.0/2.0)*pow(3.0,(1.0/2.0))*cos(a6),-(1.0/2.0)*cos(a6),sin(a6),0.0,
+-sin(b6)/2.0-pow(3.0,(1.0/2.0))*cos(b6)*sin(a6)/2.0, cos(b6)*sin(a6)/2.0-pow(3.0,(1.0/2.0))*sin(b6)/2.0,cos(b6)*cos(a6),0.0,
+-pow(3.0,(1.0/2.0))*e/2.0-R/2.0, e/2.0-pow(3.0,(1.0/2.0))*R/2.0,s6,0.0);
 MTrans_Fra_Fra_BAR6_3D_draw->setMatrix(MFra_Fra_BAR6_3D_draw);
  
 }

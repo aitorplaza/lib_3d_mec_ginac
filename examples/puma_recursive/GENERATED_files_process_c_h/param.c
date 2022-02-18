@@ -126,7 +126,6 @@
 #define FSb36 3.0832000000000000e-06
 #define FSa46 1.4203000000000000e-06
 #define FSb46 1.7219999999999999e-07
-#define g 9.8000000000000007e+00
 
 double * param=NULL; 
 
@@ -257,7 +256,6 @@ param[121]=FSa36;
 param[122]=FSb36;
 param[123]=FSa46;
 param[124]=FSb46;
-param[125]=g;
 }
 
 void Init_param ( )

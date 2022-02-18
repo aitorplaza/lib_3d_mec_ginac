@@ -1,4 +1,4 @@
-function PhiInit_q_ = PhiInit_q(q,time,param)
+function Phi_init_q_ = PhiInit_q(q,time,param)
 
 a1 = q( 1 ); 
 a2 = q( 2 ); 
@@ -134,10 +134,9 @@ FSa36 = param( 122 );
 FSb36 = param( 123 ); 
 FSa46 = param( 124 ); 
 FSb46 = param( 125 ); 
-g = param( 126 ); 
 
 
-PhiInit_q_ = [1.0 , 0.0 , 0.0 , 0.0 , 0.0 , 0.0;
+Phi_init_q_ = [1.0 , 0.0 , 0.0 , 0.0 , 0.0 , 0.0;
 0.0 , 1.0 , 0.0 , 0.0 , 0.0 , 0.0;
 0.0 , 0.0 , 1.0 , 0.0 , 0.0 , 0.0;
 0.0 , 0.0 , 0.0 , 1.0 , 0.0 , 0.0;

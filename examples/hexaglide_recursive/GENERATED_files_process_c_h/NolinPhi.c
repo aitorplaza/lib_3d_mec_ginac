@@ -220,25 +220,25 @@
 #define lambda17 unknowns[ 16 ]
 #define lambda18 unknowns[ 17 ]
 
-double atom40;
 double atom39;
 double atom79;
-double atom44;
 double atom46;
+double atom44;
+double atom40;
 double atom103;
-double atom127;
 double atom130;
-double atom131;
+double atom127;
 double atom128;
+double atom131;
 double atom168;
-double atom171;
 double atom169;
-double atom208;
-double atom211;
+double atom171;
 double atom209;
-double atom248;
+double atom211;
+double atom208;
 double atom249;
 double atom251;
+double atom248;
 
 double * _NolinPhi = NULL;
 void Init_NolinPhi ( ) 
@@ -267,32 +267,32 @@ if ( _NolinPhi == NULL )
   }
  }
 
-atom40 = sin(b);
 atom39 = cos(b);
 atom79 = cos(b1);
+atom46 = cos(a)*atom39;
 atom44 = -sin(a)*atom39;
-atom46 = atom39*cos(a);
+atom40 = sin(b);
 atom103 = cos(b2);
-atom127 = cos(b3);
 atom130 = sin(a3);
-atom131 = (1.0/2.0)*pow(3.0,(1.0/2.0));
+atom127 = cos(b3);
 atom128 = sin(b3);
+atom131 = (1.0/2.0)*pow(3.0,(1.0/2.0));
 atom168 = cos(b4);
-atom171 = sin(a4);
 atom169 = sin(b4);
-atom208 = cos(b5);
-atom211 = sin(a5);
+atom171 = sin(a4);
 atom209 = sin(b5);
-atom248 = cos(b6);
+atom211 = sin(a5);
+atom208 = cos(b5);
 atom249 = sin(b6);
 atom251 = sin(a6);
+atom248 = cos(b6);
 
-_NolinPhi[0] =  sin(b1)*atom40+atom46*cos(a1)*atom79-atom44*sin(a1)*atom79;
-_NolinPhi[1] =  atom46*cos(a2)*atom103-atom44*sin(a2)*atom103+sin(b2)*atom40;
-_NolinPhi[2] =  atom44*( atom127*atom130+2.0*atom131*atom128)/2.0-( atom128+-2.0*atom131*atom127*atom130)*atom40/2.0+atom127*atom46*cos(a3);
-_NolinPhi[3] =  atom44*( 2.0*atom131*atom169+atom171*atom168)/2.0-atom40*( atom169+-2.0*atom131*atom171*atom168)/2.0+atom46*cos(a4)*atom168;
-_NolinPhi[4] = -( 2.0*atom131*atom211*atom208+atom209)*atom40/2.0+cos(a5)*atom46*atom208-atom44*( 2.0*atom131*atom209-atom211*atom208)/2.0;
-_NolinPhi[5] = -( 2.0*atom131*atom251*atom248+atom249)*atom40/2.0+atom44*( atom251*atom248+-2.0*atom131*atom249)/2.0+cos(a6)*atom46*atom248;
+_NolinPhi[0] = -sin(a1)*atom79*atom44+cos(a1)*atom46*atom79+atom40*sin(b1);
+_NolinPhi[1] = -sin(a2)*atom103*atom44+cos(a2)*atom46*atom103+atom40*sin(b2);
+_NolinPhi[2] =  atom46*atom127*cos(a3)+( 2.0*atom128*atom131+atom130*atom127)*atom44/2.0-atom40*( atom128+-2.0*atom130*atom131*atom127)/2.0;
+_NolinPhi[3] =  ( atom171*atom168+2.0*atom169*atom131)*atom44/2.0-( atom169+-2.0*atom171*atom168*atom131)*atom40/2.0+cos(a4)*atom46*atom168;
+_NolinPhi[4] = -( 2.0*atom211*atom208*atom131+atom209)*atom40/2.0+( atom211*atom208+-2.0*atom131*atom209)*atom44/2.0+cos(a5)*atom46*atom208;
+_NolinPhi[5] =  ( atom251*atom248+-2.0*atom249*atom131)*atom44/2.0-( 2.0*atom251*atom248*atom131+atom249)*atom40/2.0+atom46*atom248*cos(a6);
 
 return _NolinPhi;
 }

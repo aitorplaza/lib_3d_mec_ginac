@@ -6,4 +6,4 @@ extern void Init_param ( void );
 extern void Done_param( void );
 extern void Reallocate_param( double * user_param );
 
-#define n_param 126
+#define n_param 125

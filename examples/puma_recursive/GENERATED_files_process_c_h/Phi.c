@@ -161,7 +161,6 @@
 #define FSb36 param[ 122 ]
 #define FSa46 param[ 123 ]
 #define FSb46 param[ 124 ]
-#define g param[ 125 ]
 #define lambda1 unknowns[ 0 ]
 #define lambda2 unknowns[ 1 ]
 #define lambda3 unknowns[ 2 ]
@@ -198,12 +197,12 @@ if ( _Phi == NULL )
  }
 
 
-_Phi[0] = -sin(4.0*t)*FSa41-FS001-FSa31*sin(3.0*t)+a1-FSb21*cos(2.0*t)-FSa11*sin(t)-sin(2.0*t)*FSa21-cos(3.0*t)*FSb31-FSb41*cos(4.0*t)-cos(t)*FSb11;
-_Phi[1] = -FSb22*cos(2.0*t)-FSa22*sin(2.0*t)+a2-cos(t)*FSb12-cos(3.0*t)*FSb32-FSa12*sin(t)-FSa42*sin(4.0*t)-FSa32*sin(3.0*t)-FSb42*cos(4.0*t)-FS002;
-_Phi[2] =  a3-cos(2.0*t)*FSb23-FSa23*sin(2.0*t)-FS003-FSb13*cos(t)-FSb43*cos(4.0*t)-FSa13*sin(t)-cos(3.0*t)*FSb33-FSa33*sin(3.0*t)-sin(4.0*t)*FSa43;
-_Phi[3] = -FSb34*cos(3.0*t)-FSb14*cos(t)-sin(4.0*t)*FSa44-FSa24*sin(2.0*t)-FS004-sin(3.0*t)*FSa34-cos(4.0*t)*FSb44-cos(2.0*t)*FSb24-FSa14*sin(t)+a4;
-_Phi[4] = -FS005-FSb35*cos(3.0*t)-cos(t)*FSb15-cos(2.0*t)*FSb25-FSa25*sin(2.0*t)-cos(4.0*t)*FSb45-FSa35*sin(3.0*t)-sin(4.0*t)*FSa45+a5-FSa15*sin(t);
-_Phi[5] = -FSa16*sin(t)-FSa46*sin(4.0*t)-FSa36*sin(3.0*t)-FSb46*cos(4.0*t)-FSb26*cos(2.0*t)-cos(t)*FSb16-cos(3.0*t)*FSb36-FSa26*sin(2.0*t)+a6-FS006;
+_Phi[0] = -FSb41*cos(4.0*t)-FS001-FSa21*sin(2.0*t)+a1-cos(3.0*t)*FSb31-sin(4.0*t)*FSa41-cos(t)*FSb11-FSa31*sin(3.0*t)-cos(2.0*t)*FSb21-sin(t)*FSa11;
+_Phi[1] =  a2-FSa22*sin(2.0*t)-sin(4.0*t)*FSa42-FSb12*cos(t)-FSa32*sin(3.0*t)-cos(2.0*t)*FSb22-sin(t)*FSa12-FSb42*cos(4.0*t)-cos(3.0*t)*FSb32-FS002;
+_Phi[2] =  a3-cos(2.0*t)*FSb23-cos(3.0*t)*FSb33-FS003-FSa23*sin(2.0*t)-sin(t)*FSa13-sin(3.0*t)*FSa33-FSb13*cos(t)-cos(4.0*t)*FSb43-sin(4.0*t)*FSa43;
+_Phi[3] =  a4-sin(4.0*t)*FSa44-sin(t)*FSa14-FS004-FSa34*sin(3.0*t)-cos(t)*FSb14-cos(2.0*t)*FSb24-FSa24*sin(2.0*t)-FSb44*cos(4.0*t)-cos(3.0*t)*FSb34;
+_Phi[4] = -FS005-sin(4.0*t)*FSa45-FSa15*sin(t)-cos(2.0*t)*FSb25-sin(2.0*t)*FSa25-FSa35*sin(3.0*t)-FSb45*cos(4.0*t)-cos(t)*FSb15+a5-cos(3.0*t)*FSb35;
+_Phi[5] = -FS006-FSa16*sin(t)-FSa36*sin(3.0*t)-sin(2.0*t)*FSa26-cos(3.0*t)*FSb36-cos(t)*FSb16-sin(4.0*t)*FSa46-FSb46*cos(4.0*t)+a6-cos(2.0*t)*FSb26;
 
 return _Phi;
 }

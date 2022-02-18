@@ -161,7 +161,6 @@
 #define FSb36 param[ 122 ]
 #define FSa46 param[ 123 ]
 #define FSb46 param[ 124 ]
-#define g param[ 125 ]
 #define lambda1 unknowns[ 0 ]
 #define lambda2 unknowns[ 1 ]
 #define lambda3 unknowns[ 2 ]
@@ -198,7 +197,6 @@ if ( _Energy == NULL )
  }
 
 
-_Energy[0] = 0.0;
 
 return _Energy;
 }

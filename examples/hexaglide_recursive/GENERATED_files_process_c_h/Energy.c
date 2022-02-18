@@ -249,7 +249,6 @@ if ( _Energy == NULL )
  }
 
 
-_Energy[0] = 0.0;
 
 return _Energy;
 }

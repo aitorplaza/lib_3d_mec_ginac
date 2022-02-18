@@ -1,4 +1,4 @@
-function Energy_ = Energy(q,dq,ddq,time,param)
+function energy_ = Energy(q,dq,ddq,time,param)
 
 x = q( 1 ); 
 y = q( 2 ); 
@@ -190,6 +190,6 @@ FSa26 = param( 110 );
 FSb26 = param( 111 ); 
 
 
-Energy_ = [0];
+energy_ = [0];
 
 %endfunction

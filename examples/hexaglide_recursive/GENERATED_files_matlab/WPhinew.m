@@ -1,4 +1,4 @@
-function WPhinew_ = WPhinew(q,dq,ddq,unknowns,time,param)
+function WPhinew_ = WPhinew(q,dq,ddq,unknowns,time,param,inputs)
 
 x = q( 1 ); 
 y = q( 2 ); 

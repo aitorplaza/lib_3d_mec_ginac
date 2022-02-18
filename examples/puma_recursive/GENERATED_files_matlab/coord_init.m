@@ -1,0 +1,12 @@
+global a1;
+global a2;
+global a3;
+global a4;
+global a5;
+global a6;
+a1 = 0.0;
+a2 = 0.0;
+a3 = 0.0;
+a4 = 0.0;
+a5 = 0.0;
+a6 = 0.0;

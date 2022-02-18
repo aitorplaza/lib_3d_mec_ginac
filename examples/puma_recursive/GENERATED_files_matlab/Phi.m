@@ -134,14 +134,13 @@ FSa36 = param( 122 );
 FSb36 = param( 123 ); 
 FSa46 = param( 124 ); 
 FSb46 = param( 125 ); 
-g = param( 126 ); 
 
 
-Phi_ = [-sin(4*t)*FSa41-FS001-FSa31*sin(3*t)+a1-FSb21*cos(2*t)-FSa11*sin(t)-sin(2*t)*FSa21-cos(3*t)*FSb31-FSb41*cos(4*t)-cos(t)*FSb11;
--FSb22*cos(2*t)-FSa22*sin(2*t)+a2-cos(t)*FSb12-cos(3*t)*FSb32-FSa12*sin(t)-FSa42*sin(4*t)-FSa32*sin(3*t)-FSb42*cos(4*t)-FS002;
-a3-cos(2*t)*FSb23-FSa23*sin(2*t)-FS003-FSb13*cos(t)-FSb43*cos(4*t)-FSa13*sin(t)-cos(3*t)*FSb33-FSa33*sin(3*t)-sin(4*t)*FSa43;
--FSb34*cos(3*t)-FSb14*cos(t)-sin(4*t)*FSa44-FSa24*sin(2*t)-FS004-sin(3*t)*FSa34-cos(4*t)*FSb44-cos(2*t)*FSb24-FSa14*sin(t)+a4;
--FS005-FSb35*cos(3*t)-cos(t)*FSb15-cos(2*t)*FSb25-FSa25*sin(2*t)-cos(4*t)*FSb45-FSa35*sin(3*t)-sin(4*t)*FSa45+a5-FSa15*sin(t);
--FSa16*sin(t)-FSa46*sin(4*t)-FSa36*sin(3*t)-FSb46*cos(4*t)-FSb26*cos(2*t)-cos(t)*FSb16-cos(3*t)*FSb36-FSa26*sin(2*t)+a6-FS006];
+Phi_ = [-FSb41*cos(4*t)-FS001-FSa21*sin(2*t)+a1-cos(3*t)*FSb31-sin(4*t)*FSa41-cos(t)*FSb11-FSa31*sin(3*t)-cos(2*t)*FSb21-sin(t)*FSa11;
+a2-FSa22*sin(2*t)-sin(4*t)*FSa42-FSb12*cos(t)-FSa32*sin(3*t)-cos(2*t)*FSb22-sin(t)*FSa12-FSb42*cos(4*t)-cos(3*t)*FSb32-FS002;
+a3-cos(2*t)*FSb23-cos(3*t)*FSb33-FS003-FSa23*sin(2*t)-sin(t)*FSa13-sin(3*t)*FSa33-FSb13*cos(t)-cos(4*t)*FSb43-sin(4*t)*FSa43;
+a4-sin(4*t)*FSa44-sin(t)*FSa14-FS004-FSa34*sin(3*t)-cos(t)*FSb14-cos(2*t)*FSb24-FSa24*sin(2*t)-FSb44*cos(4*t)-cos(3*t)*FSb34;
+-FS005-sin(4*t)*FSa45-FSa15*sin(t)-cos(2*t)*FSb25-sin(2*t)*FSa25-FSa35*sin(3*t)-FSb45*cos(4*t)-cos(t)*FSb15+a5-cos(3*t)*FSb35;
+-FS006-FSa16*sin(t)-FSa36*sin(3*t)-sin(2*t)*FSa26-cos(3*t)*FSb36-cos(t)*FSb16-sin(4*t)*FSa46-FSb46*cos(4*t)+a6-cos(2*t)*FSb26];
 
 %endfunction

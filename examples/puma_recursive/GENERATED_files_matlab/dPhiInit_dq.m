@@ -1,4 +1,4 @@
-function dPhiInit_dq_ = dPhiInit_dq(q,time,param)
+function dPhi_init_dq_ = dPhiInit_dq(q,time,param)
 
 a1 = q( 1 ); 
 a2 = q( 2 ); 
@@ -134,10 +134,9 @@ FSa36 = param( 122 );
 FSb36 = param( 123 ); 
 FSa46 = param( 124 ); 
 FSb46 = param( 125 ); 
-g = param( 126 ); 
 
 
-dPhiInit_dq_ = [1.0 , 0.0 , 0.0 , 0.0 , 0.0 , 0.0;
+dPhi_init_dq_ = [1.0 , 0.0 , 0.0 , 0.0 , 0.0 , 0.0;
 0.0 , 1.0 , 0.0 , 0.0 , 0.0 , 0.0;
 0.0 , 0.0 , 1.0 , 0.0 , 0.0 , 0.0;
 0.0 , 0.0 , 0.0 , 1.0 , 0.0 , 0.0;

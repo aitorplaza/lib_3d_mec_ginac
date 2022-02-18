@@ -1,4 +1,4 @@
-function Qnew_ = Qnew(q,dq,time,param)
+function Qnew_ = Qnew(q,dq,time,param,inputs)
 
 x = q( 1 ); 
 y = q( 2 ); 

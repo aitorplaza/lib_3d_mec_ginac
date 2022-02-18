@@ -280,31 +280,31 @@ dds5 = ddq( 23);
 dds6 = ddq( 24); 
 end
 
-atom40 = sin(b);
 atom39 = cos(b);
 atom79 = cos(b1);
+atom46 = cos(a)*atom39;
 atom44 = -sin(a)*atom39;
-atom46 = atom39*cos(a);
+atom40 = sin(b);
 atom103 = cos(b2);
-atom127 = cos(b3);
 atom130 = sin(a3);
-atom131 = 1/2*sqrt(3);
+atom127 = cos(b3);
 atom128 = sin(b3);
+atom131 = 1/2*sqrt(3);
 atom168 = cos(b4);
-atom171 = sin(a4);
 atom169 = sin(b4);
-atom208 = cos(b5);
-atom211 = sin(a5);
+atom171 = sin(a4);
 atom209 = sin(b5);
-atom248 = cos(b6);
+atom211 = sin(a5);
+atom208 = cos(b5);
 atom249 = sin(b6);
 atom251 = sin(a6);
+atom248 = cos(b6);
 
-NolinPhi_ = [sin(b1)*atom40+atom46*cos(a1)*atom79-atom44*sin(a1)*atom79;
-atom46*cos(a2)*atom103-atom44*sin(a2)*atom103+sin(b2)*atom40;
-1/2*atom44*(atom127*atom130+2*atom131*atom128)-1/2*(atom128-2*atom131*atom127*atom130)*atom40+atom127*atom46*cos(a3);
-1/2*atom44*(2*atom131*atom169+atom171*atom168)-1/2*atom40*(atom169-2*atom131*atom171*atom168)+atom46*cos(a4)*atom168;
--1/2*(2*atom131*atom211*atom208+atom209)*atom40+cos(a5)*atom46*atom208-1/2*atom44*(2*atom131*atom209-atom211*atom208);
--1/2*(2*atom131*atom251*atom248+atom249)*atom40+1/2*atom44*(atom251*atom248-2*atom131*atom249)+cos(a6)*atom46*atom248];
+NolinPhi_ = [-sin(a1)*atom79*atom44+cos(a1)*atom46*atom79+atom40*sin(b1);
+-sin(a2)*atom103*atom44+cos(a2)*atom46*atom103+atom40*sin(b2);
+atom46*atom127*cos(a3)+1/2*(2*atom128*atom131+atom130*atom127)*atom44-1/2*atom40*(atom128-2*atom130*atom131*atom127);
+1/2*(atom171*atom168+2*atom169*atom131)*atom44-1/2*(atom169-2*atom171*atom168*atom131)*atom40+cos(a4)*atom46*atom168;
+-1/2*(2*atom211*atom208*atom131+atom209)*atom40+1/2*(atom211*atom208-2*atom131*atom209)*atom44+cos(a5)*atom46*atom208;
+1/2*(atom251*atom248-2*atom249*atom131)*atom44-1/2*(2*atom251*atom248*atom131+atom249)*atom40+atom46*atom248*cos(a6)];
 
 %endfunction

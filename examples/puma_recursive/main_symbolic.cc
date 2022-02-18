@@ -1187,7 +1187,7 @@ vector < symbol_numeric * > v1;
 
 
 // Elemin
-//*
+/*
 v1.push_back( &mz5 );
 v1.push_back( &mx3 );
 v1.push_back( &mx2 );
@@ -1345,6 +1345,71 @@ v1.push_back( &Ixy6 );
 v1.push_back( &mx6 );
 v1.push_back( &my6 );
 //*/
+
+// L1 (mx1, mz1, Ixy1, Ixz1, Iyz1, Iyy1, my1, Ixx1, mz2, m1, m2)
+//*
+//~ v1.push_back( &mx1 );
+//~ v1.push_back( &mz1 );
+//~ v1.push_back( &Ixy1 );
+//~ v1.push_back( &Ixz1 );
+//~ v1.push_back( &Iyz1 );
+//~ v1.push_back( &Iyy1 );
+//~ v1.push_back( &my1 );
+//~ v1.push_back( &Ixx1 );
+//~ v1.push_back( &mz2 );
+//~ v1.push_back( &m1 );
+//~ v1.push_back( &m2 );
+v1.push_back( &Iyy3 );
+v1.push_back( &Ixx2 );
+v1.push_back( &mz3 );
+v1.push_back( &mz4 );
+v1.push_back( &m4 );
+v1.push_back( &m5 );
+v1.push_back( &m6 );
+v1.push_back( &m3 );
+v1.push_back( &Iyz5 );
+v1.push_back( &Ixz5 );
+v1.push_back( &Ixz4 );
+v1.push_back( &Ixy4 );
+v1.push_back( &Ixy5 );
+v1.push_back( &Iyz4 );
+v1.push_back( &Iyz6 );
+v1.push_back( &Ixy6 );
+v1.push_back( &Ixz6 );
+v1.push_back( &Iyz3 );
+v1.push_back( &Ixz3 );
+v1.push_back( &mx5 );
+v1.push_back( &mx6 );
+v1.push_back( &mz6 );
+v1.push_back( &my5 );
+v1.push_back( &Izz6 );
+v1.push_back( &my6 );
+v1.push_back( &Ixy3 );
+v1.push_back( &mx4 );
+v1.push_back( &my4 );
+v1.push_back( &mz5 );
+v1.push_back( &Izz4 );
+v1.push_back( &mx3 );
+v1.push_back( &Izz5 );
+v1.push_back( &Iyy6 );
+v1.push_back( &Ixx6 );
+v1.push_back( &Ixx5 );
+v1.push_back( &Iyy5 );
+v1.push_back( &Ixy2 );
+v1.push_back( &my2 );
+v1.push_back( &Ixz2 );
+v1.push_back( &Iyz2 );
+v1.push_back( &my3 );
+v1.push_back( &Ixx4 );
+v1.push_back( &Iyy4 );
+v1.push_back( &Ixx3 );
+v1.push_back( &Izz3 );
+v1.push_back( &Izz1 );
+v1.push_back( &mx2 );
+v1.push_back( &Iyy2 );
+v1.push_back( &Izz2 );
+//*/
+
 
 vector < symbol_numeric * > v2;
    

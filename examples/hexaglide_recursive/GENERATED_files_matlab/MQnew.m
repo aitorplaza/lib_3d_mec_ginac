@@ -1,4 +1,4 @@
-function MQnew_ = MQnew(q,dq,time,param)
+function MQnew_ = MQnew(q,dq,time,param,inputs)
 
 x = q( 1 ); 
 y = q( 2 ); 
