@@ -1835,72 +1835,138 @@ v1.push_back( &mP );
 //*/
 
 
+vector<vector<symbol_numeric * >> vec_L1{ {&mz3, &mz4,  &IyyP, &Izz1}, {&mP,&m6,&m5, &m4, &m3}, {&mP}, {&mP,&m6,&m5, &m4, &m5}, {&m2,&m1,&m5, &m4, &m3}}; 
 
-//~ lst kaka;
-//~ kaka = {IzzP,IxxP,IyyP,IxzP};
 
-//~ vector < symbol_numeric * > v3;
-//~ cout <<"kaka= " << ex_to<symbol>(kaka[1])<<endl;
-//~ symbol_numeric sym_j;
-//~ sym_j = ex_to<symbol>(kaka[1]);
-//~ v3.push_back( &sym_j );
-//~ Matrix kakaka = zero_substitution(Mo,v3);
 
-vector < symbol_numeric * > v2; 
+
+                                     
+vector<vector<symbol_numeric * >> vec_subs = vec_L1;
+
+for (int k = 0;k<vec_subs.size(); k++) {
+    
+    cout <<"List element =  " << k << " Size = "<<vec_subs[k].size()<< endl;
+    
+    Matrix Mnew = zero_substitution(Mo,vec_subs[k]);
+    Matrix Qnew = zero_substitution(Qo,vec_subs[k]);
+    Matrix MQnew = zero_substitution(MQo,vec_subs[k]);
+    //Matrix Knew= zero_substitution(Ko,vec_subs[k]);
+    Matrix WPhinew= zero_substitution(WPhio,vec_subs[k]);   
+    
+    
+    lst new_atom_list_Mnew, new_exp_list_Mnew;        
+    matrix_list_optimize (Mnew, new_atom_list_Mnew, new_exp_list_Mnew);
+    sys.export_function_MATLAB("Mnew", "Mnew_", Mnew, new_atom_list_Mnew, new_exp_list_Mnew,"q,time,param");
+
+    lst new_atom_list_Qnew, new_exp_list_Qnew;        
+    matrix_list_optimize (Qnew, new_atom_list_Qnew, new_exp_list_Qnew);
+    sys.export_function_MATLAB("Qnew", "Qnew_", Qnew, new_atom_list_Qnew, new_exp_list_Qnew, "q,dq,time,param,inputs"); 
+        
+     
+    lst new_atom_list_MQnew, new_exp_list_MQnew;        
+    matrix_list_optimize (MQnew, new_atom_list_MQnew, new_exp_list_MQnew);
+    sys.export_function_MATLAB("MQnew", "MQnew_", MQnew, new_atom_list_MQnew, new_exp_list_MQnew, "q,dq,time,param,inputs");
+
+    //~ lst new_atom_list_Knew, new_exp_list_Knew;        
+    //~ matrix_list_optimize (Knew, new_atom_list_Knew, new_exp_list_Knew);
+    //~ sys.export_function_MATLAB("Knew", "Knew_", Knew, new_atom_list_Knew, new_exp_list_Knew,"q,dq,ddq,unknowns,time,param,inputs");
+
+    lst new_atom_list_WPhinew, new_exp_list_WPhinew;        
+    matrix_list_optimize (WPhinew, new_atom_list_WPhinew, new_exp_list_WPhinew);
+    sys.export_function_MATLAB("WPhinew", "WPhinew_", WPhinew, new_atom_list_WPhinew, new_exp_list_WPhinew,"q,dq,ddq,unknowns,time,param,inputs");
+
+    int e;
+
+    //cout << "symb = "<< v1[k]->get_name()<<endl;
+
+    cout <<"M atom = " << new_atom_list_Mnew.nops()<<endl;
+    e = system("python op_counter.py Mnew.m");
+
+    cout <<"Q atom = " << new_atom_list_Qnew.nops()<<endl;
+    e = system("python op_counter.py Qnew.m");
+
+    cout <<"MQ atom = " << new_atom_list_MQnew.nops()<<endl;
+    e = system("python op_counter.py MQnew.m");
+
+    //cout <<"K atom = " << new_atom_list_Knew.nops()<<endl;
+    //e = system("python op_counter.py Knew.m");
+
+    cout <<"WPhi atom = " << new_atom_list_WPhinew.nops()<<endl;
+    e = system("python op_counter.py WPhinew.m");
+
+    //e = system("octave -q mrank_indep.m");
+
+    cout<<endl;
+} 
+
+
+
+
+
+
+
+
+
+
+
+return 0;
+
+
+vector < symbol_numeric * > v2;
 for (int k = 0;k<v1.size(); k++) {
-v2.push_back( v1[k]);
+    v2.push_back( v1[k]);
 
-    
-Matrix Mnew = zero_substitution(Mo,v2);
-Matrix Qnew = zero_substitution(Qo,v2);
-Matrix MQnew = zero_substitution(MQo,v2);
-//Matrix Knew= zero_substitution(Ko,v2);
-Matrix WPhinew= zero_substitution(WPhio,v2);
+        
+    Matrix Mnew = zero_substitution(Mo,v2);
+    Matrix Qnew = zero_substitution(Qo,v2);
+    Matrix MQnew = zero_substitution(MQo,v2);
+    //Matrix Knew= zero_substitution(Ko,v2);
+    Matrix WPhinew= zero_substitution(WPhio,v2);
 
-lst new_atom_list_Mnew, new_exp_list_Mnew;        
-matrix_list_optimize (Mnew, new_atom_list_Mnew, new_exp_list_Mnew);
-sys.export_function_MATLAB("Mnew", "Mnew_", Mnew, new_atom_list_Mnew, new_exp_list_Mnew,"q,time,param");
+    lst new_atom_list_Mnew, new_exp_list_Mnew;        
+    matrix_list_optimize (Mnew, new_atom_list_Mnew, new_exp_list_Mnew);
+    sys.export_function_MATLAB("Mnew", "Mnew_", Mnew, new_atom_list_Mnew, new_exp_list_Mnew,"q,time,param");
 
-lst new_atom_list_Qnew, new_exp_list_Qnew;        
-matrix_list_optimize (Qnew, new_atom_list_Qnew, new_exp_list_Qnew);
-sys.export_function_MATLAB("Qnew", "Qnew_", Qnew, new_atom_list_Qnew, new_exp_list_Qnew, "q,dq,time,param,inputs"); 
-    
- 
-lst new_atom_list_MQnew, new_exp_list_MQnew;        
-matrix_list_optimize (MQnew, new_atom_list_MQnew, new_exp_list_MQnew);
-sys.export_function_MATLAB("MQnew", "MQnew_", MQnew, new_atom_list_MQnew, new_exp_list_MQnew, "q,dq,time,param,inputs");
+    lst new_atom_list_Qnew, new_exp_list_Qnew;        
+    matrix_list_optimize (Qnew, new_atom_list_Qnew, new_exp_list_Qnew);
+    sys.export_function_MATLAB("Qnew", "Qnew_", Qnew, new_atom_list_Qnew, new_exp_list_Qnew, "q,dq,time,param,inputs"); 
+        
+     
+    lst new_atom_list_MQnew, new_exp_list_MQnew;        
+    matrix_list_optimize (MQnew, new_atom_list_MQnew, new_exp_list_MQnew);
+    sys.export_function_MATLAB("MQnew", "MQnew_", MQnew, new_atom_list_MQnew, new_exp_list_MQnew, "q,dq,time,param,inputs");
 
-//~ lst new_atom_list_Knew, new_exp_list_Knew;        
-//~ matrix_list_optimize (Knew, new_atom_list_Knew, new_exp_list_Knew);
-//~ sys.export_function_MATLAB("Knew", "Knew_", Knew, new_atom_list_Knew, new_exp_list_Knew,"q,dq,ddq,unknowns,time,param,inputs");
+    //~ lst new_atom_list_Knew, new_exp_list_Knew;        
+    //~ matrix_list_optimize (Knew, new_atom_list_Knew, new_exp_list_Knew);
+    //~ sys.export_function_MATLAB("Knew", "Knew_", Knew, new_atom_list_Knew, new_exp_list_Knew,"q,dq,ddq,unknowns,time,param,inputs");
 
-lst new_atom_list_WPhinew, new_exp_list_WPhinew;        
-matrix_list_optimize (WPhinew, new_atom_list_WPhinew, new_exp_list_WPhinew);
-sys.export_function_MATLAB("WPhinew", "WPhinew_", WPhinew, new_atom_list_WPhinew, new_exp_list_WPhinew,"q,dq,ddq,unknowns,time,param,inputs");
+    lst new_atom_list_WPhinew, new_exp_list_WPhinew;        
+    matrix_list_optimize (WPhinew, new_atom_list_WPhinew, new_exp_list_WPhinew);
+    sys.export_function_MATLAB("WPhinew", "WPhinew_", WPhinew, new_atom_list_WPhinew, new_exp_list_WPhinew,"q,dq,ddq,unknowns,time,param,inputs");
 
-  
-int e;
+      
+    int e;
 
-cout << "symb = "<< v1[k]->get_name()<<endl;
+    cout << "symb = "<< v1[k]->get_name()<<endl;
 
-cout <<"M atom = " << new_atom_list_Mnew.nops()<<endl;
-e = system("python op_counter.py Mnew.m");
+    cout <<"M atom = " << new_atom_list_Mnew.nops()<<endl;
+    e = system("python op_counter.py Mnew.m");
 
-cout <<"Q atom = " << new_atom_list_Qnew.nops()<<endl;
-e = system("python op_counter.py Qnew.m");
+    cout <<"Q atom = " << new_atom_list_Qnew.nops()<<endl;
+    e = system("python op_counter.py Qnew.m");
 
-cout <<"MQ atom = " << new_atom_list_MQnew.nops()<<endl;
-e = system("python op_counter.py MQnew.m");
+    cout <<"MQ atom = " << new_atom_list_MQnew.nops()<<endl;
+    e = system("python op_counter.py MQnew.m");
 
-//cout <<"K atom = " << new_atom_list_Knew.nops()<<endl;
-//e = system("python op_counter.py Knew.m");
+    //cout <<"K atom = " << new_atom_list_Knew.nops()<<endl;
+    //e = system("python op_counter.py Knew.m");
 
-cout <<"WPhi atom = " << new_atom_list_WPhinew.nops()<<endl;
-ex = system("python op_counter.py WPhinew.m");
+    cout <<"WPhi atom = " << new_atom_list_WPhinew.nops()<<endl;
+    ex = system("python op_counter.py WPhinew.m");
 
-//e = system("octave -q mrank_indep.m");
+    //e = system("octave -q mrank_indep.m");
 
-cout<<endl;
+    cout<<endl;
 } 
 
 
