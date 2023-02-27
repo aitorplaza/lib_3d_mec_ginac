@@ -639,7 +639,7 @@ Tensor3D * System::new_Tensor3D ( string name , ex exp1 , ex exp2 , ex exp3 , ex
         lst laux;
         laux.append( exp1 ); laux.append( exp2 );laux.append( exp3 );
         laux.append( exp4 ); laux.append( exp5 );laux.append( exp6 );
-        laux.append( exp7 ); laux.append( exp9 );laux.append( exp9 );
+        laux.append( exp7 ); laux.append( exp8 );laux.append( exp9 );
         Matrix m ( 3 , 3 , laux);
         //Matrix m ( 3 , 3 , lst ( exp1 , exp2 , exp3 , exp4 , exp5 , exp6 , exp7 , exp8 , exp9 ) );
         return new_Tensor3D ( name , & m , base );
@@ -658,7 +658,7 @@ Tensor3D * System::new_Tensor3D ( string name , ex exp1 , ex exp2 , ex exp3 , ex
         lst laux;
         laux.append( exp1 ); laux.append( exp2 );laux.append( exp3 );
         laux.append( exp4 ); laux.append( exp5 );laux.append( exp6 );
-        laux.append( exp7 ); laux.append( exp9 );laux.append( exp9 );
+        laux.append( exp7 ); laux.append( exp8 );laux.append( exp9 );
         Matrix m ( 3 , 3 , laux);
         //Matrix m ( 3 , 3 , lst ( exp1 , exp2 , exp3 , exp4 , exp5 , exp6 , exp7 , exp8 , exp9 ) );
        return new_Tensor3D ( name , & m , get_Base ( s_Base ) );
