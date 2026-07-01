@@ -104,7 +104,7 @@ External objets from Globals
 int gravity;
 void ( * outError )( const char * );
 vector < atom > atoms;
-exhashmap < ex > atom_hashmap(10^5);
+exhashmap < ex > atom_hashmap(1e5);
 //~ exhashmap < ex > atom_hashmap;
 
 vector < symbol_numeric > exclude_atoms;
