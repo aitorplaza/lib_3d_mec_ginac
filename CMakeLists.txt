@@ -87,3 +87,22 @@ install(TARGETS lib_3d_mec_ginac
 install(FILES ${HEADER_FILES}
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lib_3d_mec_ginac
 )
+
+# Generate and install pkg-config file
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/lib_3d_mec_ginac.pc"
+"prefix=${CMAKE_INSTALL_PREFIX}
+exec_prefix=\${prefix}
+libdir=\${prefix}/${CMAKE_INSTALL_LIBDIR}
+includedir=\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}
+
+Name: lib_3d_mec_ginac
+Description: lib_3d_mec_ginac C++ library.
+Version: ${PROJECT_VERSION}
+Libs: -L\${libdir} -l_3d_mec_ginac
+Cflags: -I\${includedir}
+"
+)
+
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/lib_3d_mec_ginac.pc"
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
+)
