@@ -8,7 +8,7 @@ sudo apt-get -y install build-essential cmake pkg-config libgsl-dev libblas3gf l
 Compile library:
 
 mkdir -p build && cd build
-cmake -DCMAKE_INSTALL_PREFIX=`pwd`/../.. ..
+cmake -DCMAKE_INSTALL_PREFIX=.. ..
 make
 make install
 
