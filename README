@@ -1,16 +1,15 @@
 # INSTALLATION INSTRUCTIONS
 
-Install dependecies:
-sudo apt-get -y install build-essential pkg-config libgsl-dev libblas3gf libblas-dev liblapack3gf liblapack-dev graphviz openscenegraph libopenscenegraph-dev gnuplot libgts-bin autoconf libtool libcln6 libcln-dev ginac-tools libginac-dev
+Install dependencies:
+sudo apt-get -y install build-essential cmake pkg-config libgsl-dev libblas3gf libblas-dev liblapack3gf liblapack-dev graphviz openscenegraph libopenscenegraph-dev gnuplot libgts-bin libcln6 libcln-dev ginac-tools libginac-dev
 
 
 
 Compile library:
 
-cd lib_3d_mec_ginac
-make clean
-
-./autogen.sh --prefix=`pwd`/..
+mkdir -p build && cd build
+cmake -DCMAKE_INSTALL_PREFIX=`pwd`/../.. ..
 make
 make install
+
 
