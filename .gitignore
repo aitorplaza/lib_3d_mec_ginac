@@ -1,12 +1,12 @@
-# Prerequisites
+# Prerequisites / Dependency files
 *.d
+*.Plo
 
 # Compiled Object files
 *.slo
 *.lo
 *.o
 *.obj
-*.Plo
 
 # Precompiled Headers
 *.gch
@@ -32,10 +32,8 @@
 *.out
 *.app
 
-
 # Ignore libtool
 libtool
-
 
 # Ignoring include/ and lib/ directories
 include/
@@ -43,3 +41,35 @@ lib/
 
 # Ignoring .log files
 *.log
+
+# CMake build directory
+build/
+
+# Autotools generated files
+Makefile
+Makefile.in
+aclocal.m4
+autom4te.cache/
+config.log
+config.status
+config.h
+config.h.in
+config.h.in~
+configure
+compile
+depcomp
+install-sh
+missing
+mkinstalldirs
+ltmain.sh
+stamp-h1
+lib_3d_mec_ginac.pc
+
+# IDE files
+.vscode/
+.idea/
+*~
+*.swp
+
+# Simulation output directories in examples
+examples/*/GENERATED_*/
