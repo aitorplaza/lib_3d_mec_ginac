@@ -161,7 +161,8 @@ ex atomize_ex( ex expression ){
         atoms.push_back ( a ) ;
         atom_hashmap[new_exp] = a;
         return a;
-    } 
+    }
+    return 0; 
 }
 #endif
 /*
