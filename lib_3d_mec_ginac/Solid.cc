@@ -42,6 +42,7 @@ Vector3D * Solid::get_CM ( void ){
 	}catch ( int e ) {
         outError ( "ERR -  The Center of Mass Vector is not defined" );
 	}
+	return NULL;
 }
 
 /*
@@ -54,6 +55,7 @@ Tensor3D * Solid::get_IT ( void ){
 	}catch ( int e ) {
         outError ( "ERR -  The Inertia Tensor is not defined" );
 	}
+	return NULL;
 }
 
 /*
@@ -66,6 +68,7 @@ symbol_numeric * Solid::get_mass ( void ){
 	}catch ( int e ) {
         outError ( "ERR -  The mass is not defined" );
 	}
+	return NULL;
 }
 /*
 Return MassCenter Point
