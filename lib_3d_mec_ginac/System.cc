@@ -480,6 +480,7 @@ Base * System::new_Base ( string name , Base * previous_base , Matrix rotation_t
 		if (e==1)       {outError ( (string("ERR - Name of base ") + name + string(" already used ")).c_str() );}
 		else if (e==2) {outError ( (string("ERR - The base ") + previous_base-> get_name () + string (" used to define ") + name + string("base  does not exist ")).c_str() );}
     }
+return NULL;
 }
 
 
@@ -492,6 +493,7 @@ Base * System::new_Base ( string name , string previous_base_name , Matrix rotat
         return new_Base ( name , get_Base ( previous_base_name ) , rotation_tupla , rotation_angle );
     } catch ( int e ) {
     	if (e==1) {outError ( (string("ERR - The base ") + previous_base_name + string (" used to define ") + name + string(" base does not exist ")).c_str() );}
+    return NULL;
     }
 }
 
@@ -511,6 +513,7 @@ Base * System::new_Base ( string name , string previous_base_name , ex expressio
         return new_Base ( name , get_Base ( previous_base_name ) , m_new , rotation_angle );
     } catch ( int e ) {
     	if (e==1) {outError ( (string("ERR - The base ") + previous_base_name + string (" used to define ") + name + string(" base does not exist ")).c_str() );}
+    return NULL;
     }
 }
 
@@ -534,6 +537,7 @@ Vector3D * System::new_Vector3D ( string name , Matrix mat , Base * base ) {
 		if (e==1)             {outError ( (string("ERR - Name of Vector ") + name + string(" already used ")).c_str() );}
 		else if (e==2)       {outError ( (string("ERR - The base ") + base->get_name() + string (" used to define ") + name + string(" vector does not exist ")).c_str() );}
     }
+return NULL;
 }
 
 
@@ -546,6 +550,7 @@ Vector3D * System::new_Vector3D ( string name , Matrix mat , string base_name ) 
         return new_Vector3D ( name , mat , get_Base ( base_name ) );
     }catch ( int e ) {
 		if (e==1)             {outError ( (string("ERR - The base ") + base_name + string (" used to define ") + name + string(" vector does not exist ")).c_str() );}
+    return NULL;
     }
 }
 
@@ -564,6 +569,7 @@ Vector3D * System::new_Vector3D ( string name , ex expression1 , ex expression2 
         //return new_Vector3D ( name , Matrix ( 3 , 1 , lst ( expression1 , expression2 , expression3 ) ) , base );
     }catch ( int e ) {
 		if (e==1) {outError ( (string("ERR - The base ") + base-> get_name () + string (" used to define ") + name + string(" vector does not exist ")).c_str() );}
+    return NULL;
     }
 }
 
@@ -582,6 +588,7 @@ Vector3D * System::new_Vector3D ( string name , ex expression1 , ex expression2 
         //return new_Vector3D ( name , Matrix ( 3 , 1 , lst ( expression1 , expression2 , expression3 ) ) , get_Base ( base_name ) );
     }catch ( int e ) {
 		if (e==1) {outError ( (string("ERR - The base ") + base_name + string (" used to define ") + name + string(" vector does not exist ")).c_str() );}
+    return NULL;
     }
 }
 
@@ -597,6 +604,7 @@ Vector3D * System::new_Vector3D ( string name , Matrix * mat , string base_name 
     }catch ( int e ) {
 		if (e==1)             {outError ( (string("ERR - The base ") + base_name + string (" used to define ") + name + string(" vector does not exist ")).c_str() );}
 		else if (e==2)       {outError ( (string("ERR - The matrix ") + mat->get_name () + string (" used to define ") + name + string(" vector does not exist ")).c_str() );}
+    return NULL;
     }
 
 }
@@ -627,6 +635,7 @@ Tensor3D * System::new_Tensor3D ( string name , Matrix * mat , Base * base ) {
        if (e==1)             {outError ( (string("ERR - Name of Tensor3D ") + name + string(" already used.")).c_str() );}
        else if (e==2)       {outError ( (string("ERR - The base ") + base->get_name () + string (" used to define ") + name + string(" tensor does not exist ")).c_str() );}
     }
+return NULL;
 }
 
 
@@ -645,6 +654,7 @@ Tensor3D * System::new_Tensor3D ( string name , ex exp1 , ex exp2 , ex exp3 , ex
         return new_Tensor3D ( name , & m , base );
     }catch ( int e ) {
        if (e==1) {outError ( (string("ERR - The base ") + base->get_name () + string (" used to define ") + name + string(" tensor does not exist ")).c_str() );}
+    return NULL;
     }
 }
 
@@ -667,6 +677,7 @@ Tensor3D * System::new_Tensor3D ( string name , ex exp1 , ex exp2 , ex exp3 , ex
     }catch ( int e ) {
         if (e==1) {outError ( (string("ERR - The base ") + s_Base + string (" used to define ") + name + string(" tensor does not exist ")).c_str() );}
 	}
+return NULL;
 }
 
 /*
@@ -697,6 +708,7 @@ Point * System::new_Point ( string name , Point * p , Vector3D * v ) {
         else if (e==2) {outError ( (string("ERR - The point ") + p->get_name() + string (" used to define ") + name + string(" point does not exist ")).c_str() );}
         //~ else if (e==3) {outError ( (string("ERR - The vector ") + v->get_name() + string (" used to define ") + name + string(" point does not exist ")).c_str() );}
     }
+return NULL;
 }
 
 /*
@@ -708,6 +720,7 @@ Point * System::new_Point ( string name , string p , Vector3D * v ) {
         return new_Point ( name , get_Point ( p ) , v );
     }catch ( int e ) {
         if (e==1) {outError ( (string("ERR - The point ") + p + string (" used to define ") + name + string(" point does not exist ")).c_str() );}
+	return NULL;
 	}
 }
 
@@ -724,6 +737,7 @@ Point * System::new_Point ( string name , string p , ex exp1 , ex exp2 , ex exp3
         return new_Point ( name , get_Point ( p ) , vaux );
     }catch ( int e ) {
         if (e==1) {outError ( (string("ERR - The point ") + p + string (" used to define ") + name + string(" point does not exist ")).c_str() );}
+	return NULL;
 	}
 }
 
@@ -749,6 +763,7 @@ Frame * System::new_Frame ( string name , Point * p , Base * base) {
         else if (e==2) {outError ( (string("ERR - The point ") + p->get_name() + string (" used to define ") + name + string(" frame does not exist ")).c_str() );}
         else if (e==3) {outError ( (string("ERR - The bse ") + base->get_name() + string (" used to define ") + name + string(" frame does not exist ")).c_str() );}
     }
+return NULL;
 }
 /*
 Method for build a new Frame in the System
@@ -761,6 +776,7 @@ Frame * System::new_Frame ( string name , string s_Point , string s_Base) {
     }catch ( int e ) {
 	    if (e==1) {outError ( (string("ERR - The point ") + s_Point + string(" used to define ") + name + string(" frame is not defined.")).c_str() );}
         else if (e==2) {outError ( (string("ERR - The base ") + s_Base + string(" used to define ") + name + string(" frame is not defined.")).c_str() );}
+    return NULL;
     }
 }
 /*
@@ -779,6 +795,7 @@ VectorE  * System::new_VectorE ( string name ) {
     }catch ( int e ) {
         if (e==1) {outError ( "ERR -  Name of VectorE  already used" );}
     }
+return NULL;
 }
 
 /*
@@ -817,6 +834,7 @@ Solid * System::new_Solid ( string name , Point * p , Base * base, symbol_numeri
         else if (e==7) {outError ( (string("ERR - The vector ") + new_CM->get_name() + string(" used to define ") + name + string(" solid is not defined.")).c_str() );}
         else if (e==8) {outError ( (string("ERR - The tensor ") + new_IT->get_name() + string(" used to define ") + name + string(" solid is not defined.")).c_str() );}
     }
+ return NULL;
  }
 /*
 Method for build a new Solid in the System with strings
@@ -835,6 +853,7 @@ Solid * System::new_Solid ( string name , string s_Point , string s_Base, string
         else if (e==3) {outError ( (string("ERR - The parameter ") + s_mass + string(" used to define ") + name + string(" solid is not defined.")).c_str() );}
         else if (e==4) {outError ( (string("ERR - The vector ") + s_CM + string(" used to define ") + name + string(" solid is not defined.")).c_str() );}
         else if (e==5) {outError ( (string("ERR - The tensor ") + s_IT + string(" used to define ") + name + string(" solid is not defined.")).c_str() );}
+    return NULL;
     }
 }
 
@@ -855,6 +874,7 @@ Solid * System::new_Solid ( string name , string s_Point , string s_Base, symbol
         //else if (e==3) {outError ( (string("ERR - The parameter ") + s_mass + string(" used to define ") + name + string(" solid is not defined.")).c_str() );}
         else if (e==4) {outError ( (string("ERR - The vector ") + s_CM + string(" used to define ") + name + string(" solid is not defined.")).c_str() );}
         else if (e==5) {outError ( (string("ERR - The tensor ") + s_IT + string(" used to define ") + name + string(" solid is not defined.")).c_str() );}
+    return NULL;
     }
 }
 
@@ -878,6 +898,7 @@ Wrench3D * System::new_Wrench3D ( string name, Vector3D F, Vector3D M , Point * 
        if (e==1) {outError ( (string("ERR - Name of Wrench3D ") + name + string(" already used ")).c_str() );}
        //else if (e==2){outError ( "ERR -  Wrench type not defined or incorrectly defined. It must be: inertia, constitutive, joint or external." );}
     }
+return NULL;
 }
 /*
 Method for build a new wrench in the System
@@ -909,6 +930,7 @@ Wrench3D * System::new_Wrench3D ( string name, Vector3D F, Vector3D M , Point * 
 
     new_Wrench3D ( name_action, F, M , P, Sol2 , type);
     new_Wrench3D ( name_reaction, -F, -M , P, Sol1 , type);
+return NULL;
 }
 
 /*
@@ -935,6 +957,7 @@ Wrench3D * System::new_Wrench3D(string s_name, ex f1, ex f2, ex f3, string s_bas
     new_Wrench3D ( name_action,    Faux,  Maux , get_Point ( s_P ), get_Solid ( s_Sol2 ) , type);
     new_Wrench3D ( name_reaction, -Faux, -Maux , get_Point ( s_P ), get_Solid ( s_Sol1 ) , type);
 
+return NULL;
 }
 
 /*
@@ -968,6 +991,7 @@ Drawing3D * System::new_Drawing3D (  string s_name , Solid * Sol, string file_na
        else if (e==2) {outError ( (string("ERR - The solid ") + Sol->get_name() + string(" used to define ") + s_name + string(" drawings is not defined.")).c_str() );}
     }
 
+return NULL;
 }
 /*
 Method for build a new Draw in the System with Solid object
@@ -1010,6 +1034,7 @@ Drawing3D * System::new_Drawing3D (string s_name, string s_point , string s_base
     	else if (e==2) {outError ( (string("ERR - The point ") + s_point + string(" used to define ") + s_name + string(" Drawing3D is not defined.")).c_str() );}
         else if (e==3) {outError ( (string("ERR - The base ") + s_base + string(" used to define ") + s_name + string(" Drawing3D is not defined.")).c_str() );}
     }
+return NULL;
 }
 
 
@@ -1062,6 +1087,7 @@ Drawing3D * System::new_Drawing3D ( string s_name ,  Frame * Fra, numeric scale 
        else if (e==2) {outError ( (string("ERR - The frame ") + Fra->get_name() + string(" used to define ") + s_name + string(" drawings is not defined.")).c_str() );}
 
     }
+return NULL;
 }
 
 /*
@@ -1100,6 +1126,7 @@ Drawing3D * System::new_Drawing3D ( string s_name ,  Point * Pnt, numeric scale,
 	if (e==1) {outError ( (string("ERR - The Drawing3D ") + s_name + string(" is already in the Drawing3D structure ")).c_str() );    }
 	else if (e==2) {outError ( (string("ERR - The point ") + Pnt->get_name() + string(" used to define ") + s_name + string(" drawings is not defined.")).c_str() );}
     }
+return NULL;
 }
 
 Drawing3D * System::new_Drawing3D (  string s_name , Point * Pnt, numeric scale) {
@@ -1143,6 +1170,7 @@ Drawing3D * System::new_Drawing3D ( string s_name , Vector3D * Vec, Point * Pnt,
 
     }
 
+return NULL;
 }
 
 
@@ -1152,6 +1180,7 @@ Drawing3D * System::new_Drawing3D (string s_name ,  Vector3D * Vec, Point * Pnt)
         return new_Drawing3D (s_name, Vec, Pnt , 1.0, 0.0, 0.0, 1.0  );
     }catch ( int e ) {
        if (e==1) {outError ( (string("ERR - The point ") + Pnt->get_name() + string(" used to define ") + s_name + string(" drawings is not defined.")).c_str() );}
+    return NULL;
     }
 }
 /*
@@ -1170,6 +1199,7 @@ Matrix * System::new_Matrix ( string name , Matrix m_new ) {
     }catch ( int e ) {
 		outError ( (string("ERR - Name of Matrix ") + name + string(" already used ")).c_str() );
     }
+return NULL;
 }
 
 
@@ -1688,6 +1718,7 @@ Base * System::Reduced_Base ( Base * BaseA , Base * BaseB ) {
     }else{
         return b;
     }
+return NULL;
 }
 
 
@@ -1775,6 +1806,7 @@ Point * System::Reduced_Point ( Point * PointA , Point * PointB ) {
     }else{
         return p;
     }
+return NULL;
 }
 
 /*
@@ -2206,6 +2238,7 @@ Vector3D System::Angular_Velocity ( Base * BaseA , Base * BaseB ) {
 
         }catch ( int i ){
             outError ( "ERR - The two Bases don't exist in this System" );
+        return Vector3D();
         }
 
     }else
@@ -3106,6 +3139,7 @@ try {
 
     } catch (int e) {
 		outError ( (string("ERR - The string") + symbol_name + string("is not a symbol (Coordinate velocity acceleration or parameter)")).c_str());
+    return Matrix();
     }
 }
 
@@ -3135,6 +3169,7 @@ try {
 
     } catch (int e) {
 		outError ( (string("ERR - The string") + symbol_name + string("is not a symbol (Coordinate velocity acceleration or parameter)")).c_str());
+    return Vector3D();
     }
 }
 
@@ -3165,6 +3200,7 @@ try {
 
     } catch (int e) {
 		outError ( (string("ERR - The string") + symbol_name + string("is not a symbol (Coordinate velocity acceleration or parameter)")).c_str());
+    return Tensor3D();
     }
 }
 
@@ -3195,6 +3231,7 @@ Wrench3D System::diff(Wrench3D WrenchA,string symbol_name){
 
     } catch (int e) {
 		outError ( (string("ERR - The string") + symbol_name + string("is not a symbol (Coordinate velocity acceleration or parameter)")).c_str());
+    return Wrench3D();
     }
 }
 
