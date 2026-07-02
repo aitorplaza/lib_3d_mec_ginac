@@ -513,6 +513,7 @@ Matrix Matrix::get_col ( int j ) {
     }catch ( int e ) {
 		outError ( (string("ERR - The index of the column is out of range")).c_str() );
     }
+    return Matrix();
 }
 /*
 Extracts the i-th row of a matrix
@@ -527,8 +528,7 @@ Matrix Matrix::get_row ( int i ) {
     }catch ( int e ) {
 		outError ( (string("ERR - The index of the row is out of range")).c_str() );
     }
-
-}
+    return Matrix();}
 
 /*
 Extracts the item at the ith row and jth column (it is the same as the operator ())
@@ -569,9 +569,7 @@ Matrix Matrix::remove_col ( int jth ) {
     }catch ( int e ) {
 		outError ( (string("ERR - The index of the column is out of range")).c_str() );
     }
-
-
-}
+    return Matrix();}
 
 /*
 Removes the i-th row of a matrix
@@ -597,6 +595,7 @@ Matrix Matrix::remove_row ( int ith ) {
     }catch ( int e ) {
 		outError ( (string("ERR - The index of the column is out of range")).c_str() );
     }
+    return Matrix();
 }
 
 /*
