@@ -6483,6 +6483,132 @@ void System::export_function_MATLAB(string function_name, string function_out, M
 
 }
 
+void System::export_function_python(string function_name, string function_out, Matrix symbolic_matrix_function, lst Matrix_atom_list, lst Matrix_atom_expression_list, string s_in){
+
+  vector<string> s_internal;
+  stringstream ss(s_in);
+  string tok;
+
+  while(getline(ss, tok, ',')) {
+    s_internal.push_back(tok);
+  }
+
+  ofstream py_file;
+  py_file.open( ( function_name+".py" ).c_str () );
+
+  py_file << "import numpy as np" << endl;
+  py_file << "from numpy import sin, cos, tan, sqrt, pi, exp, log, abs" << endl << endl;
+
+  string s="(";
+
+  for(size_t i = 0; i < s_internal.size(); ++i){
+     if (s_internal[i] == "q"){s=s+"q,";}
+     else if (s_internal[i] == "qaux"){s=s+"qaux,";}
+     else if (s_internal[i] == "dq"){s=s+"dq,";}
+     else if (s_internal[i] == "dqaux"){s=s+"dqaux,";}
+     else if (s_internal[i] == "ddq"){s=s+"ddq,";}
+     else if (s_internal[i] == "ddqaux"){s=s+"ddqaux,";}
+     else if (s_internal[i] == "param"){s=s+"param,";}
+     else if (s_internal[i] == "time" || s_internal[i] == "t"){s=s+"t,";}
+     else if (s_internal[i] == "inputs" && inputs.size () > 0){s=s+"inputs,";}
+     else if (s_internal[i] == "unknowns" && unknowns.size ()> 0 ){s=s+"unknowns,";}
+     else {s=s+s_internal[i]+",";};
+  }
+  if (s.size () > 0) { s.resize (s.size () - 1);}
+  s = s + ")";
+
+  py_file << "def " << function_name << s << ":" << endl;
+
+  for(size_t i = 0; i < s_internal.size(); ++i){
+    if (s_internal[i] == "q"){
+      for ( size_t k = 0 ; k < coordinates.size () ; k++ )
+        py_file << "    " << coordinates[k]-> get_name () << " = q[" << k << "]" << endl;
+    }
+    else if (s_internal[i] == "qaux"){
+      for ( size_t k = 0 ; k < aux_coordinates.size () ; k++ )
+        py_file << "    " << aux_coordinates[k]-> get_name () << " = qaux[" << k << "]" << endl;
+    }
+    else if (s_internal[i] == "dq"){
+      for ( size_t k = 0 ; k < velocities.size () ; k++ )
+        py_file << "    " << velocities[k]-> get_name () << " = dq[" << k << "]" << endl;
+    }
+    else if (s_internal[i] == "dqaux"){
+      for ( size_t k = 0 ; k < aux_velocities.size () ; k++ )
+        py_file << "    " << aux_velocities[k]-> get_name () << " = dqaux[" << k << "]" << endl;
+    }
+    else if (s_internal[i] == "ddq"){
+      for ( size_t k = 0 ; k < accelerations.size () ; k++ )
+        py_file << "    " << accelerations[k]-> get_name () << " = ddq[" << k << "]" << endl;
+    }
+    else if (s_internal[i] == "ddqaux"){
+      for ( size_t k = 0 ; k < aux_accelerations.size () ; k++ )
+        py_file << "    " << aux_accelerations[k]-> get_name () << " = ddqaux[" << k << "]" << endl;
+    }
+    else if (s_internal[i] == "param"){
+      for ( size_t k = 0 ; k < parameters.size () ; k++ )
+        py_file << "    " << parameters[k]-> get_name () << " = param[" << k << "]" << endl;
+    }
+    else if (s_internal[i] == "time" || s_internal[i] == "t"){
+      py_file << "    " << get_Time_Symbol ( ) << " = t" << endl;
+    }
+    else if (s_internal[i] == "inputs"){
+      for ( size_t k = 0 ; k < inputs.size () ; k++ )
+        py_file << "    " << inputs[k]-> get_name () << " = inputs[" << k << "]" << endl;
+    }
+    else if (s_internal[i] == "unknowns"){
+      for ( size_t k = 0 ; k < unknowns.size () ; k++ )
+        py_file << "    " << unknowns[k]-> get_name () << " = unknowns[" << k << "]" << endl;
+    }
+  }
+
+  py_file << endl;
+
+  if (atomization == YES){
+    for (int i = 0 ; i < Matrix_atom_list.nops () ; i++ ){
+      py_file << "    " << Matrix_atom_list.op( i ) << " = " << Matrix_atom_expression_list.op( i ) << endl;
+    }
+    py_file << endl;
+  }
+
+  stringstream mat_ss;
+  mat_ss << symbolic_matrix_function;
+  string mat_str = mat_ss.str();
+
+  // Convert GiNaC matrix output [a,b;c,d] to Python numpy array np.array([[a,b],[c,d]])
+  // Replace ';' with '], ['
+  for (size_t pos = 0; (pos = mat_str.find(';', pos)) != string::npos; ) {
+    mat_str.replace(pos, 1, "], [");
+    pos += 4;
+  }
+  // Replace starting '[' with 'np.array([[' and ending ']' with ']])'
+  if (!mat_str.empty() && mat_str.front() == '[') {
+    mat_str = "np.array([" + mat_str + "])";
+  } else {
+    mat_str = "np.array(" + mat_str + ")";
+  }
+
+  py_file << "    " << function_out << " = " << mat_str << endl;
+  py_file << "    return " << function_out << endl;
+  py_file.close();
+}
+
+
+void System::export_function_python(string function_name, string function_out, Matrix symbolic_matrix_function, lst Matrix_atom_list, lst Matrix_atom_expression_list){
+  lst empty_list;
+  export_function_python(function_name, function_out, symbolic_matrix_function, Matrix_atom_list, Matrix_atom_expression_list, "q,dq,ddq");
+}
+
+void System::export_function_python(string function_name, string function_out, Matrix symbolic_matrix_function){
+  lst Matrix_atom_list, Matrix_atom_expression_list;
+  export_function_python(function_name, function_out, symbolic_matrix_function, Matrix_atom_list, Matrix_atom_expression_list);
+}
+
+void System::export_function_python(string function_name, string function_out, Matrix symbolic_matrix_function, string s_in){
+  lst Matrix_atom_list, Matrix_atom_expression_list;
+  export_function_python(function_name, function_out, symbolic_matrix_function, Matrix_atom_list, Matrix_atom_expression_list, s_in);
+}
+
+
 
 
 void System::export_function_MATLAB_SYMPY(string function_name, string function_out, Matrix symbolic_matrix_function){
@@ -7759,6 +7885,121 @@ void System::export_environment_m ( void ) {
 
 /*---------end write q, dq, ddq, epsilon, parameters to environment.m---------*/
 }
+
+void System::export_environment_py ( void ) {
+    ofstream py_file;
+    py_file.open("./environment.py", ios::out);
+
+    py_file << "import numpy as np" << endl << endl;
+    py_file << "#------------ Coordinates -------------------" << endl;
+    for (size_t i=0; i < coordinates.size() ; ++i) {
+        py_file << *coordinates[i] << " = " << coordinates[i]->get_value() << endl;
+    }
+
+    py_file << "#------------ Velocities -------------------" << endl;
+    for (size_t i=0; i < velocities.size() ; ++i) {
+        py_file << *velocities[i] << " = " << velocities[i]->get_value() << endl;
+    }
+
+    py_file << "#------------ Accelerations -------------------" << endl;
+    for (size_t i=0; i < accelerations.size() ; ++i) {
+        py_file << *accelerations[i] << " = " << accelerations[i]->get_value() << endl;
+    }
+
+    py_file << "#------------ Auxiliar Coordinates -------------------" << endl;
+    for (size_t i=0; i < aux_coordinates.size() ; ++i) {
+        py_file << *aux_coordinates[i] << " = " << aux_coordinates[i]->get_value() << endl;
+    }
+
+    py_file << "#------------ Auxiliar Velocities -------------------" << endl;
+    for (size_t i=0; i < aux_velocities.size() ; ++i) {
+        py_file << *aux_velocities[i] << " = " << aux_velocities[i]->get_value() << endl;
+    }
+
+    py_file << "#------------ Auxiliar Accelerations -------------------" << endl;
+    for (size_t i=0; i < aux_accelerations.size() ; ++i) {
+        py_file << *aux_accelerations[i] << " = " << aux_accelerations[i]->get_value() << endl;
+    }
+
+    py_file << "#------------ Parameters -------------------" << endl;
+    for (size_t i=0; i < parameters.size() ; ++i) {
+        py_file << *parameters[i] << " = " << parameters[i]->get_value() << endl;
+    }
+
+    py_file << "#------------ Joint_Unknowns -------------------" << endl;
+    for (size_t i=0; i < unknowns.size() ; ++i) {
+        py_file << *unknowns[i] << " = " << unknowns[i]->get_value() << endl;
+    }
+
+    py_file << "#------------ Inputs -------------------" << endl;
+    for (size_t i=0; i < inputs.size() ; ++i) {
+        py_file << *inputs[i] << " = " << inputs[i]->get_value() << endl;
+    }
+
+    py_file << "#------------ q, dq, ddq, param, input, unknowns Vectors -------------------" << endl;
+    py_file << "q = np.array([";
+    for (size_t i=0; i < coordinates.size() ; ++i) {
+        py_file << *coordinates[i] << ", ";
+    }
+    py_file << "], dtype=np.float64)" << endl;
+
+    py_file << "dq = np.array([";
+    for (size_t i=0; i < velocities.size() ; ++i) {
+        py_file << *velocities[i] << ", ";
+    }
+    py_file << "], dtype=np.float64)" << endl;
+
+    py_file << "ddq = np.array([";
+    for (size_t i=0; i < accelerations.size() ; ++i) {
+        py_file << *accelerations[i] << ", ";
+    }
+    py_file << "], dtype=np.float64)" << endl;
+
+    if (aux_coordinates.size() != 0){
+        py_file << "qaux = np.array([";
+        for (size_t i=0; i < aux_coordinates.size() ; ++i) {
+            py_file << *aux_coordinates[i] << ", ";
+        }
+        py_file << "], dtype=np.float64)" << endl;
+
+        py_file << "dqaux = np.array([";
+        for (size_t i=0; i < aux_velocities.size() ; ++i) {
+            py_file << *aux_velocities[i] << ", ";
+        }
+        py_file << "], dtype=np.float64)" << endl;
+
+        py_file << "ddqaux = np.array([";
+        for (size_t i=0; i < aux_accelerations.size() ; ++i) {
+            py_file << *aux_accelerations[i] << ", ";
+        }
+        py_file << "], dtype=np.float64)" << endl;
+    }
+
+    py_file << "param = np.array([";
+    for (size_t i=0; i < parameters.size() ; ++i) {
+        py_file << *parameters[i] << ", ";
+    }
+    py_file << "], dtype=np.float64)" << endl;
+
+    if (unknowns.size() != 0){
+        py_file << "unkn = np.array([";
+        for (size_t i=0; i < unknowns.size() ; ++i) {
+            py_file << *unknowns[i] << ", ";
+        }
+        py_file << "], dtype=np.float64)" << endl;
+    }
+
+    if (inputs.size() != 0){
+        py_file << "inputs = np.array([";
+        for (size_t i=0; i < inputs.size() ; ++i) {
+            py_file << *inputs[i] << ", ";
+        }
+        py_file << "], dtype=np.float64)" << endl;
+    }
+
+    py_file.close();
+}
+
 
 /*********************************************************************************************************
 ************************************* CONFIG.INI EXPORT FUNCTIONS ****************************************
